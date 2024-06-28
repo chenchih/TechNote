@@ -1,22 +1,21 @@
 ## Test Case Description
 
-This is good practice of learning how to use RestAPI automation test. I think this youtube channel teach a pretty concept on it. Please refer my python code, I will keep update if there are some note in advance. `2024 June`
+This is a good practice for learning how to use the RestAPI automation test.This YouTube tutorial teaches a great concept on it. Please refer to my Python code, I will keep you updated if there are some notes in advance. `2024 June`
 
-**TestCase1 :** Testing the Create() endpoint
-**TestCase2 :** Testing the Update() endpoint
-**TestCase3:** Testing the List() endpoint with unique users
-**TestCase4:** Testing the Delete() endpoint
+- **TestCase1** :Testing the Create() endpoint 
+- **TestCase2 :** Testing the Update() endpoint
+- **TestCase3:** Testing the List() endpoint with unique users
+- **TestCase4:** Testing the Delete() endpoint
 
 ### Status Update
 
-- `20240628`: inital add the code learn from youtube
+- `20240628`: initial add the code learn from youtube
   - add the full code
   - add a draft code for some debug
 
 ## Python Libary:
-
-requests
-pytest
+`requests`
+`pytest`
 
 ## Reference:
 
@@ -24,9 +23,8 @@ pytest
 - [Github from author](https://github.com/pixegami)
 
 ## API URL:
-
-test endpoint: `https://todo.pixegami.io/`
-UI interface: `https://todo.pixegami.io/docs`
+- test endpoint: `https://todo.pixegami.io/`
+- UI interface: `https://todo.pixegami.io/docs`
 
 ## Command and Note:
 
@@ -40,10 +38,9 @@ in `pytest` it will only run the function that start with `test\_`,
 >   `pytest <testscript.py> -v -s ::<functionname>`
 
 ### Pytest some option to use
-
-    -`-m`: if pytest run error, please use `python3 -m`. It means import a module *or package* for you, then run it as a script.
-    - `-v`: verbose, print more information pass or fail
-    - `-s`: show output, like print
+- `-m`: if pytest run error, please use `python3 -m`. It means import a module *or package* for you, then run it as a script.
+- `-v`: verbose, print more information pass or fail
+- `-s`: show output, like print
 
 ### How to run this code:
 
