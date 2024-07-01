@@ -8,13 +8,6 @@ def test_can_Call_endpoint():
     assert response.status_code == 200
 #CASE1
 def test_can_create_task():
-    #using put method
-    #copy the json code and paste below 
-   # payload= {  
-   #     "content": "test content",
-   #     "user_id": "test_user",
-   #     "is_done": False,
-  #}
     payload=new_task_payload()
     #create_task_response=requests.put(ENDPOINT + "/create-task", json=payload)
     create_task_response=create_task(payload)
@@ -57,7 +50,8 @@ def test_can_update_task():
 #CASE3 LIST TASK_ID
 def test_can_list_tasks():
     n=3 
-    #create N tasks
+    #Step1. create N tasks
+    #only generate payload once, generate once with only one user_id
     payload = new_task_payload()
     #print(payload)
     #same usernmae and content, server generate ID everytime
@@ -65,7 +59,7 @@ def test_can_list_tasks():
         create_task_response=create_task(payload)
         #create_task_response=create_task(new_task_payload())
         assert create_task_response.status_code==200
-
+    # step2. list tasks and check that there are N items
     user_id=payload["user_id"]
     list_task_response = list_tasks(user_id)
     assert list_task_response.status_code==200
@@ -76,16 +70,16 @@ def test_can_list_tasks():
 
 #case4 delete task
 def test_can_delete_tasks():
-    #create a task
+    #Step1 create a task
     payload=new_task_payload()
     #create_task_response=requests.put(ENDPOINT + "/create-task", json=payload)
     create_task_response=create_task(payload)
     assert create_task_response.status_code == 200
     task_id = create_task_response.json()["task"]["task_id"]
-    #delete the task
+    #Step2 delete the task
     delete_task_response=delete_task(task_id)
     assert delete_task_response.status_code==200
-    # get the task and  check that it's not found
+    # Step3 get the task and  check that it's not found
     get_task_response=get_task(task_id)
     #print(get_task_response.status_code) #404 mean not found
     assert get_task_response.status_code
