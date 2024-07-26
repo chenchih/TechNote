@@ -2,7 +2,11 @@
 
 ## Update Status
 - 2024.07.19 inital update 
-
+- 2024.07.26 update readme 
+	- create img folder to store image
+	- create each pytest feature folder and move related file in it
+	- Parameterized add selenium project
+	
 ## Intoduction
 In this page I would like to share on some of basic example of using pip test. 
 
@@ -199,8 +203,6 @@ It allows you to create multiple test cases from a single test function by provi
 -  Reduced Code Duplication: mutiply test case with same logic but different input , you can use parameterized test function.
 -  Test Readability: provide clear and concise manner, like test data and expected result
 -  Allows for passing different input values
-
-
 
 > Syntax: 
 ```
