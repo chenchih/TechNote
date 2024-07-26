@@ -1,12 +1,11 @@
 # My Pytest Note 
-
 ## Update Status
 - 2024.07.19 initial update 
 - 2024.07.26 update readme 
 	- create img folder to store the image
 	- create each `pytest` feature folder and move related files in it
 	- Parameterized add selenium project
-	
+
 ## Intoduction
 In this page, I would like to share on some of basic example of using `pip` test. 
 
@@ -97,7 +96,7 @@ filterwarnings =
     ignore::UserWarning
 ```
 
-
+<a id="part2"></a>
 ## Fixture 
 Reusable blocks of code that handle specific testing needs like setting up environments, providing mock data, or cleaning up resources (teardown).
 You will often use for setup or teardown
@@ -264,11 +263,11 @@ This is a better approach instead of writing a multiply test case function you c
 You can add a marker or you can refer to it as a tag, and add it on top of the test case. This means it will run only on the marker you add, and essential this is like testing group of testing like checkbox related.
 
 - Custom Marker: Marker defined by you. 
-	> run like this: `pytest -v filename.py -m <marker name>
+	> run like this: `pytest -v filename.py -m <marker name>`
 	
 - Buult-in marker: pytest marker like `skip`, `skipif`, `xpass`, and etc.
 	> show all built-in marker: `pytest --markers`
-	> Example of writting a built-in marker:  `@pytest.mark.skip(reason="")`
+	> Example of writing a built-in marker:  `@pytest.mark.skip(reason="")`
 	
 Example file will use:`test_markerOS.py`,`test_markerSkip.py`
 
@@ -277,3 +276,6 @@ Example file will use:`test_markerOS.py`,`test_markerSkip.py`
 ## reference
 - [Pytest offical site](https://docs.pytest.org/en/8.2.x/)
 - [Youtube channel: codebasics ](https://www.youtube.com/watch?v=l32bsaIDoWk&list=PLeo1K3hjS3uv5U-Lmlnucd7gqF-3ehIh0&index=35)
+
+
+
