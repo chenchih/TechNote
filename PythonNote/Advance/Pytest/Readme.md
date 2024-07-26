@@ -1,5 +1,5 @@
 # My Pytest Note 
-## Update Status
+## Update Status 
 - 2024.07.19 initial update 
 - 2024.07.26 update readme 
 	- create img folder to store the image
@@ -7,9 +7,28 @@
 	- Parameterized add selenium project
 
 ## Intoduction
-In this page, I would like to share on some of basic example of using `pip` test. 
+In this page, I would like to share on some of the basic example of using `pip` test. 
 
-## Basic Understanding of pytest 
+
+# Table Of Content 
+<details open>
+<summary><b>(click to expand or hide)</b></summary>
+	
+1. [How to run Test case](#RunTestCase)
+   1. [cli command](#cli)
+   2. [Flag and option](#flag)
+   3. [IDE Setting](#IDE)
+	- [VScode Setting](#vscode)
+	- [Pycharm Setting](#Pycharm)
+	4. [Pytest configure](#Pytest_onfigure)
+2. [Fixture](#part2_Fixture)
+3. [contest](#part3_conftest)
+4. [parameterized](part4_parameterized)
+5. [Grouping test marker](part5_marker)
+
+</details>
+
+##  <a id="part1_basic"> 1. Basic Understanding of pytest </a>
 ### Install module 
 > Install pytest module or libary
 >> `pip install pytest`
@@ -22,8 +41,8 @@ def test_hello():
 	print("helloworld")
 ```
 
-### How to run Test case
-#### cli command 
+###  <a id="RunTestCase"> How to run Test case </a> 
+####  <a id="cli"> cli command  </a>  
 
 - File naming convention:
 	- File name with `test_*.py` or `*_test.py` will automatic run your test case 
@@ -31,7 +50,7 @@ def test_hello():
 
 **Note:** If you don't assign your testfile.py name, then when you use `pytest` all the tests will be execute in the current directory. 
 
-#### Flag and option
+####  <a id="flag"> Flag and option</a>  
 When we run with `pytest` we can add some flag or option, if not added will not display test result information. 
 
 | Flag | Description | example/command |
@@ -43,10 +62,10 @@ When we run with `pytest` we can add some flag or option, if not added will not 
 | `-k` or `--keyword`  | Select tests based on keyword expression, or matching keyword will run| `pytest -k <substring> file.py` |
 | `-m` or `--marker`  | Seelct group test base on marker | pytest -m <marker tag> file.py |
 
-#### IDE Setting
+#### <a id="IDE">IDE Setting</a>  
 We can also use IDE editor to run `pytest`, I will show using VSCODE and Pycharm as examples. 
 
-- VScode Setting
+##### <a id="vscode">VScode Setting</a>  
 You can click on "Testing" on the left sidebar navigator, click on the configure setting, and select `pytest` and your project name.
 This setting will use the default setting, if you want to use the argument of `pytest` flag, please access this setting: 
 	- (Method1)go to `settings`>`Workspace`>`TextEditor`>edit in `settings.json` 
@@ -72,7 +91,7 @@ Add below into the setting, and `["."]` add your flag like
 ![vscodemsetting1](img/vscodesetting.png)	
 ![vscodemsetting2](img/vscodesetting2.png)	
 
-- Pycharm Setting
+##### <a id="Pycharm">Pycharm Setting</a>  
 	- go to `settings`>search for `integrate tool` or under `Tools`> `Python Integrated tool` 
 	- In the testing section change `default` to `pytest`
 	- To add an argument please click on the three dot beside the setting, and press `edit`
@@ -80,7 +99,7 @@ Add below into the setting, and `["."]` add your flag like
 	
 ![pycharmsetting](img/pycharmsetting.PNG)	
 
-#### Pytest configure
+#### <a id="Pytest_onfigure">Pytest configure </a>  
 Please refer to this [site](https://docs.pytest.org/en/7.1.x/reference/customize.html) for more information to set `pytest` configure. 
 
 If you don't like to use the IDE or Option, then you can choose to add inside the `pytest` configure file with `pytest.ini`, `pyproject.toml`, etc.
@@ -95,9 +114,7 @@ filterwarnings =
     error
     ignore::UserWarning
 ```
-
-<a id="part2"></a>
-## Fixture 
+## <a id="part2_Fixture"> 2.Fixture </a>
 Reusable blocks of code that handle specific testing needs like setting up environments, providing mock data, or cleaning up resources (teardown).
 You will often use for setup or teardown
 
@@ -122,14 +139,16 @@ def removeItemfromChart():
 ```
 
 Example file will use:,`test_dbFixture.py`, `test_db.py`,`mydb.py`
-## conftest
+
+## <a id="part3_conftest"> 3.conftest </a>
 The purpose of using `conftest.py` is to reuse the function, or if you have many tests, and not wanting to write setup or tear down function, then you can write it in the conftest. 
 
-In the fixture example you have to write a  setup in this case will move the setup into a new file `conftest.py` 
+In the fixture example you have to write a  setup in this case will move the setup into a new file `conftest.py` , and `yeild` for teardown
 
-> Syntax:
+> Syntax:@pytest.fixture
 
 
+### <a id="autouse_option">  autouse option</a>
 You can also add an option `autouse=True` inside the fixture. This means all the tests will default read confest.py. 
 Without this option, you need to pass your setup function to fixture
 ```
@@ -152,7 +171,7 @@ def test_with_autouse():
 
 ```
 
-From the above example if you add `autouse=True` then you no need to pass in function into your test case function. This means no matter whether you pass in or not it will always read the `confest.py`. 
+From the above example if you add `autouse=True` then you do need to pass in function into your test case function. This means no matter whether you pass in or not it will always read the `confest.py`. 
 
 
 > - test_fixtureexample.py
@@ -184,7 +203,7 @@ def setup():
 
 Now when you run it will read the conftest.py and run the setup
 
-### understand scope 
+### <a id="understand_scope">  understand scope</a>
 The default scope is `function`, there are a couple of scopes:
 - `function`: default scope, the fixture is destroyed at the end of the test 
 - `class`: fixture is destroyed during teardown of the last test in the class
@@ -196,7 +215,7 @@ So in the above, I use the default scope since I didn't assign it. You can assig
 In the function scope: all the tests will run like `setup`, your test, and `teardown`
 In the session scope: each test will run like `setup` test1, test2..., and then `teardown` which means if you only want to run one time setup and teardown then you can use this.
 
-## parameterized
+## <a id="part4_parameterized"> 4.parameterized </a>
 It allows you to create multiple test cases from a single test function by providing different input values and expected outputs.
 
 -  Reduced Code Duplication: multiple test case with the same logic but different input, you can use a parameterized test function.
@@ -213,7 +232,7 @@ It allows you to create multiple test cases from a single test function by provi
 
 > Example file will use:`test_parameter.py`,`string_num.py`
 
-### without parameterized
+### <a id="without_parameterized"> without Parameterized</a>
 > `string_num.py`
 ```
 def greting(name):
@@ -241,7 +260,7 @@ If you have alot of name to test, then you have to keep changing the name or wri
 Instead of doing that you can write a parameterized function. 
 
 
-### with parameterized
+### <a id="with_parameterized"> with Parameterized</a>
 ```
 import pytest
 
@@ -259,7 +278,7 @@ def test_greeting(test_input, expected_output):
 This is a better approach instead of writing a multiply test case function you can write one function and add the input and expected value on the parameterized decorator. 
 
 
-## Grouping test marker
+## <a id="part5_marker"> 5.Grouping test marker </a>
 You can add a marker or you can refer to it as a tag, and add it on top of the test case. This means it will run only on the marker you add, and essential this is like testing group of testing like checkbox related.
 
 - Custom Marker: Marker defined by you. 
