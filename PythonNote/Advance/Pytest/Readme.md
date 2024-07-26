@@ -53,9 +53,9 @@ def test_hello():
 ####  <a id="flag"> Flag and option</a>  
 When we run with `pytest` we can add some flag or option, if not added will not display test result information. 
 
-| Flag | Description | example/command |
-| :-- |: -- |:--:|
-| `-v` or `--verbose`  | Provide more detail about test execution | `pytest -v file.py` |
+| Flag          | Description | example/command |
+| :-- |:-- |:--:|
+| `-v` or `--verbose`             | Provide more detail about test execution | `pytest -v file.py` |
 | `-s` or `--nocapture`  | Prints standard output of your test cases by default will not display  on the console only fail will display| pytest -s file.py |
 | ::  | Run specfic testcase| `pytest -v file.py::testcase` |
 | `-q` or `--quiet`  | show only failure, summary, and errors| `pytest -q file.py` |
