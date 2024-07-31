@@ -170,19 +170,20 @@ def test_togetthe_price():
     price_map={ 'apple': 4.0,'banana': 1.0 }
     assert cart.get_total_price(price_map) == 5.0
 ```
-![case4](img/case4.PNG)
 
-### Cleaning Code for duplicate:
-As you can see the unit test's code have alot of duplicate logic, you can use fixture to `fixture` for dupicate logic `cart= ShoppingCart(5)`.
-![duplicate](img/duplicate.PNG)
+![case4](img/case4.png)
 
-To make the code clearer without adding same logic, you can create a cart is basically is the setup and add a fixture decorator. 
-You can see define `cart()`, which meant all the intial cart will write over here. Now you have to do this: 
-- create cart() function
-- create pxtest.fixture
-- pass all the argument with cart
+### Cleaning Code for the duplicate:
+As you can see the unit test's code has a lot of duplicate logic, you can use fixture to `fixture` for duplicate logic `cart= ShoppingCart(5)`.
+![duplicate](img/duplicate.png)
 
-![fixture](img/fixture.PNG)
+To make the code clearer without adding the same logic, you can create a cart is is the setup and add a fixture decorator. 
+You can see the defined `cart()`, which means all the initial carts will write over here. Now you have to do this: 
+- create `cart()` function
+- create `pxtest.fixture`
+- pass all the arguments with the cart
+
+![fixture](img/fixture.png)
 
 > `shoppingcart.py`
 ```
@@ -201,10 +202,10 @@ def test_when_item_added_then_cart_contains_items(cart):
 ### Mock with fake database
 A mock object is a simulated object used in testing to isolate the component you're testing.
 
-In previous we store data in dictionary, and we know we can use get method. But what if we want to use the get method, but it's not implement yet. In this test will create a fake database, and will have a get method. 
-Just image if the get method is develope by other developer in our team and is not working yet, but you need to validate the unit test to make sure it work. In this situation we need to add get method to mock. To let the get method work, we need to mock, to stimulate get method work properly. 
+Previous we store data in a dictionary, and we knew we could use `get` method. But what if we want to use the get method, but it's not implemented yet? This test will create a fake database and will have a get method. 
+Just image if the get method is developed by other developers in our team and is not working yet, but you need to validate the unit test to make sure it work. In this situation, we need to add `get` method to mock. To let the get method work, we need to mock, to stimulate `get` method to work properly. 
 
->create a fake database that gave get method: `item_db.py` 
+> create a fake database that gave get method: `item_db.py` 
 ```
 class ItemDatabase:
     def __init__(self)->None:
@@ -234,7 +235,7 @@ When you run this test it will Fail, instead of waiting for the get method to im
 #### Adding Mock 
 - mock get method: `item_database.get = Mock()`
 
-get method is not implement and still developer, so need to mock it like this:
+get method is not implemented and still developed, so need to mock it like this:
 >>　`item_database.get = Mock(return_value=1.0)`
 
 
@@ -256,12 +257,12 @@ Now when you run it will pass, and assert will pass.
 But the problem here is that I want to set specfic value for each item , not giving all the same value 1. 
 In the above basically each item will have 1.0 so having three item  total up to 3.0 so indeed assert will pass. 
 
-![mock](img/mock1.PNG)
+![mock](img/mock1.png)
 
 
 #### Customize Mock
-To customize the mock of the value, need to create a function and use side_effect argument. 
-Let change the code liek below
+To customize the mock of the value, need to create a function and use `side_effect` argument. 
+Let's change the code like below
 > `test_shoppingcart.py`
 ```
 def test_togetthe_price_mock(cart):
@@ -276,15 +277,15 @@ def test_togetthe_price_mock(cart):
     item_database.get = Mock(side_effect=mock_get_item)
     assert cart.get_total_price(item_database) == 3.0
 ```
-Now as you can see to need to create a function, and need to add argument `side_effect` and assign the function to it. 
-Now you can see I each item have it's own value, not like previous one have a fixed value. 
+Now as you can see to need to create a function, and need to add the argument `side_effect`, and assign the function to it. 
+Now you can see each item has it's value, not like the previous one has a fixed value. 
 
-![mock_side_effect](img/mock2.PNG)
+![mock_side_effect](img/mock2.png)
 
 ## package  
 - Install: 
-	- please install pip install pytest 
-- Import libary
+	- please install pip pytest 
+- Import library
 	- pytest import `import pytest -vs`
 	- mock import `from unittest.mock import Mock`
 - pytest command to run use either method
