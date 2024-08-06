@@ -1,10 +1,5 @@
 # Note for Run UnitTest using pytest
 
-## Reference
-- This tutorial is base on [Youtube Channel:pixegami](https://www.youtube.com/playlist?list=PLZJBfja3V3RvxooZ5SNOr7CMFzURr4NBs) on `How To Write Unit Tests in Python • Pytest Tutorial`
-- [mock documentation](https://docs.python.org/3/library/unittest.mock.html)
-
-
 ## Introuction
 This tutorial conver most of createing a unittest using Pytest. I really think it a good tutorial on teaching how to write unitest.
 In this tutorial it cover on pytest:
@@ -13,18 +8,43 @@ In this tutorial it cover on pytest:
 
 I really like his explanation on the mock that if you need to use a function that is implment by other developer, but it's not ready yet, you can use the `mock` and stimulate. 
 
-## UnitTest/ TEST Case
+## Table Of Content
+<details open>
+<summary><b>(click to expand or hide)</b></summary>
+1. [Reference](#Reference)
+2. [UnitTest/ TEST Case](#UnitTest)
+	1. [Case1: Add an item ](#Case1)
+	2. [Case2: Check cart contain item ](#Case2)
+	3. [Case3: Trigger Exception Error when meet max value ](#Case3) 
+	4. [Case4: Total Up Price](#Case4)
+		- [Will Not Trigger Exception when reach MAX](#Case4-nottrigger)
+		- [Solution to fix trigger exception](#Case4-trigger) 
+	5. [Cleaning Code for the duplicate](#duplicate)
+	6. [Mock with fake database(#mock)
+		- [Adding Mock-return_value](#mock1)
+		- [Customize Mock-side_effect](#mock2)
+3. [ How to run and package](#Package)
+</details>
+
+
+## <a id="Reference">  Reference </a>
+- This tutorial is base on [Youtube Channel:pixegami](https://www.youtube.com/playlist?list=PLZJBfja3V3RvxooZ5SNOr7CMFzURr4NBs) on `How To Write Unit Tests in Python • Pytest Tutorial`
+- [mock documentation](https://docs.python.org/3/library/unittest.mock.html)
+
+
+## <a id="UnitTest"> UnitTest/ TEST Case </a>
 In Case1~Case5 will use `shoppingcart.py`, and `test_shoppingcart.py`, but in case5 will also use `item_db.py` which is the fake database
 - Case1: add an item
 - Case2: check cart contain item
 - Case3: Trigger Exception Error when meet max value
-- Case4: Total Up Price 
-- Case5: Total Up Price with Mock using a fake database
+- Case4: Total Up Items 
+- Duplicate: Cleaning duplicate code
+- Mock with fake database
 
 In Note 5 create a fake database which have a get method, but the get method, just think it's implement by other people, and not done yet. So If you are person to write Unittest, then you need to test it. So you will need a mock to validate your unittest. 
 
 
-### Case1:
+### <a id="Case1"> Case1: add an item </a>
 Will add an item and check the size 
 
 - You can use either `self.items = []` or `self.items:List[str]=[]` they are all the same. 
@@ -63,15 +83,31 @@ def test_can_add_item_to_cart():
     assert cart.size() == 1
 ```
 
-### Case2:
+### <a id="Case2"> Case2: check cart contain item </a>
 Validate the item is `apple`
 
 **Note:** I will not include all code, the `...` means same as above
 - return the list items: `return self.items`
 - validate item in list: `assert "apple" in cart.get_items()`
 
+> `shoppingcart.py`
 
-### Case3:
+```
+from typing import List
+class ShoppingCart:
+	...... #please refer above 
+	def get_items(self)->List[str]:
+        return self.items
+```
+> `test_shoppingcart.py`
+```
+def test_when_item_added_then_cart_contains_items():
+    cart=ShoppingCart(5)
+    cart.add('apple')
+    assert "apple" in cart.get_items()
+
+```
+### <a id="Case3"> Case3: Trigger Exception Error when meet max value</a>
 Validate when cart is full must trigger exception error. 
 
 - Adding max_value:  `self.max_size=max_size`
@@ -93,7 +129,7 @@ class ShoppingCart:
         self.items.append(item)
 ```
 
-#### Will Not Trigger Exception when reach MAX
+#### <a id="Case4-nottrigger"> Will Not Trigger Exception when reach MAX </a>
 
 In `shoppingcart.py`, when using `if self.size()== self.max_size -1` will not catch the exception not trigger Error, it will still be pass. 
 The reason is because of this code below, when you add all item full into cart, but the 6th time will not be execute, so indeed this test will fail. 
@@ -116,7 +152,7 @@ def test_when_add_morethan_max_should_fail():
             cart.add('apple')
 ```
 
-#### Solution to fix trigger exception
+#### <a id="Case4-trigger">Solution to fix trigger exception </a>
 
 Just remove below code on `test_shoppingcart.py`: 
 ```
@@ -143,7 +179,7 @@ def test_when_add_morethan_max_should_fail():
 Now when you run the case will fail, it catch the error. Now you can remove the `-1` and run the test will pass. 
 
 
-### Case4:
+### <a id="Case4"> Case4: Total Up Items </a>
 Will sum the value of list , and do validate the items
 - total up the list: `total_price+=price_map.get(item)`or `price_map[item]`.
 	- since it's dictionary, can access using get method to get key value. 
@@ -173,7 +209,7 @@ def test_togetthe_price():
 
 ![case4](img/case4.png)
 
-### Cleaning Code for the duplicate:
+### <a id="duplicate"> Cleaning Code for the duplicate </a>
 As you can see the unit test's code has a lot of duplicate logic, you can use fixture to `fixture` for duplicate logic `cart= ShoppingCart(5)`.
 ![duplicate](img/duplicate.png)
 
@@ -199,7 +235,7 @@ def test_when_item_added_then_cart_contains_items(cart):
 ```
 
 
-### Mock with fake database
+### <a id="mock"> Mock with fake database </a>
 A mock object is a simulated object used in testing to isolate the component you're testing.
 
 Previous we store data in a dictionary, and we knew we could use `get` method. But what if we want to use the get method, but it's not implemented yet? This test will create a fake database and will have a get method. 
@@ -232,7 +268,7 @@ def test_togetthe_price(cart):
 ```
 When you run this test it will Fail, instead of waiting for the get method to implement in order to relied on `item_database` or `ItemDatabase()`, we can use `mock` behavior of `item_database`.
 
-#### Adding Mock 
+####  <a id="mock1"> Adding Mock-return_value </a>
 - mock get method: `item_database.get = Mock()`
 
 get method is not implemented and still developed, so need to mock it like this:
@@ -260,7 +296,7 @@ In the above basically each item will have 1.0 so having three item  total up to
 ![mock](img/mock1.png)
 
 
-#### Customize Mock
+####  <a id="mock2"> Customize Mock-side_effect </a>
 To customize the mock of the value, need to create a function and use `side_effect` argument. 
 Let's change the code like below
 > `test_shoppingcart.py`
@@ -282,7 +318,7 @@ Now you can see each item has it's value, not like the previous one has a fixed 
 
 ![mock_side_effect](img/mock2.png)
 
-## package  
+##  <a id="Package"> How to run and package  </a>
 - Install: 
 	- please install pip pytest 
 - Import library
