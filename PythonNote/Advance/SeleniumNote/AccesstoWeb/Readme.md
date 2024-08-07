@@ -24,29 +24,23 @@ I will cover navigate to URL using:
 <details open>
 <summary><b>(click to expand or hide)</b></summary>
 	
-- [Access Web using Selenium Framework Basic](#access-web-using-selenium-framework-basic)
-  - [Introduction](#introduction)
-  - [ Table Of Content ](#-table-of-content-)
-    - [ Install Library and How to run  (Top)](#-install-library-and-how-to-run--top)
-    - [ File Description  (Top)](#-file-description--top)
-    - [ Part 1 Keypoint for Selenium Code (Top)](#-part-1-keypoint-for-selenium-code-top)
-      - [ 1. Define webdriver and Option setting (Top)](#-1-define-webdriver-and-option-setting-top)
-        - [ Chrome Option (Top)](#-chrome-option-top)
-      - [ 2. waiting method  (Top)](#-2-waiting-method--top)
-        - [ 2.1 sleep  (Top)](#-21-sleep--top)
-        - [2.2 Implicity wait  (Top)](#22-implicity-wait--top)
-        - [2.3 Explicit wait  (Top)](#23-explicit-wait--top)
-      - [3. Find and Locate elements  (Top)](#3-find-and-locate-elements--top)
-        - [ 3.1 Locate element by Xpath  (Top)](#-31-locate-element-by-xpath--top)
-        - [ 3.2 Locate element by id or class  (Top)](#-32-locate-element-by-id-or-class--top)
-      - [ 4. send key or type string  (Top)](#-4-send-key-or-type-string--top)
-      - [ 5. close driver  (Top)](#-5-close-driver--top)
-    - [ Part 2 Keypoint for Selenium and Pytest code  (Top)](#-part-2-keypoint-for-selenium-and-pytest-code--top)
-      - [ 1. Pytest and Stucture of the code  (Top)](#-1-pytest-and-stucture-of-the-code--top)
-      - [ 2. Access to URL and validate it  (Top)](#-2-access-to-url-and-validate-it--top)
-        - [ 2.1 Run Unittest with Pytestt  (Top)](#-21-run-unittest-with-pytestt--top)
-        - [ 2.2 Adding Unittest with parametrize  (Top)](#-22-adding-unittest-with-parametrize--top)
-  - [ Update  (Top)](#-update--top)
+1. [Install Library and How to run](#library)
+2. [File Description](#filedescription)
+3. [Part 1 Keypoint for Selenium Code](#part1)
+	1. [Define webdriver and Option setting](#intialwebdriver)
+   	1. [Chrome option](#option)
+	2. [2. waiting method](#waiting)
+   		1. [2.1 sleep](#sleep) 
+   		2. [2.2 Implicity wait](#implicity) 
+   		3. [2.3 Explicit wait](#explicit)
+	3. [3. Find and Locate elements ](#locateelement)
+   		1. [ 3.1 Locate element by Xpath](#xpath) 
+   		2. [ 3.2 Locate element by id or class](#idclass ) 		
+	4. [Part 2 Keypoint for Selenium and Pytest code ](#part2 )
+   		1. [1. Pytest and Stucture of the code](#pyteststructure)
+		2. [2. Access to URL and validate it](#pytestaccessurl)
+   			- [ 2.1 Run Unittest with Pytestt](#unitest1)
+   			- [ 2.2 Adding Unittest with parametrize](#unitest2)
 </details>
 
 ### <a id="library"> Install Library and How to run </a> [(Top)](#toc)
@@ -57,23 +51,23 @@ I will cover navigate to URL using:
 
 ### <a id="filedescription"> File Description </a> [(Top)](#toc)
 
-- Ex1: Navigate to google search engine:
+- Ex1: Navigate to Google search engine:
   - `access_google_basic.py`: with basic code
-  - `access_google_function.py`: add the code into function
-- Ex2: Navigate to amazon page search product
+  - `access_google_function.py`: add the code into a function
+- Ex2: Navigate to Amazon page search product
   - `access_amazonSearch_Basic.py`: with basic code
-  - `access_amazonSearch_Function.py`: add code into function
-- Test Amazon Site and check match result
-  - `test_amazonSearch_Class.py`: Test the code and validate search string
-  - `test_amazonSearch_Parametrize.py`: Test the code and validate search string with parametrize on multiply search keyword
+  - `access_amazonSearch_Function.py`: add code into a function
+- Test the Amazon Site and check the match result
+  - `test_amazonSearch_Class.py`: Test the code and validate the search string
+  - `test_amazonSearch_Parametrize.py`: Test the code and validate the search string with parametrize on multiple search keyword
 
 ### <a id="part1"> Part 1 Keypoint for Selenium Code</a> [(Top)](#toc)
 
 #### <a id="intialwebdriver"> 1. Define webdriver and Option setting</a> [(Top)](#toc)
 
-You can use either method to initializing a Selenium WebDriver instance for the Chrome browser
+You can use either method to initialize a Selenium WebDriver instance for the Chrome browser
 
-- using default system chrome driver
+- using the default system Chrome driver
 
 ```
 from selenium.webdriver import Chrome
@@ -82,36 +76,36 @@ url="https://www.amazon.com"
 driver.get(url)
 ```
 
-- assign your chrome driver path
+- assign your Chrome driver path
   You need to first [download chrome driver](https://developer.chrome.com/docs/chromedriver/downloads) and assign the path like below
 
 ```
 from selenium import webdriver
 #assign full path
 driver = webdriver.Chrome("chrome full path ")
-#if driver same directory can leave full path as empty
+#if driver same directory can leave the full path empty
 #driver = webdriver.Chrome()
 url="https://www.google.com"
 driver.get(url)
 ```
 
-I believe there are many more way to intalize, but i think these two method is most commonly been use.
+I believe there are many more way to initialize, but I think these two methods is most commonly been used.
 
 ##### <a id="option"> Chrome Option</a> [(Top)](#toc)
 
-If you are interesting of using option, you can use like this:
+If you are interested in using the option, you can use it like this:
 
 ```
 from selenium.webdriver.chrome.options import Options
 chrome_options = Options()
 
-# let browser will not close
+# let the browser will not close
 chrome_options.add_experimental_option("detach", True)
 driver=Chrome(options=chrome_options)
 driver=Chrome()
 ```
 
-These are common use option, you can use as below. Please keep in mind if you want to use my setting on `driver` variable, then you need to change `driver=Chrome(options=chrome_options)`. Below is the offical site syntax:
+These are common use options, you can use as below. Please keep in mind if you want to use my setting on `driver` variable, then you need to change `driver=Chrome(options=chrome_options)`. Below is the official site syntax:
 
 ```
 from selenium import webdriver
@@ -120,7 +114,7 @@ options = Options()# or
 #Opens Chrome in maximized mode:
 options.add_argument("--start-maximized")
 
-#set Chrome screen specfic size
+#set Chrome screen-specific size
 options.add_argument("--window-size=1920,1080")
 
 #Runs Chrome in headless mode (without a graphical interface):
@@ -133,11 +127,11 @@ options.add_argument("--incognito"):
 
 #### <a id="waiting"> 2. waiting method </a> [(Top)](#toc)
 
-From above you can access a URL, if you don't add the waiting option, then your window will automatic been close. You need to let it wait for specfic second depend on your system. I will show you differnt way you can use the waiting option and choose which one you perfer.
+From above you can access a URL, if you don't add the waiting option, then your window will automatically be closed. You need to let it wait for a specfic second depending on your system. I will show you different ways you can use the waiting option and choose which one you prefer.
 
 ##### <a id="sleep"> 2.1 sleep </a> [(Top)](#toc)
 
-This is not the best approach, basically it just doing pause which need to wait for specific time or static time. For example your web is open already, but you set to ` sleep(10)`, this mean even the URL is open still have to wait for 10 second to do next step. It will just waste your time or your code might run longer if you use other waiting method.
+This is not the best approach, basically it just doing pauses that need to wait for a specific time or static time. For example, your web is open already, but you set it to `sleep(10)`, this means even if the URL is open still have to wait for 10 seconds to do the next process. It will just waste your time or your code might run longer if you use other waiting methods.
 
 ```
 import time
