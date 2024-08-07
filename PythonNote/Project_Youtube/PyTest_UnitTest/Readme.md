@@ -14,7 +14,7 @@ I really like his explanation on the mock that if you need to use a function tha
 <summary><b>(click to expand or hide)</b></summary>
 	
 1. [Reference](#reference)
-2. [UnitTest/ TEST Case](#unitTest)
+2. [UnitTest/ TEST Case](#unittest)
 	1. [Case1: Add an item ](#case1)
 	2. [Case2: Check cart contain item ](#case2)
 	3. [Case3: Trigger Exception Error when meet max value ](#case3) 
@@ -34,7 +34,7 @@ I really like his explanation on the mock that if you need to use a function tha
 - [mock documentation](https://docs.python.org/3/library/unittest.mock.html)
 
 
-## <a id="unitTest"> UnitTest/ TEST Case </a>  [(Top)](#toc)
+## <a id="unittest"> UnitTest/ TEST Case </a>  [(Top)](#toc)
 In Case1~Case5 will use `shoppingcart.py`, and `test_shoppingcart.py`, but in case5 will also use `item_db.py` which is the fake database
 - Case1: add an item
 - Case2: check cart contains item
