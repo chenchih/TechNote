@@ -41,6 +41,8 @@ I will cover navigate to URL using:
 		2. [2. Access to URL and validate it](#pytestaccessurl)
    			- [ 2.1 Run Unittest with Pytestt](#unitest1)
    			- [ 2.2 Adding Unittest with parametrize](#unitest2)
+4. [Update](#update)
+
 </details>
 
 ### <a id="library"> Install Library and How to run </a> [(Top)](#toc)
