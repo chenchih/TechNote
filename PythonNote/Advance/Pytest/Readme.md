@@ -17,17 +17,17 @@ In this page, I would like to share on some of the basic example of using `pip` 
 <details open>
 <summary><b>(click to expand or hide)</b></summary>
 	
-1. [How to run Test case](#RunTestCase)
+1. [How to run Test case](#runtestcase)
    1. [cli command](#cli)
    2. [Flag and option](#flag)
-   3. [IDE Setting](#IDE)
+   3. [IDE Setting](#ide)
 	- [VScode Setting](#vscode)
-	- [Pycharm Setting](#Pycharm)
-	4. [Pytest configure](#Pytest_onfigure)
-2. [Fixture](#part2_Fixture)
+	- [Pycharm Setting](#pycharmset)
+	4. [Pytest configure](#pycharmcfg)
+2. [Fixture](#part2fixture)
 3. [contest](#part3_conftest)
-4. [parameterized](part4_parameterized)
-5. [Grouping test marker](part5_marker)
+4. [parameterized](#part4_parameterized)
+5. [Grouping test marker](#part5_marker)
 
 </details>
 
@@ -50,7 +50,7 @@ def test_hello():
 	print("helloworld")
 ```
 
-### <a id="RunTestCase"> How to run Test case </a>
+### <a id="runtestcase"> How to run Test case </a>
 
 #### <a id="cli"> cli command </a>
 
@@ -73,11 +73,11 @@ When we run with `pytest` we can add some flag or option, if not added will not 
 | `-k` or `--keyword`   | Select tests based on keyword expression, or matching keyword will run                                      | `pytest -k <substring> file.py` |
 | `-m` or `--marker`    | Seelct group test base on marker                                                                            | pytest -m <marker tag> file.py  |
 
-#### <a id="IDE">IDE Setting</a>
+#### <a id="ide"> IDE Setting</a>
 
 We can also use IDE editor to run `pytest`, I will show using VSCODE and Pycharm as examples.
 
-##### <a id="vscode">VScode Setting</a>
+##### <a id="vscode"> VScode Setting</a>
 
 You can click on "Testing" on the left sidebar navigator, click on the configure setting, and select `pytest` and your project name.
 This setting will use the default setting, if you want to use the argument of `pytest` flag, please access this setting:
@@ -107,8 +107,8 @@ Add below into the setting, and `["."]` add your flag like
 
 ![vscodemsetting1](img/vscodesetting.png)
 ![vscodemsetting2](img/vscodesetting2.png)
-
-##### <a id="Pycharm">Pycharm Setting</a>
+          
+##### <a id="pycharmset"> Pycharm Setting</a>
 
 - go to `settings`>search for `integrate tool` or under `Tools`> `Python Integrated tool`
 - In the testing section change `default` to `pytest`
@@ -117,7 +117,7 @@ Add below into the setting, and `["."]` add your flag like
 
 ![pycharmsetting](img/pycharmsetting.PNG)
 
-#### <a id="Pytest_onfigure">Pytest configure </a>
+#### <a id="pycharmcfg">Pytest configure </a>
 
 Please refer to this [site](https://docs.pytest.org/en/7.1.x/reference/customize.html) for more information to set `pytest` configure.
 
@@ -135,7 +135,7 @@ filterwarnings =
     ignore::UserWarning
 ```
 
-## <a id="part2_Fixture"> 2.Fixture </a>
+## <a id="part2fixture"> 2.Fixture </a>
 
 Reusable blocks of code that handle specific testing needs like setting up environments, providing mock data, or cleaning up resources (teardown).
 You will often use for setup or teardown
