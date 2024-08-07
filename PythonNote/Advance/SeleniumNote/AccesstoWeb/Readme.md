@@ -19,13 +19,43 @@ I will cover navigate to URL using:
 - using cleaning code like function, or class
 - pytest method to test it
 
-### Install Library and How to run
+## <a id="toc"> Table Of Content </a>
+
+<details open>
+<summary><b>(click to expand or hide)</b></summary>
+	
+- [Access Web using Selenium Framework Basic](#access-web-using-selenium-framework-basic)
+  - [Introduction](#introduction)
+  - [ Table Of Content ](#-table-of-content-)
+    - [ Install Library and How to run  (Top)](#-install-library-and-how-to-run--top)
+    - [ File Description  (Top)](#-file-description--top)
+    - [ Part 1 Keypoint for Selenium Code (Top)](#-part-1-keypoint-for-selenium-code-top)
+      - [ 1. Define webdriver and Option setting (Top)](#-1-define-webdriver-and-option-setting-top)
+        - [ Chrome Option (Top)](#-chrome-option-top)
+      - [ 2. waiting method  (Top)](#-2-waiting-method--top)
+        - [ 2.1 sleep  (Top)](#-21-sleep--top)
+        - [2.2 Implicity wait  (Top)](#22-implicity-wait--top)
+        - [2.3 Explicit wait  (Top)](#23-explicit-wait--top)
+      - [3. Find and Locate elements  (Top)](#3-find-and-locate-elements--top)
+        - [ 3.1 Locate element by Xpath  (Top)](#-31-locate-element-by-xpath--top)
+        - [ 3.2 Locate element by id or class  (Top)](#-32-locate-element-by-id-or-class--top)
+      - [ 4. send key or type string  (Top)](#-4-send-key-or-type-string--top)
+      - [ 5. close driver  (Top)](#-5-close-driver--top)
+    - [ Part 2 Keypoint for Selenium and Pytest code  (Top)](#-part-2-keypoint-for-selenium-and-pytest-code--top)
+      - [ 1. Pytest and Stucture of the code  (Top)](#-1-pytest-and-stucture-of-the-code--top)
+      - [ 2. Access to URL and validate it  (Top)](#-2-access-to-url-and-validate-it--top)
+        - [ 2.1 Run Unittest with Pytestt  (Top)](#-21-run-unittest-with-pytestt--top)
+        - [ 2.2 Adding Unittest with parametrize  (Top)](#-22-adding-unittest-with-parametrize--top)
+  - [ Update  (Top)](#-update--top)
+</details>
+
+### <a id="library"> Install Library and How to run </a> [(Top)](#toc)
 
 > Install selenium, `request`, `beautifulsoup4`, and `pytest`:
 >
 > > `pip install selenium requests beautifulsoup4 pytest`
 
-### File Description
+### <a id="filedescription"> File Description </a> [(Top)](#toc)
 
 - Ex1: Navigate to google search engine:
   - `access_google_basic.py`: with basic code
@@ -37,9 +67,9 @@ I will cover navigate to URL using:
   - `test_amazonSearch_Class.py`: Test the code and validate search string
   - `test_amazonSearch_Parametrize.py`: Test the code and validate search string with parametrize on multiply search keyword
 
-### Keypoint on the code for Selenium
+### <a id="part1"> Part 1 Keypoint for Selenium Code</a> [(Top)](#toc)
 
-#### 1. Define webdriver and Option setting
+#### <a id="intialwebdriver"> 1. Define webdriver and Option setting</a> [(Top)](#toc)
 
 You can use either method to initializing a Selenium WebDriver instance for the Chrome browser
 
@@ -67,7 +97,7 @@ driver.get(url)
 
 I believe there are many more way to intalize, but i think these two method is most commonly been use.
 
-##### Option
+##### <a id="option"> Chrome Option</a> [(Top)](#toc)
 
 If you are interesting of using option, you can use like this:
 
@@ -101,13 +131,13 @@ options.add_argument("--incognito"):
 
 ```
 
-#### 2. waiting method
+#### <a id="waiting"> 2. waiting method </a> [(Top)](#toc)
 
 From above you can access a URL, if you don't add the waiting option, then your window will automatic been close. You need to let it wait for specfic second depend on your system. I will show you differnt way you can use the waiting option and choose which one you perfer.
 
-##### sleep
+##### <a id="sleep"> 2.1 sleep </a> [(Top)](#toc)
 
-This is not the best approach, basically it just doing pause which need to wait for specific time or static time. For example your web is open already, but you set to` sleep(10)`, this mean even the URL is open still have to wait for 10 second to do next step. It will just waste your time or your code might run longer if you use other waiting method.
+This is not the best approach, basically it just doing pause which need to wait for specific time or static time. For example your web is open already, but you set to ` sleep(10)`, this mean even the URL is open still have to wait for 10 second to do next step. It will just waste your time or your code might run longer if you use other waiting method.
 
 ```
 import time
@@ -115,7 +145,7 @@ driver.get(url)
 time.sleep(10)
 ```
 
-##### Implicity
+##### <a id="implicity">2.2 Implicity wait </a> [(Top)](#toc)
 
 ```
 import time
@@ -123,7 +153,7 @@ driver.get(url)
 driver.implicitly_wait(10)
 ```
 
-##### Explicit wait
+##### <a id="explicit">2.3 Explicit wait </a> [(Top)](#toc)
 
 Using Explicit, is much better than sleep, because once your element is been find, it will start to run the next process and not wait till the max time. Below is an example of how to use explicit wait, you need to import the module first.
 
@@ -134,11 +164,11 @@ wait.until(EC.presence_of_element_located((By.ID, "twotabsearchtextbox")))
     search_box.send_keys('dress', Keys.ENTER)
 ```
 
-#### 3. Find and Locate elements
+#### <a id="locateelement">3. Find and Locate elements </a> [(Top)](#toc)
 
 When access to web you we use mouse select or locate on specific target on web. So you need to located the element by finding the element, which is like select on html tag like `class`, `id`, `xpath` or etc.
 
-##### 3.1 Locate element by Xpath:
+##### <a id="xpath"> 3.1 Locate element by Xpath </a> [(Top)](#toc)
 
 > There are `relative path` and `absolute path`
 >
@@ -156,15 +186,15 @@ driver.find_element(
          )
 ```
 
-##### 3.2 Locate element by id or class:
+##### <a id="idclass"> 3.2 Locate element by id or class </a> [(Top)](#toc)
 
-You can also use the id or class to locate the element, just like below example:
+You can also use the `id` or `class` to locate the element, just like below example:
 
 > locate element by ID:
 >
 > > `driver.find_element(By.ID,'twotabsearchtextbox')`
 
-#### 4. send key or type string
+#### <a id="sendkey"> 4. send key or type string </a> [(Top)](#toc)
 
 continue from above since we can click on specific button or location on the web, we can also type in string or send specific key or keyboard.
 
@@ -181,18 +211,51 @@ time.sleep(10)
 
 ```
 
-#### 5. close driver
+#### <a id="close"> 5. close driver </a> [(Top)](#toc)
 
 after finish access to url, you need to close your driver. You can use either of these.
 
 - `driver.close()`: Use when you want to close a specific window but keep the WebDriver session alive (for example, when handling multiple windows).
 - `driver.quit()`: Use when you're finished with all your tests and want to completely terminate the browser session.
 
-### Pytest item
+### <a id="part2"> Part 2 Keypoint for Selenium and Pytest code </a> [(Top)](#toc)
 
-In the pytest I will change it to class, and move the function inside. All of the function will be name as test_XXX as unit test.
+In Part1 already know how to use selenium basic knowledge, now in this part I would like to use pytest with selenium to validate test. In this example continue using above example on Amazon Website, and check whether out seach result match.
+
+In this code change orginal code(function) to class, and move the function inside. All of the function will be name as test_XXX as unit test.
+
+#### <a id="pyteststructure"> 1. Pytest and Stucture of the code </a> [(Top)](#toc)
+
+I will not write all the code, you can refer this two full code file for this example:
+
+- `test_amazonSearch_Class.py`: basic pytest code
+- `test_amazonSearch_Parametrize.py`: add Parametrize
+
+  ```
+  class Testamazonsearch:
+      def setup_method(self):
+          self.driver=Chrome()
+          self.driver.implicitly_wait(10)
+          url="https://www.amazon.com"
+          self.driver.get(url)
+     def test_amazon_search_dress(self):
+        	......
+  	......
+     def test_amazon_search_otheritem(self):
+        	......
+  	......
+      def teardown_method(self):
+          self.driver.quit()
+  ```
+
+#### <a id="pytestaccessurl"> 2. Access to URL and validate it </a> [(Top)](#toc)
+
+##### <a id="unitest1"> 2.1 Run Unittest with Pytestt </a> [(Top)](#toc)
+
+Below is example of `test_amazon_search_dress` from above, notice my function is name as `test`. Below this code will navigate to amazon page and search for dress, like the one in above. The only different is the `assert` us doing validate to compare it" ` assert except_txt == actual_txt`
 
 ```
+
 # Locate the search product element
 search_box = wait.until(EC.presence_of_element_located((By.ID, "twotabsearchtextbox")))
 
@@ -203,11 +266,21 @@ except_txt='"dress"'
 #compare the except_txt with the URL and validate
 actual_txt=self.driver.find_element(By.XPATH,"//span[@class='a-color-state a-text-bold']").text
         assert except_txt == actual_txt, f"Error . Expected text: {except_txt}, but actual text: {actual_txt}"
+
 ```
 
-In this example you are searching on amazon page on specfic product, in my example is `dress`, but if you want to search multiply product, then you need to create multiple function or unittest, and add change `except_txt="item name"` to a different product name.
+##### <a id="unitest2"> 2.2 Adding Unittest with parametrize </a> [(Top)](#toc)
 
-This is not a good approach, you will have duplicate code and code will be longer. To solve this solution you just have to add `parametrize` like below:
+In this example searching on amazon page on specfic product, in my example is `dress`, but if you want to search multiply product, then you need to create multiple function or unittest, and add change `except_txt="item name"` to a different product name just like below, you have to define each test for each product.
+
+```
+     def test_amazon_search_dress(self):
+    ......
+  	......
+     def test_amazon_search_otheritem(self):
+```
+
+This is not a good approach, you will have duplicate code and code will be longer. To solve this solution you just have to add `parametrize` like below. Now notiice I just have to add the product item inside the `search_Word` it will automatic run test by search each item and validate it.
 
 ```
 class Testamazonsearch:
@@ -225,6 +298,7 @@ class Testamazonsearch:
 
 ```
 
-## update
+## <a id="update"> Update </a> [(Top)](#toc)
 
 - 2024.8.1: intial added
+- 2024.9.7: add table of content
