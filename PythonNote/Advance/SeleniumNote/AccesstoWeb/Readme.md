@@ -42,6 +42,7 @@ I will cover navigate to URL using:
    			- [ 2.1 Run Unittest with Pytestt](#unitest1)
    			- [ 2.2 Adding Unittest with parametrize](#unitest2)
 4. [Update](#update)
+5. [Reference](#reference)
 
 </details>
 
@@ -77,6 +78,26 @@ driver=Chrome()
 url="https://www.amazon.com"
 driver.get(url)
 ```
+Please make sure one thing here, there is an alternative method you can do is import the entire webdriver api, below is comparision: 
+> import all driver: `from selenium import webdriver`
+> import all chrome driver: `from selenium.webdriver import Chrome`
+
+![webdriver_compare](img/webdriver_compare.png)
+
+To use different browser other than chrome, you can use like this: 
+```
+from selenium import webdriver
+
+# To use Chrome
+driver = webdriver.Chrome()
+
+# To use Firefox
+driver = webdriver.Firefox()
+
+# To use Edge
+driver = webdriver.Edge()
+```
+
 
 - assign your Chrome driver path
   You need to first [download chrome driver](https://developer.chrome.com/docs/chromedriver/downloads) and assign the path like below
@@ -112,7 +133,9 @@ These are common use options, you can use as below. Please keep in mind if you w
 ```
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-options = Options()# or
+
+options = webdriver.ChromeOptions()
+
 #Opens Chrome in maximized mode:
 options.add_argument("--start-maximized")
 
@@ -120,11 +143,14 @@ options.add_argument("--start-maximized")
 options.add_argument("--window-size=1920,1080")
 
 #Runs Chrome in headless mode (without a graphical interface):
-options.add_argument("--headless")
+options.add_argument("--headless") #ensure GUI is off
 
 # Opens Chrome in incognito mode
-options.add_argument("--incognito"):
+options.add_argument("--incognito")
 
+#change language, use either method or both
+options.add_argument('--lang=en-US')
+options.add_experimental_option('prefs', {'intl.accept_languages': 'en-US,en'})
 ```
 
 #### <a id="waiting"> 2. waiting method </a> [(Top)](#toc)
@@ -182,6 +208,10 @@ driver.find_element(
          )
 ```
 
+- How to copy absolutive xpath:
+Please go to chrome develper mode(window `F12`, mac: `Option + command + I` ), and click inspect will show. 
+![xpath_absolutepath](img/xpath_chrome.png)
+
 ##### <a id="idclass"> 3.2 Locate element by id or class </a> [(Top)](#toc)
 
 You can also use the `id` or `class` to locate the element, just like below example:
@@ -189,6 +219,8 @@ You can also use the `id` or `class` to locate the element, just like below exam
 > locate element by ID:
 >
 > > `driver.find_element(By.ID,'twotabsearchtextbox')`
+
+![amazon_id_search](img/amazon_search_id.png)
 
 #### <a id="sendkey"> 4. send key or type string </a> [(Top)](#toc)
 
@@ -298,3 +330,7 @@ class Testamazonsearch:
 
 - 2024.8.1: intial added
 - 2024.9.7: add table of content
+
+
+## <a id="reference"> Reference </a> [(Top)](#toc)
+- https://nariyoo.com/python-how-to-run-selenium-in-google-colab/

@@ -20,10 +20,7 @@ def request_google_search(driver: Chrome):
 def create_chrome_driver() -> Chrome:
     return Chrome()
 
-def request_google_site(driver: Chrome):
-    url="https://www.google.com"
-    driver.get(url)
-    time.sleep(10)
+
 
 if __name__ == '__main__':
     chrome_driver=create_chrome_driver()
