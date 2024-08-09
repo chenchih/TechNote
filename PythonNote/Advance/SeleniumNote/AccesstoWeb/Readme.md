@@ -329,7 +329,8 @@ class Testamazonsearch:
 ## <a id="update"> Update </a> [(Top)](#toc)
 
 - 2024.8.1: intial added
-- 2024.9.7: add table of content
+- 2024.8.7: add a table of content
+- 2024.9.9: upload image, reference page, description on option, and driver
 
 
 ## <a id="reference"> Reference </a> [(Top)](#toc)
