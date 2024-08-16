@@ -1,6 +1,17 @@
 # Create a easy FastAPI
 
-In this note I will share on how to create a easy api for testing, using FastAPI. You need to install some libary before get to start
+In this note I will share on how to create a easy api for testing, using FastAPI. You need to install some library before get to start
+
+Let me mention CRUD over here:
+
+- **C** for Create or `put`
+- **R** for Read or `get`
+- **U** for update or `put`
+- **D** for `delete`
+
+Server and Client:
+**Request**: Client send to Server
+**Response**: Server respond back to Client
 
 ## Library
 
@@ -325,6 +336,43 @@ Recap here I set the text as variable, and data type as string, and the value I 
 
 It helps validate the type is missing which is an advantage of it helps checking the name exists or not. In that example just want to show if you don't put the value to it, it will encounter a validation error `text: null` or something like that.
 
+### Adding responce_model
+
+In FastAPI, a Response Model defines the structure of the data your API will send back as a response. It tells FastAPI what kind of data to expect, and it helps make sure the data is correct.
+
+Just think like this: Adding a `response_model` primarily helps with data validation and documentation. Its primary function are:
+
+- Define the expected structure of the response
+- Validate incoming data
+- Generate OpenAPI documentation
+
+Let me show some example, continue from above, just basically just add `response_model` as argument in decorator function.
+
+```
+#multiply list item
+@app.get("/items",response_model=list[Item] )
+#@app.get("/items")
+def list_items(limit: int = 3):
+    return items[0:limit]
+```
+
+When you add `response_model` and create item, and get the item, you will notice that it will return the structure of each item in the list. In my example it will return `"text": "string", "is_done": false` , but if don't add response_model it will only return `"string"`. Please refer below picture
+
+![responce_model](img/response_model.PNG)
+
+If you add below code with response_model, no matter add or not add will not have difference, it because of the `-> Item`
+
+```
+@app.get("/items/{item_id}", response_model=Item)
+#@app.get("/items/{item_id}")
+def get_item(item_id: int) -> Item:
+    if item_id< len(items):
+        return items[item_id]
+    else:
+        raise HTTPException (status_code=404, detail= f"Item {item_id}  not found")
+
+```
+
 ## Troubleshooting
 
 For window user, if you are unable to close the server by `ctrl+c`, you can use this command:
@@ -362,3 +410,4 @@ Let's recap important commands in this part, so you can be useful without search
 
 - 2024.08.09: initial create
 - 2024.08.13: Update the note, finish updating
+- 2024.08.14: update responce_model
