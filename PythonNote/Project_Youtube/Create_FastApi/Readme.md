@@ -130,7 +130,7 @@ continue from the above code, let's create a new method to add items to the list
 
 @app.post("/items")
 def create_item(item: str):
-    str.append(item)
+    items.append(item)
     return item
 ```
 
@@ -375,11 +375,14 @@ def get_item(item_id: int) -> Item:
 
 ## Troubleshooting
 
-For window user, if you are unable to close the server by `ctrl+c`, you can use this command:
+For window user, if you are unable to close the server by `ctrl+c`, you can use this command. Sometimes it will not be ablet to stop services.
 
-> - Check your process: `tasklist  |grep uvicorn`
-> - kill your process or uvicorn: `taskkill /pid <uvicorn pid> /f`
+> - Check your process: `tasklist  |grep python`
+> - kill your process or uvicorn: `taskkill /pid <python pid> /f`
 >   > If none of these work, then press `ctrl + shift+ esc` will open taksmanager, go to services> find Python and click end task.
+
+please refer below picture for more clear understand
+![removeprocess](img/removeporcess.PNG)
 
 ## Documentation
 
@@ -411,3 +414,4 @@ Let's recap important commands in this part, so you can be useful without search
 - 2024.08.09: initial create
 - 2024.08.13: Update the note, finish updating
 - 2024.08.14: update responce_model
+
