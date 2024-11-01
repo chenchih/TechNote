@@ -172,9 +172,20 @@ Essentially it provides a user-friendly interface to explore your API endpoints,
 
 Sometimes when you manually run the `uvicorn main:app --reload` services, and `ctrl+c` not able to close it, there are some way to solve this issue.
 
+> kill process ID
+
 - Step1:In Window please run this command to check process ID: `tasklist  |grep python`
 - Step2: Kill the process by the ID: `taskkill /pid <process ID> /f`
 
+> kill process name
+
+Another way to kill process with one command:
+- window: `Taskkill /IM python.exe /F`
+- linux: use below method 
+	- Combining pgrep and kill: `kill $(pgrep python)`
+	- using pkill: `pkill python` or kill with file: `pkill -f "python my_script.py"`
+	- xargs for More Complex Scenarios like filter: `pgrep python | xargs kill`
+	
 Note: sometimes you you access endpoint and it show the result wrong, then maybe you need to use the above method to stop services and run the services again.
 
 ## Part2 Essential Concepts
