@@ -14,13 +14,13 @@
 - [ ] add some examples of accounts not sure 
 
 ## Content 
-- [Part1 Introduction fundamental of using FastAPI](#part1-introduction-fundamentals-of-using-fastapi)
+- [Part1 Introduction fundamental of using FastAPI](#part1)
 	- [1. Installation and Module](#1-installation-and-module)
  	- [2. Running fastapi service](#2-running-fastapi-service)
 		- [2.1 Method1: manual run the server by command](#part1-2.1)
   		- [2.2 Method2: write server into `__main__()`](#part1-2.2) 
 	- [3. Create route](#3-create-route) 
-	- [4. Run API: Send request or access endpoint](#4-run-api-send-request-or-access-endpoint)
+	- [4. Accesing Endpoint ](#4-Accesing Endpoint)
 	- [5. FastAPI Documentation](#5-fastapi-documentation)
 	- [6. Troubleshooting](#6-troubleshooting)
 - [Part2 Essential Concepts](#part2-essential-concepts)
@@ -30,29 +30,31 @@
 		- [1.3 Create Post](#create-post)
 		- [1.4 Summary of Route](#summary-of-route)
 	- [2. Error Handling](#2-error-handling)
- 	- [3. Response Models](3-response-models)
-		- [3.1 Basic Model pydantic](#31-basic-model-pydantic)
-		- [3.2 Define Base Model Example](#32-define-base-model-example)
-		- [3.3. Base Model occurs Error: when missing Field of data raises Error](#3.3-base-model-error)
-  			- [3.3.1 Post Method missing one Field](#331-post-method-missing-one-field)
-			- [3.3.2 Get Method Missing one Field](#332-get-method-missing-one-field)
- 		 	- [3.3.3 Solution for fixing missing field](#333-solution-for-fixing-missing-field)
-		- [3.4 Response Model Case Example normal](#34-response-model-case-example-normal)
-			- [3.4.1 Case1 Example: adding items](#341-case1-example-adding-items)
-			- [3.4.2 Case2  Example: account password](#342-case2--example-account-password)
-  				- [Password hidden](#password-hidden)
- 				- [Password hash](#password-hash)
+ - [Part3. Response Models](Part3-response-models)
+	- [3.1 Basic Model pydantic](#31-basic-model-pydantic)
+	- [3.2 Define Base Model Example](#32-define-base-model-example)
+	- [3.3. Base Model occurs Error: when missing Field of data raises Error](#3.3-base-model-error)
+  		- [3.3.1 Post Method missing one Field](#331-post-method-missing-one-field)
+		- [3.3.2 Get Method Missing one Field](#332-get-method-missing-one-field)
+ 		- [3.3.3 Solution for fixing missing field](#333-solution-for-fixing-missing-field)
+	- [3.4 Response Model Case Example normal](#34-response-model-case-example-normal)
+		- [3.4.1 Case1 Example: adding items](#341-case1-example-adding-items)
+		- [3.4.2 Case2  Example: account password](#342-case2--example-account-password)
+  			- [Password hidden](#password-hidden)
+ 			- [Password hash](#password-hash)
 	- [4. fastapi GUI ](#4-fastapi-gui)
 - [Summary](#summary)
 - [Reference](#reference)
 
 
 
-
 <a name="part1"></a>
 ## Part1 Introduction fundamentals of using FastAPI
-This is some note of fastapi note. FastAPI is a powerful and fast module use in Python to create an API
+FastAPI is a powerful and fast module use in Python to create an API, you can create it with either methods below which I will explain in part2 and part3:
+- Path Parameter: are dynamic parts of a URL that allow you to define flexible endpoints based on variable values. This means you can use the same endpoint for different values 
+- Response Model: defines the structure of the data that the API will return. It is useful because it validates and formats the data, ensuring a clear structure that makes it easier for other developers to understand and use. 
 
+I will explain in part 2 and part3 section on some explaination, and example. Before creating API you need to know how to start the server, which I will cover in this section. 
 
 ### 1. Installation and Module
 - Installation:
@@ -66,51 +68,54 @@ from fastapi import FastAPI
 app= FastAPI()
 ```
 
+Let me explain FastAPI and Uvicron:
+- **FastAPI:**The framework used to define the API, is an application should do when a request is received
+- **Uvicorn:** The server that runs the FastAPI app and manages requests and responses(client-server communication).  Uvicorn listens for incoming HTTP requests, runs your FastAPI application, and sends the responses back to the client. To run a FastAPI app, you typically launch it using Uvicorn
+
 ### 2. Running fastapi service
 
-You can create multiple ways to start the server by `cli command` as method1, or write into a python file and run the file as method2.
+You can create serveral ways to start the server with command or write into a python file and run the file. 
 
 > syntax: `uvicorn <file_name>:<app_instance> [options]`  
 
-You can use some flag or option, I want to explain each flag in case you want to know. So you also use the command `uvicorn --help` to see all options. I will not mention all of them, only pick I think it's useful or commonly used. You can reference [ucicorn official site](https://www.uvicorn.org/)
+
+<a name="part1-2.1"></a>
+#### 2.1 Method1: run fastapi server by uvicorn command
+
+use this command to run services:
+
+> `uvicorn main:app --reload`
+>> `main` is your python file name
+
+You can use these option as below which I think used often, however there are many more you also use the command `uvicorn --help` or reference [ucicorn official site](https://www.uvicorn.org/) for more detail options. 
 
 - `--reload` or `reload=True`: This enables automatic reloading of the server whenever you make changes to your code
 - `log_level="info"`: This sets the logging level. "info" provides general information about server events.
 - `port=8000`: This defines the port number on which the server listens for incoming requests, you can change different port number if you like.
 - `filename:app`: uvicorn looks for the file `<filename>.py`, and the app is look inside the `filename.py` for fastapi instance call `app`
 
-<a name="part1-2.1"></a>
-#### 2.1 Method1: manual run the server by command
-
-use this command to run services:
-
-> `uvicorn main:app --reload`
-> > `main` is your python file name
 
 <a name="part1-2.2"></a>
-#### 2.2 Method2: write server into `__main__()`
-	 2.2 Method2: write server into `__main()__`
+#### 2.2 Method2: add uvicorn inside the code and run fastapi services
+
+You can also add `uvicorn` in the python file, which will execute the fastapi servies when execute the code. 
 ```
 from fastapi import FastAPI
+import uvicorn
+
 app= FastAPI()
 
-@app.get('/')
-def hello():
-    return {'Hello': 'World' }
-
 if __name__=='__main__':
-    import uvicorn
-
-    # please select either one
-
-	#default main.py will be your file
-	uvicorn.run(app, host="127.0.0.1", port=8000)
-	# specify your main file with other option
-	uvicorn.run("filename:app", host="127.0.0.1", port=8000, reload=True, log_level="info")
+# choose either one in below:	
+	
+	#using the default setting
+	uvicorn.run("main:app", reload=True)
+	#assign more detail information
+	uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True, log_level="info")
+	
 ```
 
 ### 3. Create route
-
 A route in FastAPI defines a specific URL path and the HTTP method (GET, POST, PUT, DELETE, etc.) that will trigger a particular function.
 
 This is a simple example on creating a route.
@@ -121,12 +126,17 @@ app= FastAPI()
 @app.get('/')
 def root():
     return {'Hello': 'World'}
+	
+@app.post("/items")
+def create_item(item: str):
+    items.append(item)
+    return items
 ```
 
 - Route Definition: The `@app.get("/")` decorator defines a GET request for the root path (/).
 - Route Handler: The root function is the handler for this route
 
-### 4. Run API: Send request or access endpoint
+### 4. Accesing Endpoint 
 
 In API, to access to endpoint you need to know the term **CRUD** which means:
 
@@ -139,38 +149,62 @@ In API, to access to endpoint you need to know the term **CRUD** which means:
 
 You can use a couple of ways to access the endpoint or send a request, you can use either way.
 
-- fastAPI UI
+#### fastAPI UI
 
   > You can access to UI url: `http://127.0.0.1:8000/docs`
   > You can also use FastAPI provide for validating and debugging:
   >
   > > `http://127.0.0.1:8000/docs`
 
-- using command to send a request
+#### using command to send a request (to remove)
+This is a quick overview of the command to send request, GET and POST method. 
 
+- GET request 
 ```
 curl -H "Accept: application/json" http://127.0.0.1:8000
 # output:
 {"hello":"world"}
 ```
 
-- send request
+- POST Request
+```
+curl -X POST -H "Content-Type: application/json" 'http://127.0.0.1:8000/items?item=appleddd22'
+```
+
+
+#### Write code to send request
+
+- get request 
 
 ```
 import requests
 request = requests.get('http://127.0.0.1:8000')
 print(request.json())
 ```
-FastAPI 
+
+- post request
+```
+import requests
+import json
+requests.post(url='http://127.0.0.1:5000/register',  data=json.dumps({X:Xvalue)).text
+```
+
 ### 5. FastAPI Documentation
 
-I would like to talk about interactive FastAPI Documentation. `http://127.0.0.1:8000/docs` is the default URL for accessing the interactive API documentation generated by FastAPI using Swagger UI. In this URL you can do many validations with your endpoint.
+I would like to talk about interactive URLs for FastAPI Documentation. `http://127.0.0.1:8000/docs` is the default URL for accessing the interactive API documentation generated by FastAPI using Swagger UI. In this URL you can do many validations with your endpoint.
 
-Essentially it provides a user-friendly interface to explore your API endpoints, see their parameters, response bodies, and try out requests directly in the browser.
+Essentially it provides a user-friendly interface to explore your API endpoints, see their parameters, response bodies, and try out requests directly in the browser. It allow you to: 
+
+- allow to do testing using get or post just like Postman tool(an API Tool) 
+- documentation
+
+Overall it allows you to debug by testing and see working or not, with a GUI, instead of command. If you are not familiar with the `cli` command, then this URL is also a great option.
+
 
 ### 6. Troubleshooting
 
-Sometimes when you manually run the `uvicorn main:app --reload` services, and `ctrl+c` not able to close it, there are some way to solve this issue.
+Sometimes when you run the `uvicorn main:app --reload` services, and `ctrl+c` not able to stop  then you might need to force to stop it by command. 
+There are some way to solve this issue, you can use either of the comamnd to force stop uvicorn services. 
 
 > kill process ID
 
@@ -179,20 +213,26 @@ Sometimes when you manually run the `uvicorn main:app --reload` services, and `c
 
 > kill process name
 
-Another way to kill process with one command:
+Another way to kill process with one command, I like this one, it will kill all the process at once without finding the PID. 
+
 - window: `Taskkill /IM python.exe /F`
 - linux: use below method 
 	- Combining pgrep and kill: `kill $(pgrep python)`
 	- using pkill: `pkill python` or kill with file: `pkill -f "python my_script.py"`
 	- xargs for More Complex Scenarios like filter: `pgrep python | xargs kill`
 	
-Note: sometimes you you access endpoint and it show the result wrong, then maybe you need to use the above method to stop services and run the services again.
 
-## Part2 Essential Concepts
 
-In part 1 I show you the fundamentals of using FastAPI, like how to start the server, how to access the endpoint. These are important steps you need to know before creating api. In this part, I will dive into the core concept of it.
+## Part2 Path Parameter 
 
-Understand some terms in FastAPI:
+In part 1 I show you the fundamentals of using FastAPI include:
+- start the server using `uvicorn`
+- Access the endpoint
+- Troubleshoot not able to stop services 
+- API doc or API UI interface
+These are important steps you need to know before creating API. In this part, I will explain how to create FASTAPI method using path parameter. 
+
+Understand some terms in Path Parameter:
 
 - Route:
   - Defines the endpoint or URL path for an API. It's like the address of a resource
@@ -217,10 +257,11 @@ Understand some terms in FastAPI:
     - Filtering data (e.g., searching for users by name or age)
     - Sorting results (e.g., sorting users by name or creation date).
 
-> Note:
-> We need to understand these term in order to more unstrand when creating routes. In the previous part, the create route is an easy example, and in this part, I will mention different using different HTTP methods like get, post, etc.
+Please refer below picture for more understand of what is path and query parameter:
+![Path_Query](img/path_query_compare.png)
 
-### 1. Create route
+
+### 1. Create route 
 
 The root route I showed in part1, basically means when access the endpoint without adding anything will be your root route, like `http://127.0.0.1/8000` it will get the root route which is display `hello:world`
 
@@ -246,8 +287,9 @@ if my route is set as `/test` to access the endpoint by `http://127.0.0.1:8000/t
 
 I will not explain too detail on the get method here, In the next section I will talk about the get method. I just want you to have a quick overview of it, on how to access it.
 <a name="create-get-method"></a>
+
 #### 1.1 Create get method
-Let's create another route using the GET method, which is used to retrieve data from the endpoint.
+Let's create another route using the GET method which is use to send a get reques to retrieve data from the endpoint. 
 
 ```
 from fastapi import FastAPI
@@ -291,6 +333,7 @@ Now you can access the endpoint with either method:
 - with **query parameters** like `http://127.0.0.1:8000/random?limit=20`. The refresh page will keep updating random numbers. The limit value is specified after the question mark? and is used to provide additional information to the function.
 
 <a name="create-post"></a>
+
 #### 1.3 Create Post
 
 In the above, I have shown you the get method, which means read endpoint. In this part let me show how to create post
@@ -433,17 +476,20 @@ curl -X GET http://127.0.0.1:8000/items/111
 
 ```
 
-### 3. Response Models
+## Part3 Define and Using Response Models
 
-Now let's move to the more complicated part. In the above, I have mentioned **path parameter**, which is based on typically used to specify unique identifiers for a resource. In this part I will talk about Response Models, and define the expected structure of the response data. It’s excepting it to be into json payload request.
+In the above, I have mentioned **path parameter**, which is based on typically used to specify unique identifiers for a resource. In this part I will talk about Response Models, and define the expected structure of the response data. It’s excepting it to be into json payload request.
 
 When to Use Them:
 
 - Path: are used to identify specific resources. For example, to get a specific user by their ID, use a path parameter.
 - Query Parameters: When you need to provide additional options or filters for the requested resource. For example, filter them by name, use query parameters
 - Response Models: define the expected structure of the response data and ensure validation
+	- Response Model Purpose: used to define the structure of the response returned by the API. This helps inform other developers who want to use this API about what the response will look like, such as the fields and data types, without displaying the source code. 
+	- Response Model control Output: You can control which data field are displayed in the response. For example if you want to hide certain data like password then you can create different model that excludes(not include) the password field. 
 
-#### 3.1 Basic Model pydantic
+
+### Install pydantic module
 
 Pydantic models are used as response models in FastAPI.
 
@@ -451,130 +497,376 @@ Pydantic models are used as response models in FastAPI.
 > Import: `from pydantic import BaseModel`
 
 <a name="3.2-define-base-model"></a>
-#### 3.2 Define Base Model Example
 
-Let me show you an example below, needs to be defined in class, and the decorator needs to add `response_model=Item`
+
+
+### 1. Define BaseModel 
+Let me show you an example below, needs to be defined in class as data model, and the decorator needs to add `response_model=Item`. When adding `response_model=Item`, which Item is the model name. This essential mean it will refer the Item's model structure. 
 
 ```
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-class Item(BaseModel):
-    id: int
-    name: str
-    price: float
-    is_active: bool = True
-
-app = FastAPI()
-
-@app.get("/items/{item_id}", response_model=Item)
-async def read_item(item_id: int):
-    return {"id": item_id, "name": "Foo", "price": 35.4, "is_active": True}
-```
-
-To run the endpoint to get the method:
-
-```
-curl -X GET http://127.0.0.1:8000/items/1
-
-# {"id":1,"name":"Foo","price":35.4,"is_active":true}
-```
-
-<a name="3.3-base-model-error"></a>
-### 3.3. Base Model occurs Error: when missing Field of data raises Error
-
-Let me show if your field does not match the Base Model, then what will happen? It will **raise error**, let me show you an example.
-
-```
 items = []
-app = FastAPI()
-
+#create model
 class Item(BaseModel):
     id: int
     name: str
     price: float
     is_active: bool = True
 
+app = FastAPI()
+
+#POST endpoint: sends or creates new data
 @app.post("/items")
 def create_item(item: Item):
     items.append(item)
     return items
-
-# remove "name": "Foo"
+	
+	
+#GET endpoint: retrieves data  data
 @app.get("/items/{item_id}", response_model=Item)
 async def read_item(item_id: int):
     return {"id": item_id, "name": "Foo", "price": 35.4, "is_active": True}
 ```
+![dataModel_sample](img/datamodel.png)
 
-When you define a BaseModel like an Item, you're essentially creating a template for the data structure that your API expects. Each field within the model represents a required or optional component of the data.
+When you send a POST request, you need to append the data to a list otherwise, it won’t be saved. Unlike a GET request, which retrieves data, a POST request is used to submit and store data.
 
-Please first refer to the below picture, I draw an arrow from the data field to data mode.
+
+#### Sending Request
+When you define a BaseModel (in this case, `Item`), you're creating a data structure that represents the expected format of the data in your API. This means that any data returned by the endpoint should match the fields and data types defined in this model.
+- Send a GET request to the endpoint, use the following:
+```
+curl -X GET http://127.0.0.1:8000/items/1
+```
+
+This will return the response: 
+```
+{"id":1,"name":"Foo","price":35.4,"is_active":true}
+```
+As you can see, the response matches the structure of the Item model.
+
+- Send a Post request to the endpoint, use the following:
+```
+curl -X POST -H "Content-Type: application/json"  -d '{  "id": 0,  "name": "test",  "price": 0,  "is_active": true}' 'http://127.0.0.1:8000/items'
+```
+
+
+#### Response Error
+
+- Error with wring data type
+
+ If any key is missing or a field has the wrong data type, FastAPI will raise a validation error and return  `Internal Server Error` response. This validation ensures that the data returned by the endpoint matches the expected structure defined in the Item model.
+please refer below picture, the above one is response matches the structure of the Item model, and bottom one is wrong data type.
 
 ![DataModelConcept](img/DataModel_fielddata.png)
 
-I will show you the missing field on both **POST** and **GET** methods, what will happen? Let summary it:
+- Error with missing field (using GET method)
+Each field within the model represents a required or optional component of the data. If a field (key-value pair) is missing in the data returned, FastAPI will raise a validation error, since the data does not match the structure defined in the model.  
 
-- Base Model Structure: The Item model defines the structure with four fields: id, name, price, and is_active
-- Data Validation: FastAPI uses this model to validate incoming or outgoing data. If the data doesn't match the model's structure, it can lead to errors.
-- Missing Fields: If you return data that omits any of the required fields, FastAPI will likely encounter an error, especially when using the response_model decorator.
-
-#### 3.3.1 Post Method missing one Field
-
-Let's run the post request, and omit one required field like `"id": item_id`
-
-```
-# all field present
-curl -X POST -H "Content-Type: application/json"  -d '{  "id": 0,  "name": "test",  "price": 0,  "is_active": true}' 'http://127.0.0.1:8000/items'
-
-# omits one field will occur error
-curl -X POST -H "Content-Type: application/json"  -d '{ "name": "test",  "price": 0,  "is_active": true}' 'http://127.0.0.1:8000/items'
-
-```
-
-Please refer below output, as you can see the second one I remove the ID field, and run it it will raise an Error. It mentions `"type": "missing"` related message.
-
-![MissingField_Post](img/missingField_Post.png)
-
-I will show how to solve this solution later, let's move to **Get method**.
-
-#### 3.3.2 Get Method Missing one Field
-
-The GET method has a default field value (fallback behavior), which means if access **get method**, it will return the default field I provide.
-
-Let's run the **get method** to get the field value: `curl -X GET http://127.0.0.1:8000/items/1`, please refer below picture to see the output.
-
-Let's remove the field for the name `"name": "Foo"`, which will look like this below
+Let me show if your field does not match the Base Model,  then what will happen? 
+Let me remove the name field `"name": "Foo"`, and send get request it will **raise error**.
 
 ```
 # remove "name": "Foo"
 @app.get("/items/{item_id}", response_model=Item)
 async def read_item(item_id: int):
-    return {"id": item_id, "price": 35.4, "is_active": True}
+	#return {"id": item_id, "name": "Foo", "price": 35.4, "is_active": True}
+    return {"id": item_id,"price": 35.4, "is_active": True}
 ```
-
-Let's run the **get method** to get the field value, this time it will be `Internal Server Error`, the reason is that in your Base Model add four fields, but if I remove one field for the name then it will raise an error.
+As you can see it will response same error `Internal Server Error` as above wrong data type. Below picture can see the different between correct data field and missing field response output. 
 
 ![MissingField_Get](img/missingField_Get.png)
 
-#### 3.3.3 Solution for fixing missing field
 
-To solve this problem, if you miss a field you can just add a variable with `None`.This basically means assigning a default value even if missing value. As in the above Get example I omit the name field, when I add `name: str=None`, this means the name default will be `None` if you don't enter that field.
+- Error with missing field (using POST method)
 
-Please refer below picture to me more clearer understanding of the output. As you can see I omit the name, it will not occur Error, it will place missing field as `Null`.
+To send a POST request to the endpoint, use the following:
+```
+# all field present
+curl -X POST -H "Content-Type: application/json"  -d '{  "id": 0,  "name": "test",  "price": 0,  "is_active": true}' 'http://127.0.0.1:8000/items'
+```
+> `output`: `[{"id":0,"name":"test","price":0.0,"is_active":true}]`
+
+Let me send POST request with a missing field, it will give you a warming telling you missing, please see the below picture for the output.
+```
+# send POST Request and omits one field will occur error
+curl -X POST -H "Content-Type: application/json"  -d '{ "name": "test",  "price": 0,  "is_active": true}' 'http://127.0.0.1:8000/items'
+
+# response output:
+{
+  "detail": [
+    {
+      "type": "missing",
+      "loc": ["body", "id"],
+      "msg": "Field required",
+      "input": {
+        "name": "test",
+        "price": 0,
+        "is_active": true
+      }
+    }
+  ]
+}
+```
+Base on the response result, you can see API returns a detailed error message indicating that the id field is missing, along with the provided input data for context.
+![MissingField_Post](img/missingField_Post.png)
+
+
+Overall, the response model helps validate that the data returned from the API matches the defined data model structure, including required fields and their data types. This ensures consistent and predictable data for clients and helps catch errors if the response data is incomplete or of the wrong type.
+
+Let summary it:
+- Base Model Structure: The Item model defines the data structure specifying four fields: id, name, price, and is_active.
+- Data Validation: FastAPI uses this model to validate incoming or outgoing data. If the data doesn't match the model's structure, it can lead to errors.   
+- Missing Fields: If the returned data lacks any required fields defined in the model (such as missing name or price), FastAPI will likely raise an error as it expects the data to match the model structure exactly.
+
+
+#### Solution for fixing missing field- Optional keyValue
+
+In the example above, if the data returned doesn't match the structure defined in the data model, it raises a validation error.  To avoid this error when fields are missing, you can assign a default value or set the field to None in the model. This approach ensures that even if a field is omitted, the response still includes that field, either with a default value or as null.
+
+Let’s look at the example where a GET request is sent, but the name field is omitted. Without a default value, this results in an Internal Server Error:
+```
+class Item(BaseModel):
+    id: int
+    name: str 
+    price: float
+    is_active: bool = True
+	
+async def read_item(item_id: int):
+	return {"id": item_id, "price": 35.4, "is_active": True}
+```
+To avoid this error, you can set `name: Optional[str] = None` in the Item model. This way, if name is missing, it defaults to None and no error is raised:
+```
+#import Optional 
+from typing import Optional
+class Item(BaseModel):
+    id: int
+    name: Optional[str] = None
+    price: float
+    is_active: bool = True
+```
+Now, when you send a GET request with the `name` field omitted, the response will return null for name instead of raising an error.
+ 
+> send get request: `curl -X GET http://127.0.0.1:8000/items/1`
+> response output: `{"id":1,"name":null,"price":35.4,"is_active":true}`
+
+Refer to the image below to understand how setting name=None allows the missing field to appear as null rather than causing an error. .This ensures the response includes all fields in the model, with null as the placeholder for any field that are missing. I made a comparison between adding with and without adding None value. 
 
 ![missing_None_responsemodel](img/responseModel_example.png)
 
+
 Let's make a summary with the post and get when the missing value:
 
-- POST requests:
-  When using a POST request with a defined model, FastAPI expects the request body to contain data that matches the model's structure. If any required fields are missing, Pydantic validation will usually detect the error and provide a specific message indicating the missing field.
+- POST requests: When sending a POST request with a defined model, FastAPI expects the request body to contain data that matches the model's structure. If any required fields are missing, Pydantic validation will detect the error and return a message specifying which field is missing. This ensures that data submitted with a POST request is validated before processing.
+- GET requests: If you do include a request body with a GET request, it must still match the model's expected format to avoid unexpected behavior. Missing or incorrect data can lead to Internal Server Error. In most cases, GET requests use query parameters or path parameters for data
 
-- GET requests:
-  GET requests typically don't expect data in the request body. If you're providing data in the request body for a GET request, it's essential to ensure it matches the expected format. If the data is incorrect or missing, FastAPI might encounter unexpected behavior, potentially leading to an internal server error.
+### 2. Define Fixed data
+In the previous example, I defined the data model Item with only variable names, like id and name, without assigning any values. In order to set(populate) these fields , you typically send values via a POST request, which provides the required data in a structured format.
+In this section, I’m using a fixed data dictionary to assign values that match the structure of the data model, similar to what you’d send in a POST request. This approach is useful for testing, as it allows you to simulate a complete data model without needing to send an actual POST request. This fixed data is beneficial when testing endpoints directly, as it provides sample data that developers can use to verify their code without requiring real user input.
 
-This is a quick overview of how to use the response model, in below I will show different examples on how to use response models.
+```
+from fastapi import FastAPI
+app = FastAPI()
+item_data = {
+    "id": 1,
+    "name": "Sample Item",
+    "price": 19.99,
+    "is_active": True
+} 
 
-### 3.4 Response Model Case Example normal 
+@app.get("/items")
+def get_item():
+    return item_data
+```
+In the above code, you can now define a predefined dictionary or fixed value and add a GET endpoint to retrieve it directly. The get_item can be called to retrieve item_data without needing a POST request to create data. This is especially helpful when debugging or testing the endpoint.
+> send get request: `curl -X GET http://127.0.0.1:8000/items`
+> response output: `{"id":1,"name":"Sample Item","price":19.99,"is_active":true}`
+
+
+#### Fixed Data with response-mode
+In this section I will explain base on below this code: 
+
+```
+from fastapi import FastAPI
+from pydantic import BaseModel
+app= FastAPI()
+
+#fixed data 
+users= {
+#"x": {'id':0},
+"a": {'id':1, 'username':'a'},
+"b": {'id':2, 'username':'b', 'username':'bbb'},
+"c": {'id':3, 'username':'c', 'username':'ccc', 'description':'default'},
+"d": {'id':4, 'username':'d', 'username':'ddd', 'description':'user d'},
+"e": {'id':5, 'username':'e', 'username':'eee', 'description':'user e', 'gender':'F'},
+}
+
+#define data model 
+class UserOut(BaseModel):
+    id: int
+    username: str
+	
+#endpoint
+@app.get('/users/{username}')
+#@app.get('/users/{username}', response_model=UserOut)
+async def get_user(username: str):
+    return users.get(username, {})
+```
+#### adding response-mode
+I want to show you the response output of using response_model and without using it.
+
+Let use the FASTAPI GUI to see the different adding repsonse and not adding it. 
+
+> without adding response-mode: `@app.get('/users/{username}')`
+You can see below picture when navigate to the api web (http://127.0.0.1:8000/docs). Without adding response-model it will just display a default `string`, nothing is showing. Now you can change adding response-model and see what's the different. 
+
+> with adding response-mode: `@app.get('/users/{username}', response_model=UserOut)`
+
+When you add `response_model=UserOut` option this mean the output of the endpoint  will follow the structure defined in the UserOut model (this is model structure ). When you navigate to the API UI it is showing a sample of what the data structure looks like, including the data types and variable names. You need to use the get or post to send request. 
+Add response model, it will display the model structure’s key and value "id": 0 and "username": "string". The value is not the real data look like, it’s fastapi auto generate to illustrate what API response will look like, so you know what value to put in real data. 
+
+![compare_responsemodel](img/compare_responsemodel.png)
+
+If you want to see the sample response by command you can use this command: ` curl -X GET http://127.0.0.1:8000/openapi.json` but it all show many information. Accesing the GUI page is the best option. 
+
+
+
+- send get request and see the response 
+This command sends a GET request to the `/users/{username}` endpoint. This means the server will try to retrieve information about the user whose username is 'a'. In the code I have add fixed data of username, so to access it you can use the username. 
+The get is just to(solely ) retrieve information about the user with username='a', not to set or change the data.
+Essentially it check if a user with that username exists and to fetch their data. You can think as testing what the response data look like. 
+
+You can either send by command or access to the fastapi docs url to get it as below example. Notice when I set `/user/a`, it will response a
+![sendrequest_responsemodel](img/response_UI.png)
+
+
+
+#### Optional Key value
+In previous section I have mention about the Optional keyword, I will still cover in this section using with fix data value. 
+
+If I send a `GET` request to `/users/x` with `response_model=UserOut` to the endpoint, then will an Internal Server Error will occur due to the missing username field, as UserOut expects both id and username. However if you don't include `response_model` in the endpoint then no error will be raised. 
+
+Let breakdown some point here: 
+- Without `response_model=UserOut`: If `response_model=UserOut` isn’t specified in the decorator, a GET request to `/users/x` will not raise an error. Instead, it will return {} an empty dictionary because users.get("x", {})  defaults to an empty dictionary,  if the username key doesn't exist.
+- With `response_model=UserOut`: If you specify `response_model=UserOut` in the decorator, FastAPI  will validate the return dictionary match the model stucture. If data  doesn't match (ex: if `username` is missing) then it will raise an Error. Otherwise it will return the fields defined in UserOut, such as `id` and `username`. 
+
+![optional_keyvalue](img/optional_keyvalue.png)
+
+- How to solve this problem if missing some field?
+To fix this issue, you can make certain fields optional in the model, so if a field doesn’t exist, it uses a default value instead. Let me show an example to solve this when an entry doesn’t fully match the model.
+
+In the example below, some entries don’t completely align with the expected model. For instance, users 'a' and 'b' don’t have a description field.
+
+![optional_descriptionuser](img/optional_description_user.png)
+
+If you define description as a required str in UserOut, then sending a request for these users would cause an Internal Server Error due to the missing description field. By making description optional, you avoid this error.
+```
+class UserOut(BaseModel):
+    id: int
+    username: str
+    description: str
+
+```
+
+To address the issue where a user entry might not fully match the expected model, we can make certain fields optional in the model definition. For instance, the description field is missing for usernames 'x' and 'a'.
+If we define description in UserOut as a required str, sending a request for these users would raise an `Internal Server Error` due to the missing description field.
+
+![adding_description_key](img/adding_description_datamodel.png)
+
+To prevent this, we can define description as `optional` in the model using Optional[str], with a default value, like this: `description: Optional[str] = 'default'`. This way, if description is missing in the data, the API will return the default value instead of raising an error. To use this, you need to first `import typing module`. 
+
+```
+from typing import Optional
+.....
+class UserOut(BaseModel):
+    id: int
+    username: str
+    description: Optional[str]= 'default' #if not contain description will display default
+```
+
+Now, if you send a GET request for usernames like `a` or `b`  the API will return 'default' for the description field when it’s missing, preventing an error. 
+Let send GET request with username='b', and see  it won’t raise an error; instead, it will display the description as 'default'.. 
+
+![adding_description_optional](img/description_adding_optional.png)
+
+Overall this solution uses optional fields in the model to  to prevent errors when data is missing. 
+
+- Existence data check
+You can directly check if a user exists in the users dictionary. For example, if you try to access a non-existent username like mary, it would lead to an Internal Server Error. To prevent this, it’s better to add an exception that checks if the username exists. If it doesn’t, the API will respond with a 404 Not Found error, improving the clarity and reliability of your endpoint.
+
+```
+from fastapi import FastAPI, HTTPException
+....
+
+@app.get('/users/{username}', response_model=UserOut)
+async def get_user(username: str):
+    user = users.get(username)
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return users.get(username, {})
+```
+
+Let make some sumamry on optional and existence check:
+- optional: Used to handle missing fields within a model by allowing a default value to replace any missing field.
+- existence: Used to ensure a field or entry exists, by checking the data in a dictionary to prevent errors when accessing non-existent data.\
+
+
+### 3. Other Response Model Parameter
+
+There are some response-model parameter that you can use, but I will only mention some of them. If your are interested on other item, you can go to refer documentation for more details. 
+
+The example I will be using will continue from previously. 
+![responsemodel-otherparameter](img/response_model_parameter.png)
+
+
+#### 1. include
+The `response_model_include` option specifies which fields to include in the response. For example if you only want the `id` field returned, you can set `response_model_include={"id"}` in the endpoint, and only `id` field will display. 
+
+> include option: `response_model_include={"id"}`
+
+```
+.....
+@app.get('/users/{username}', response_model=UserOut, response_model_include={"id"})
+async def get_user(username: str):
+    user = users.get(username)
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return users.get(username, {})
+```
+When you send `GET` request,only the `id` field will appear in the response, while other field will be ommitted. You can add any field in side the `{}` 
+![responsemodel-include](img/responsemodel_include.png)
+
+
+#### 2. exclude
+The `response_model_exclude` option specifies which fields excluded from the response. For example if you don’t want `id`, `username` to appear in the response,  you can add  `response_model_exclude={"id", "username"}`
+
+> exclude option: `response_model_include={"id", "username"}`
+
+```
+.....
+@app.get('/users/{username}', response_model=UserOut, response_model_include={"id", "username"})
+async def get_user(username: str):
+    user = users.get(username)
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return users.get(username, {})
+```
+
+When you send `GET` request, the response will exclude `id` and `username` field while other will display. This allow you to cutomize which field should be hidden in the response output. This is often use on password field, which don't want to display out. 
+ 
+![responsemodel-exclude](img/responsemodel_exclude.png)
+
+
+
+#### 3. exclude _unset=bool
+
+
+
+
+========================================================
+### 3.4 Some Example with using Model(Response Model)
 
 #### 3.4.1 Case1 Example: adding items 
 Let's use from above items example, and change it into the response model, if you want to see the full code, please refer `response_items.py` this file.
@@ -698,13 +990,6 @@ The password is been hashed which will not show a plain password.
 
 ![hidepassword](img/account_passwordhash.png)
 
-
-
-### 4. fastapi gui
-
-FastApi provides interactive URLs that allow to do testing and have documentation in them. You just have to use doc after the URL like `http://127.0.0.1:8000/doc`.
-
-The page allows you to debug by testing and see working or not. If you are not familiar with the `cli` command, then this URL is also a great option.
 
 
 ## Summary

@@ -2,8 +2,7 @@
 from fastapi import FastAPI
 import uvicorn
 from pydantic import BaseModel
-from typing import Optional, List, Set, Union
-
+from typing import Optional, List
 
 
 app= FastAPI()
