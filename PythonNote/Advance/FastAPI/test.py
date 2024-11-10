@@ -27,7 +27,7 @@ app = FastAPI()
 
 
 users= {
- "x": {'id':0},
+ #"x": {'id':0},
 "a": {'id':1, 'username':'a'},
 "b": {'id':2, 'username':'b', 'username':'bbb'},
 "c": {'id':3, 'username':'c', 'username':'ccc', 'description':'default'},
@@ -48,3 +48,4 @@ async def get_user(username: str):
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return users.get(username, {})
+
