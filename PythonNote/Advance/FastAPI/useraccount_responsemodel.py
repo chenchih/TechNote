@@ -12,8 +12,7 @@ class RegIn(BaseModel):
 class Regout(BaseModel):
     username: str
     email: str
-
-    
+   
 #case1 hide password
 @app.post("/register", response_model=RegIn) #show all data
 #@app.post("/register", response_model=Regout) #show only user and email
@@ -35,12 +34,7 @@ def registerhash(user: RegIn):
 
 #case3 post and get endpoint store in dictioanry 
 # POST endpoint to register a new user
-
-
-# Temporary in-memory storage for demonstration
 users_db = {}
-
-
 @app.post("/registerNew", response_model=Regout)
 def register(user: RegIn):
     # Store the user in a dictionary
