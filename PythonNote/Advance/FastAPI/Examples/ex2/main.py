@@ -1,10 +1,8 @@
 #reference: https://www.youtube.com/watch?v=65D-1FSGUt0&t=611s
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 import uvicorn
 from pydantic import BaseModel
-from typing import Optional, List
-
-
+from typing import Optional
 app= FastAPI()
 
 users= {
@@ -22,8 +20,6 @@ class UserOut(BaseModel):
     username: str
     description: Optional[str]= 'default' #if not contain description will display default
 
-
-
 #using it in the endpoint
 
 #response_model_include={"id"} #will only output id
@@ -32,25 +28,18 @@ class UserOut(BaseModel):
 
 @app.get('/users/{username}', response_model=UserOut)
 async def get_user(username: str):
-    if username is None:
+    user = users.get(username)
+    #if username is None:
+    if user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return users.get(username, {})
 
 
-
-
 #get all data in list 
-@app.get('/users', response_model=List[UserOut])
+@app.get('/users', response_model=list[UserOut])
 async def get_users():
     return users.values()
 
    
 if __name__=='__main__':
-
     uvicorn.run("main:app", reload=True)
-#if request not contain key in value then will ocuur interal error
-# you can use the optional to avoid interal error 
-# in  x key, we don;t have username, but you send request with a then error occur
-# in a key we don't have description but description is been set optional and set a default value, which wil use default as value 
- 
-    
