@@ -16,16 +16,16 @@
 
 ## Content 
 - [Part1 Introduction fundamental of using FastAPI](#part1)
-	- [1. Installation and Module](#installation-and-module)
- 	- [2. Running fastapi service](#running-fastapi-service)
+	- [1. Installation and Module](#1-installation-and-module)
+ 	- [2. Running fastapi service](#2-running-fastapi-service)
 		- [2.1 Method1: manual run the server by command](#part1-2.1)
   		- [2.2 Method2: write server into `__main__()`](#part1-2.2) 
-	- [3. Create route](#create-route) 
-	- [4. Accesing Endpoint](#accesing-endpoint)
-	- [5. FastAPI Documentation](#fastapi-documentation)
-	- [6. Troubleshooting](#troubleshooting)
+	- [3. Create route](#3-create-route) 
+	- [4. Accesing Endpoint](#4-accesing-endpoint)
+	- [5. FastAPI Documentation](#5-fastapi-documentation)
+	- [6. Troubleshooting](#6-troubleshooting)
 - [Part2 Path Parameter](#part2-path-parameter)
-	- [1. Create route](#create-route)
+	- [1. Create route](#1-create-route)
 		- [1.1 Create get method](#create-get-method)
 		- [1.2 Create a query parameter](#create-a-query-parameter)
 		- [1.3 Create Post](#create-post)
@@ -33,13 +33,13 @@
 	- [2. Error Handling](#2-error-handling)
 - [Part3 Define and Using Response Models](#part3)
 	- [Install pydantic module](#install-pydantic)
-	- [1. Define BaseModel](#define-basemodel)
-		- [Sending Request](#sending-request)
-		- [Response Error](#response-error)
-		- [Solution for fixing missing field- Optional keyValue](#solution-Optional-pathpar)
+	- [1. Define BaseModel](#1-define-basemodel)
+		- [1.1 Sending Request](#11-sending-request)
+		- [1.2 Response Error](#12-response-error)
+		- [1.3 Solution for fixing missing field- Optional keyValue](#13-solution-Optional-pathpar)
 	- [2. Define Fixed data (without POST)](#define-fixed-data)
-		- [Fixed Data example](#fixed-data-example)
-		- [adding response-mode](#adding-response-mode)
+		- [2.1 Fixed Data example](#21-fixed-data-example)
+		- [2.2 adding response-mode](#22-adding-response-mode)
 	- [3. Optional Key value: missing field](#optional-key-value)
 	- [4. Response Model Parameter](#response-model-parameter)
 		- [include](#include)
@@ -48,10 +48,10 @@
 			- [Case1: when description is set `None`](#exclude_unset_case1)
 			- [Case2: when description is set `String` default value](#exclude_unset_case2)
 	- [ 5. Response result in list](#responsemodel-list)
-	- [ 6. Examples](#examples)
-		- [Password response-model](#ex1-password)
-			- [Case1: Password hidden](#ex1-password-case1)
-			- [Case2: Password hash](#ex1-password-case2) 	
+- [ Examples](#examples)
+	- [Password response-model](#ex1-password)
+		- [Case1: Password hidden](#ex1-password-case1)
+		- [Case2: Password hash](#ex1-password-case2) 	
 - [Summary](#summary)
 - [Reference](#reference)
 
@@ -938,13 +938,13 @@ To resolve this, you can either comment out the "x" entry or add a username fiel
 
 ![responsemodel_data_list](img/response_model_listdata.png)
 
-### 6. Examples[🔝](#part3)
+## Examples[🔝](#)
 <a name="ex1-password"></a>
-#### Example1:Password response-model
+### Example1:Password response-model
 In this example, it's commonly used with an account which doesn't want to display the password. For this example I refer to this youtube video which is easy to understand:
 > reference example: https://www.youtube.com/watch?v=YGrOBwDgD0U&t=313s
 <a name="ex1-password-case1"></a>
-##### Case1: Password hidden 
+#### Case1: Password hidden 
 Please reference the full code:`useraccount.py`, Below is the fastapi code:
 ```
 #skip the import library 
@@ -979,7 +979,8 @@ You can just remove the comment on the decorator of app.post
 ![hidepassword](img/account_passwordhide.PNG)
 
 <a name="ex1-password-case2"></a>
-##### Case2: Password hash 
+
+#### Case2: Password hash 
 
 There is another approach instead of a hidden password you can also **hashlib** your password without a hidden password. You just add this code
 > `user.password= hashlib.sha1(user.password.encode('utf-8')).hexdigest()`
