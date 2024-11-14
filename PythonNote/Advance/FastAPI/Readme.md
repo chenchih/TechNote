@@ -69,16 +69,15 @@ FastAPI is a powerful and fast module use in Python to create an API, you can cr
 
 I will explain in part 2 and part3 section on some explaination, and example. Before creating API you need to know how to start the server, which I will cover in this section. 
 
-
-- [Part1 Introduction fundamental of using FastAPI](#part1)
-	- [1. Installation and Module](#1-installation-and-module)
- 	- [2. Running fastapi service](#2-running-fastapi-service)
-		- [2.1 Method1: manual run the server by command](#part1-2.1)
-  		- [2.2 Method2: write server into `__main__()`](#part1-2.2) 
-	- [3. Create route](#3-create-route) 
-	- [4. Accesing Endpoint](#4-accesing-endpoint)
-	- [5. FastAPI Documentation](#5-fastapi-documentation)
-	- [6. Troubleshooting](#6-troubleshooting)
+**Click on the section you want to see:**
+- [1. Installation and Module](#1-installation-and-module)
+- [2. Running fastapi service](#2-running-fastapi-service)
+	- [2.1 Method1: manual run the server by command](#part1-2.1)
+  	- [2.2 Method2: write server into `__main__()`](#part1-2.2) 
+- [3. Create route](#3-create-route) 
+- [4. Accesing Endpoint](#4-accesing-endpoint)
+- [5. FastAPI Documentation](#5-fastapi-documentation)
+- [6. Troubleshooting](#6-troubleshooting)
 
 ### 1. Installation and Module[🔼](#part1)
 - Installation:
@@ -136,7 +135,6 @@ if __name__=='__main__':
 	uvicorn.run("main:app", reload=True)
 	#assign more detail information
 	uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True, log_level="info")
-	
 ```
 
 ### 3. Create route[🔼](#part1)
@@ -163,7 +161,6 @@ def create_item(item: str):
 ### 4. Accesing Endpoint[🔼](#part1)
 
 In API, to access to endpoint you need to know the term **CRUD** which means:
-
 - **Create** also mean POST
 - **Read** also mean GET
 - **Update** also mean PUT
@@ -239,13 +236,13 @@ There are some way to solve this issue, you can use either of the comamnd to for
 
 Another way to kill process with one command, I like this one, it will kill all the process at once without finding the PID. 
 
-- window:
+- **window**:
 	- kill python process: `Taskkill /IM python.exe /F` 
 	- kill cmd process: ` Get-Process -Name "cmd" | Stop-Process`
-- linux: use below method 
-	- Combining pgrep and kill: `kill $(pgrep python)`
-	- using pkill: `pkill python` or kill with file: `pkill -f "python my_script.py"`
-	- xargs for More Complex Scenarios like filter: `pgrep python | xargs kill`
+- **linux**: use below method 
+	- Combining **pgrep and kill**: `kill $(pgrep python)`
+	- **pkill**: `pkill python` or kill with file: `pkill -f "python my_script.py"`
+	- **xargs** for More Complex Scenarios like filter: `pgrep python | xargs kill`
 	
 <a name="part2"></a>
 ## Part2 Path Parameter[🔝](#content)
@@ -258,20 +255,20 @@ In part 1 I show you the fundamentals of using FastAPI include:
 These are important steps you need to know before creating API. In this part, I will explain how to create FASTAPI method using path parameter. 
 
 Understand some terms in Path Parameter:
-- Route:
+- **Route**:
   - Defines the endpoint or URL path for an API. It's like the address of a resource
   - example of route: `/`, `/users`,`/items`
   - access endpoint:
     - route set `/`: access by `http://127.0.0.1:8000`
     - route set `/users/` access by `http://127.0.0.1:8000/users`
-- Path Parameters(without a data model):
+- **Path Parameters** (without a data model):
   - Purpose: Identify a specific resource within the API, like user_id'. It's parts of the URL path, indicated by curly braces (`{}`)
   - Syntax: {parameter_name}
   - Example: /users/{user_id}, where `user_id` is a path parameter.
   - Use case:
     - Fetching a single item (e.g., getting a specific user by ID).
     - Updating or deleting a specific resource.
-- Query Parameters:
+- **Query Parameters**:
   - Purpose: Provide additional information provided in the URL after a question mark (`?`). It's like providing filters or options for the request.
   - Location: Appended to the URL after a question mark (`?`) and separated by ampersands (`&`).
   - Syntax: `?param1=value1&param2=value2`
@@ -280,7 +277,7 @@ Understand some terms in Path Parameter:
     - Pagination (specifying page number and items per page).
     - Filtering data (e.g., searching for users by name or age)
     - Sorting results (e.g., sorting users by name or creation date).
-- Base Model: Path parameter with a data model, validation is performed the incoming data with data model
+- **Base Model**: Path parameter with a data model, validation is performed the incoming data with data model
 Please refer below picture for more understand of what is path and query parameter:
 ![Path_Query](img/path_query_compare.png)
 
@@ -368,8 +365,8 @@ Now you can access the endpoint with either method:
 #### 1.3 Create Post [⏫](#part2-1)
 There are two approach with basic data type, and one using a data model for structured validation. The different between these two are: 
 
-- Baic data type: FastAPI would not validate the request payload 
-- Data Model: FastAPI will validate the incoming data against the Item model structure.
+-**Baic data type**: FastAPI would not validate the request payload 
+- **Data Model**: FastAPI will validate the incoming data against the Item model structure.
 
 In the above, I have shown you the get method, which means read endpoint. In this part let me show how to create post. 
 ```
@@ -698,10 +695,10 @@ class Item(BaseModel):
 ```
 Now, when you send a GET request with the `name` field omitted, the response will return null for name instead of raising an error.
  
-> send get request: `curl -X GET http://127.0.0.1:8000/items/1`
-> response output: `{"id":1,"name":null,"price":35.4,"is_active":true}`
+- > **send get request:** `curl -X GET http://127.0.0.1:8000/items/1`
+- > **response output:** `{"id":1,"name":null,"price":35.4,"is_active":true}`
 
-Refer to the image below to understand how setting name=None allows the missing field to appear as null rather than causing an error. .This ensures the response includes all fields in the model, with null as the placeholder for any field that are missing. I made a comparison between adding with and without adding None value. 
+Refer to the image below to understand how setting `name=None` allows the missing field to appear as null rather than causing an error. This ensures the response includes all fields in the model, with null as the placeholder for any field that are missing. I made a comparison between adding with and without adding None value. 
 
 ![missing_None_responsemodel](img/responseModel_example.png)
 
@@ -870,7 +867,6 @@ There are some **response-model parameter** that you can use, but I will only me
 The example I will be using will continue from previously. 
 ![responsemodel-otherparameter](img/response_model_parameter.png)
 
-
 #### 4.1 include[⏫](#part3-4)
 The `response_model_include` option specifies which fields to include in the response. For example if you only want the `id` field returned, you can set `response_model_include={"id"}` in the endpoint, and only `id` field will display. 
 
@@ -1016,7 +1012,6 @@ In the note I will show with use data-model, but I also provide without data-mod
 
 > This code example I reference this video tutorial: https://www.youtube.com/watch?v=YGrOBwDgD0U&t=313s
 
-
 - [Password response-model](#ex1-password)
 	- [Case1: Password hidden](#ex1-password-case1)
 	- [Case2: Password hash](#ex1-password-case2) 	
@@ -1060,6 +1055,8 @@ requests.post(url='http://127.0.0.1:8000/register',
 data=json.dumps({'username': 'hellotest', 'password': '123456','email': 'hello@test.com'})).text
 ```
 or 
+
+
 ```
 requests.post(
     url='http://127.0.0.1:8000/register',
@@ -1096,7 +1093,7 @@ print(response.text)
 #### Case2: Password hash[⏫](#ex1-password)
 Another approach to handle the password instead of hiding it is to hash the password using the `hashlib` module.
 
-> import the hashlib module:`import hashlib`
+> **import the hashlib module**:`import hashlib`
  
 Define a new `registerhash` endpoint to show the difference between hiding the password and hashing it.  Here’s how to hash the password before returning it:
 
@@ -1124,7 +1121,7 @@ As you can see, the password is now hashed so it does not appear in plain text.
 
 <a name="ex1-password-case3"></a>
 #### Case3: Storing and Retrieving User Data [⏫](#ex1-password)
-This example I will demonstrate sending Post Request does not store data permanently unless you save it in a collection like list or dictionary. Here, I will store the data in a dictionary.
+This example I will demonstrate sending **Post Request** does not store data permanently unless you save it in a collection like list or dictionary. Here, I will store the data in a dictionary.
 
 ```
 users_db = {}
@@ -1144,12 +1141,12 @@ def get_user(username: str):
 ```
 
 - **POST Request**: 
-> command: `curl -X POST -H "Content-Type: application/json" -d '{"username": "test", "password": "123456", "email": "hello@test.com"}' "http://127.0.0.1:8000/registerNew"`
->> Response Result:`{"username":"test","email":"hello@test.com"}`
+> **POST command**: `curl -X POST -H "Content-Type: application/json" -d '{"username": "test", "password": "123456", "email": "hello@test.com"}' "http://127.0.0.1:8000/registerNew"`
+>> **Response Result**:`{"username":"test","email":"hello@test.com"}`
 
 - **GET Request**:
-> command: `curl -X GET http://127.0.0.1:8000/registerNew/test`
->>Response Result: `{"username":"test","password":"123456","email":"hello@test.com"}`
+> **GET command**: `curl -X GET http://127.0.0.1:8000/registerNew/test`
+>> **Response Result:** `{"username":"test","password":"123456","email":"hello@test.com"}`
 
 **Note**: Without the GET method, your data is only temporarily available in the POST response and cannot be accessed again after the initial request. By adding the GET endpoint, you can retrieve the stored data by username whenever needed.
 
@@ -1159,15 +1156,15 @@ def get_user(username: str):
 <a name="ex2-add-item"></a>
 ### Example2:Add Item and store data[🔼](#examples)
 Full Code File: `\Examples\Example2_Items\response.py` this file. 
-I've explained this example in section [part2](#part2). In this section, however, I will demonstrate using a defined data model (e.g., Item) to validate incoming data against the structure of the model, rather than using basic data types.
+I've explained this example in section [part2 1.3 section](#create-post). In this section, however, I will demonstrate using a defined data model (e.g., Item) to validate incoming data against the structure of the model, rather than using basic data types.
 
 **Click on the section you want to see:**
-- [Define Data Mode](#ex2-add item)
+- [Define Data Mode](#ex2-add-item)
 - [ResponseMode argument](#ex2-2responsemodel)
 - [Adding and Removing response_model validate](#ex2-3addingRemove)
 
 <a name="ex2-datamode"></a>
-#### Define Data Mode[⏫](#ex2-add item)
+#### Define Data Mode[⏫](#ex2-add-item)
 This example defines a response model, Item(BaseModel), which sets the expected structure for the data that the API endpoint will receive.
 It tells FastAPI to validate the incoming data against this structure, ensuring that it meets the model's requirements.
 ```
@@ -1186,10 +1183,10 @@ def create_item(item: Item):
     return items
 ```
 
-The Item model defines the data structure for incoming data when the create_item endpoint is called. FastAPI validates the incoming request with the data model. 
+The Item model defines the data structure for incoming data when the `create_item` endpoint is called. FastAPI validates the incoming request with the data model. 
 If the data doesn’t match the model, FastAPI raises a ValidationError.
 
-Note:  If  you don’t specify a response_model in an endpoint, the response will simply return the data from the return statement as-is, without additional validation on the response structure.
+Note:  If  you don’t specify a `response_model` in an endpoint, the response will simply return the data from the return statement as-is, without additional validation on the response structure.
 
 - **Send Post request**
 
@@ -1214,7 +1211,7 @@ The error occurs because the payload lacks the required "text" field specified i
 ![raiseerror_example_items](img/items_raiserror.png)
 
 <a name="ex2-2responsemodel"></a>
-#### Using response_model for FastAPI Responses[⏫](#ex2-add item)
+#### Using response_model for FastAPI Responses[⏫](#ex2-add-item)
 
 - **GET Endpoint Without response_model**
 
@@ -1299,7 +1296,7 @@ This is a comparison between adding response_Model:
 ![missing_None_responsemodel](https://raw.githubusercontent.com/chenchih/TechNote/main/PythonNote/Project_Youtube/Create_FastApi/img/response_model.PNG)
 
 <a name="ex2-3addingRemove"></a>
-#### Adding and Removing response_model Validation[⏫](#ex2-add item)
+#### Adding and Removing response_model Validation[⏫](#ex2-add-item)
 The following example demonstrates the difference between adding and not adding the response_model argument to a FastAPI endpoint.
 
 ```
@@ -1325,6 +1322,7 @@ def get_item(item_id: int):
 
 > **With response_model**: The response_model argument validates the returned data against the Item model.
 >> **GET request**: `curl -X GET "http://127.0.0.1:8000/items/2"`
+
 >> **Response** :　`Internal Server Error`
 
 It returns an`Internal Server Error` if the data doesn’t match the model (Item). Here, {"description": "A tasty fruit"} does not have the required text field, so validation fails.
@@ -1332,6 +1330,7 @@ It returns an`Internal Server Error` if the data doesn’t match the model (Item
 
 > **Without response_model**: Removing response_model disables this validation, allowing any data structure to be returned. 
 >> **GET request**: `curl -X GET "http://127.0.0.1:8000/items/2"`
+
 >> **Response** :　`{"description":"A tasty fruit"}`
 
 It returned directly, with no validation, so it reflects the data exactly as it is stored.
@@ -1384,13 +1383,15 @@ print(request.json())
 ```
 
 **with CURL command**
-> random endpoint:  `curl -X GET "http://127.0.0.1:8000/random"`
-> random with ID endpoint:  `curl -X GET "http://127.0.0.1:8000/random/22"` 
+
+> **random endpoint:**  `curl -X GET "http://127.0.0.1:8000/random"`
+
+> **random with ID endpoint:**  `curl -X GET "http://127.0.0.1:8000/random/22"` 
 
 ## Summary[🔝](#content)
 So let me make a summary of how to execute it:
  
-- Step1: Write a code with the server and run it 
+- **Step1:** Write a code with the server and run it 
 	- Method1: Run the server with command: `uvicorn <filename>:app --reload`
 	- Method2: Adding the server in code and run the code
 		```
@@ -1401,8 +1402,8 @@ So let me make a summary of how to execute it:
 			uvicorn.run("main:app", reload=True, log_level='debug' )
 		```
 	
-- Step2: Sending a request with get or post:
-	- Method1: Write an individual code to send a request  
+- **Step2:** Sending a request with get or post:
+	- **Method1:** Write an individual code to send a request  
 		**GET endpoint**
 		```
 		import requests
@@ -1414,7 +1415,8 @@ So let me make a summary of how to execute it:
 		```
 		requests.post(url='http://127.0.0.1:5000/register',  data=json.dumps({X:Xvalue, Y:Yalue})).text
 		```
-	- Method2: Execute in `cli` command in shell mode 
+	- **Method2:** Execute in `cli` command in shell mode 
+	
 		**GET endpoint**
 		```
 		curl -X GET "http://127.0.0.1:8000/items"

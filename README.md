@@ -2,4 +2,15 @@
 Technology Note
 
 ## Update
-- [X] update Jupyter Notebook
+
+- JupyterNotebook
+- Python Note
+	- Basic 
+	- [X] Advance(different library)
+		- [X] FastAPI
+		- [X] Pytest
+		- [X] SeleniumNote
+		- [X] Decorator property
+		- [X] Closure
+	- Project_Youtube
+	
