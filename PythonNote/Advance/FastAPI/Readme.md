@@ -54,7 +54,7 @@ This is a note on how to use FASTAPI base on many youtube tutorial and noted as 
 		- [Case2: Password hash](#ex1-password-case2) 	
 		- [Case3: Storing and Retrieving User Data](#ex1-password-case3)
 	- [Example2: Add Item and store data](#ex2-add-item)
-		- [Define Data Mode](#ex2-add item)
+		- [Define Data Mode](#ex2-add-item)
 		- [ResponseMode argument](#ex2-2responsemodel)
 		- [Adding and Removing response_model validate](#ex2-3addingRemove)
 	- [Example3: Random Number](#ex3-random)
