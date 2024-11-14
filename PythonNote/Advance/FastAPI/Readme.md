@@ -53,7 +53,7 @@ This is a note on how to use FASTAPI base on many youtube tutorial and noted as 
 		- [Case1: Password hidden](#ex1-password-case1)
 		- [Case2: Password hash](#ex1-password-case2) 	
 		- [Case3: Storing and Retrieving User Data](#ex1-password-case3)
-	- [Example2: Add Item and store data](#ex2-add item)
+	- [Example2: Add Item and store data](#ex2-add-item)
 		- [Define Data Mode](#ex2-add item)
 		- [ResponseMode argument](#ex2-2responsemodel)
 		- [Adding and Removing response_model validate](#ex2-3addingRemove)
@@ -68,6 +68,18 @@ FastAPI is a powerful and fast module use in Python to create an API, you can cr
 - **Response Model**: defines the structure of the data that the API will return. It is useful because it validates and formats the data, ensuring a clear structure that makes it easier for other developers to understand and use. 
 
 I will explain in part 2 and part3 section on some explaination, and example. Before creating API you need to know how to start the server, which I will cover in this section. 
+
+
+- [Part1 Introduction fundamental of using FastAPI](#part1)
+	- [1. Installation and Module](#1-installation-and-module)
+ 	- [2. Running fastapi service](#2-running-fastapi-service)
+		- [2.1 Method1: manual run the server by command](#part1-2.1)
+  		- [2.2 Method2: write server into `__main__()`](#part1-2.2) 
+	- [3. Create route](#3-create-route) 
+	- [4. Accesing Endpoint](#4-accesing-endpoint)
+	- [5. FastAPI Documentation](#5-fastapi-documentation)
+	- [6. Troubleshooting](#6-troubleshooting)
+
 ### 1. Installation and Module[🔼](#part1)
 - Installation:
   > Install fastapi: `pip install fastapi`
@@ -272,14 +284,13 @@ Understand some terms in Path Parameter:
 Please refer below picture for more understand of what is path and query parameter:
 ![Path_Query](img/path_query_compare.png)
 
-
-- [Part2 Path Parameter](#part2-path-parameter)
-	- [1. Create route](#1-create-route)
-		- [1.1 Create get method](#create-get-method)
-		- [1.2 Create a query parameter](#create-a-query-parameter)
-		- [1.3 Create Post](#create-post)
-		- [1.4 Summary of Route](#summary-of-route)
-	- [2. Error Handling](#2-error-handling)
+**Click on the section you want to see:**
+- [1. Create route](#1-create-route)
+	- [1.1 Create get method](#create-get-method)
+	- [1.2 Create a query parameter](#create-a-query-parameter)
+	- [1.3 Create Post](#create-post)
+	- [1.4 Summary of Route](#summary-of-route)
+- [2. Error Handling](#2-error-handling)
 
 <a name="part2-1"></a>
 ### 1. Create route[🔼](#part2)
@@ -504,23 +515,23 @@ curl -X GET http://127.0.0.1:8000/items/111
 
 In the above, I have mentioned **path parameter**, which is based on typically used to specify unique identifiers for a resource. In this part I will talk about Response Models, and define the expected structure of the response data. It’s excepting it to be into json payload request.
 
-- [Part3 Define and Using Response Models](#part3)
-	- [Install pydantic module](#install-pydantic)
-	- [1. Define BaseModel](#1-define-basemodel)
-		- [1.1 Sending Request](#11-sending-request)
-		- [1.2 Response Error](#12-response-error)
-		- [1.3 Solution for fixing missing field- Optional keyValue](#13-solution-Optional-pathpar)
-	- [2. Define Fixed data (without POST)](#define-fixed-data)
-		- [2.1 Fixed Data example](#21-fixed-data-example)
-		- [2.2 adding response-mode](#22-adding-response-mode)
-	- [3. Optional Key value: missing field](#optional-key-value)
-	- [4. Response Model Parameter](#response-model-parameter)
-		- [include](#include)
-		- [exclude](#exclude)
-		- [exclude_unset](#exclude-unset)
-			- [Case1: when description is set `None`](#exclude_unset_case1)
-			- [Case2: when description is set `String` default value](#exclude_unset_case2)
-	- [ 5. Response result in list](#responsemodel-list)
+**Click on the section you want to see:**
+- [Install pydantic module](#install-pydantic)
+- [1. Define BaseModel](#1-define-basemodel)
+	- [1.1 Sending Request](#11-sending-request)
+	- [1.2 Response Error](#12-response-error)
+	- [1.3 Solution for fixing missing field- Optional keyValue](#13-solution-Optional-pathpar)
+- [2. Define Fixed data (without POST)](#define-fixed-data)
+	- [2.1 Fixed Data example](#21-fixed-data-example)
+	- [2.2 adding response-mode](#22-adding-response-mode)
+- [3. Optional Key value: missing field](#optional-key-value)
+- [4. Response Model Parameter](#response-model-parameter)
+	- [include](#include)
+	- [exclude](#exclude)
+	- [exclude_unset](#exclude-unset)
+		- [Case1: when description is set `None`](#exclude_unset_case1)
+		- [Case2: when description is set `String` default value](#exclude_unset_case2)
+- [ 5. Response result in list](#responsemodel-list)
 
 **When to Use Them:**
 
@@ -979,16 +990,16 @@ To resolve this, you can either comment out the "x" entry or add a username fiel
 
 In this section I want to show some example that might use often. 
 
-- [Examples](#examples)
-	- [Password response-model](#ex1-password)
-		- [Case1: Password hidden](#ex1-password-case1)
-		- [Case2: Password hash](#ex1-password-case2) 	
-		- [Case3: Storing and Retrieving User Data](#ex1-password-case3)
-	- [Example2: Add Item and store data](#ex2-add item)
-		- [Define Data Mode](#ex2-add item)
-		- [ResponseMode argument](#ex2-2responsemodel)
-		- [Adding and Removing response_model validate](#ex2-3addingRemove)
-	- [Example3: Random Number](#ex3-random)
+**Click on the section you want to see:**
+- [Password response-model](#ex1-password)
+	- [Case1: Password hidden](#ex1-password-case1)
+	- [Case2: Password hash](#ex1-password-case2) 	
+	- [Case3: Storing and Retrieving User Data](#ex1-password-case3)
+- [Example2: Add Item and store data](#ex2-add-item)
+	- [Define Data Mode](#ex2-add-item)
+	- [ResponseMode argument](#ex2-2responsemodel)
+	- [Adding and Removing response_model validate](#ex2-3addingRemove)
+- [Example3: Random Number](#ex3-random)
 
 <a name="ex1-password"></a>
 ### Example1:Password response-model[🔼](#examples)
@@ -1005,6 +1016,11 @@ In the note I will show with use data-model, but I also provide without data-mod
 
 > This code example I reference this video tutorial: https://www.youtube.com/watch?v=YGrOBwDgD0U&t=313s
 
+
+- [Password response-model](#ex1-password)
+	- [Case1: Password hidden](#ex1-password-case1)
+	- [Case2: Password hash](#ex1-password-case2) 	
+	- [Case3: Storing and Retrieving User Data](#ex1-password-case3)
 
 <a name="ex1-password-case1"></a>
 #### Case1: Password hidden[⏫](#ex1-password)
@@ -1140,10 +1156,15 @@ def get_user(username: str):
 ![StoringDataandRetreiving](img/ex_account_store_retreive.png)
 
 
-<a name="ex2-add item"></a>
+<a name="ex2-add-item"></a>
 ### Example2:Add Item and store data[🔼](#examples)
 Full Code File: `\Examples\Example2_Items\response.py` this file. 
 I've explained this example in section [part2](#part2). In this section, however, I will demonstrate using a defined data model (e.g., Item) to validate incoming data against the structure of the model, rather than using basic data types.
+
+**Click on the section you want to see:**
+- [Define Data Mode](#ex2-add item)
+- [ResponseMode argument](#ex2-2responsemodel)
+- [Adding and Removing response_model validate](#ex2-3addingRemove)
 
 <a name="ex2-datamode"></a>
 #### Define Data Mode[⏫](#ex2-add item)
@@ -1382,26 +1403,31 @@ So let me make a summary of how to execute it:
 	
 - Step2: Sending a request with get or post:
 	- Method1: Write an individual code to send a request  
+		**GET endpoint**
 		```
 		import requests
 		#sending request with get 
 		request= requests.get('http://127.0.0.1:8000')
 		```
-	- Method2: Execute in `cli` command in shell mode 
-		- Post request: 
+		
+		**POST endpoint**
 		```
-		import requests
 		requests.post(url='http://127.0.0.1:5000/register',  data=json.dumps({X:Xvalue, Y:Yalue})).text
 		```
-		- Get request: 
+	- Method2: Execute in `cli` command in shell mode 
+		**GET endpoint**
 		```
-		import requests
-		request= requests.get('http://127.0.0.1:8000')
-		print(request.json()) #{'example': 'This is an example', 'data': 0}
+		curl -X GET "http://127.0.0.1:8000/items"
 		```
+		**Post request**
+		```
+		url -X POST -H "Content-Type: application/json" -d '{"text": "banana"}' 'http://127.0.0.1:8000/items'
+		````
 	- Method3: Using WebUI
 		- Fastapi UI to test your endpoint
 		- Postman: this is a tool to test api
+		
+		
 		
 ## reference[🔝](#content)
 
