@@ -12,5 +12,8 @@ Technology Note
 		- [X] SeleniumNote
 		- [X] Decorator property
 		- [X] Closure
+		- [] Type Hint anotation
+		- [] Pathlib 
+		
 	- Project_Youtube
 	

@@ -3,7 +3,6 @@
 ## update 
 - inital: 2024.11.15
 
-
 ## Introduction to Type Hinting in Python
 
 Python is a **dynamically typed language**, which means there’s no need to define variable data types explicitly. If you’ve used languages like **Java** or **C++**, you may know that they **require** specifying a variable’s data type, like `int num = 100` or `string text = "hello"`.
@@ -20,8 +19,20 @@ However, type hints and the typing module don’t affect the code execution; the
 
 To type-check your type hints, you can use `mypy` tool, which that reads type hints and checks for type errors in your code without running it
 
+- [Why Use the typing Module?](#why_using)
+- [Basic Data Type](#basic-data-type )
+- [Adding Type Hint](#adding-type-hint)
+- [Return Function](#return-function)
+- [Collection](#collection)
+- [advanced types and features](#advanced)
+	- [any](#any)
+	- [union](#union)
+	- [cast](#cast)
+	- [Optional](#optional)
+	- [Sequency](#sequency)
 
 
+<a name="why_using"></a>
 ### Why Use the typing Module?
 
 You might be wonder why typing module is needed. The typing provide tools for for type hint, especially for more complex types.
@@ -36,10 +47,9 @@ numbers: List[int] = []
 #python 3.9+
 numbers: list[int] = []
 ```
-As you can see in the example above, in python 3.9+  there's no need to import the typing for collections, and can directly use it. 
+As you can see in the example above, in **python 3.9+**  there's no need to import the typing for collections, and can directly use it. 
 
-
-### Basic Data Type 
+### Basic Data Type
 
 This is define normal data type `string`, `integer`, and `bollean`:
 ```
@@ -52,9 +62,11 @@ print(type(age)) # <class 'int'>
 print(type(pay)) # <class 'float'>
 print(type(is_male)) # <class 'bool'>
 ```
+
 ### Adding Type Hint
+
 Now let add variable with **type hint**
-> syntax: `variableName :<datatype>= <value>`
+> **syntax:** `variableName :<datatype>= <value>`
 
 ```
 name: str = "Hello Test" 
@@ -66,7 +78,7 @@ print(type(age)) # <class 'int'>
 print(type(pay)) # <class 'float'>
 print(type(is_male)) # <class 'bool'>
 ```
-As you can see, adding type hints in the example  will gives the same output result as no adding hint (basic data type example). For example, if you change `name: str = 100` and run the code again, it won’t raise an error. Type hints are simply annotations to inform developers of the expected data type, but they don’t affect the code during runtime.
+As you can see, adding type hints in the example will gives the same output result as no adding hint (basic data type example). For example, if you change `name: str = 100` and run the code again, it won’t raise an error. Type hints are simply annotations to inform developers of the expected data type, but they don’t affect the code during runtime.
 
 However, you can check the correctness of your type hints using the `mypy` tool. You can install with this command:
 > **install mypy**: `pip install mypy`
@@ -80,21 +92,21 @@ For example, if `name: str = 100` is in your code, `mypy` will raise an error:
 
 ![mypy](img/typehint_mypy_result.png)
 
-Finally, another advantage of using type hints is in the editor. When you type `.` after a variable, it shows related methods and properties, which can be helpful. For example, with list, it will show methods like append, clear, and other relevant options.
+Finally, another **advantage** of using type hints is in the editor. When you type `.` after a variable, it shows related methods and properties, which can be helpful. For example, with list, it will **show methods** like `append`, `clear`, and other relevant options.
 
 ![typehint_showpropeties](img/typehint_showpropertymethod.png)
 
 
 Let’s recap the reasons for using type hints:
 - Inform developers of the expected data types
-- Use `mypy` to validate type hints and catch type errors
+- Use `mypy` to **validate type hints and catch type errors**
 - Enable your editor to show relevant properties and methods for variables
-
 
 ### Return Function
 
 In type hints for functions, the `->` symbol indicates the return type of the function. For example, `->` str means the function is expected to return a string value.
 > **To specify a return value type:** `functionName(a:int, b:int)->int`
+
 > **To specify no return value (None):** `functionName(a:int, b:int)->None`
 
 
@@ -133,11 +145,10 @@ You need to import the typing module to use type hints for collections, as shown
 from typing import List, Set, Tuple, Dict
 #List
 name_list: List[str]= ['Jenny','Sammy','Mike', 'Joe']
-
 ```
 
 - **python 3.9 or above** 
-You no longer need to import the typing module for common collections such as `list`, `set`, `tuple`, and `dict`. These collections are now built-in and can be used directly, like this:
+You no longer need to import the typing module for common collections such as `list`, `set`, `tuple`, and `dict`. These collections are now **built-in** and can be used directly, like this:
 
 ```
 # list 
@@ -162,24 +173,26 @@ mydict: dict[str,str]={'name': 'James'}
 type(mydict)  
 ```
 
-> **Note:** the `...` in tuple[int, ...] indicates that all elements in the tuple must be of the same data type.
+> **Note:** the `...` in `tuple[int, ...]` indicates that all elements in the tuple must be of the same data type.
 
-
+<a name="advanced"></a>
 ### advanced types and features
 
 In this section, I'll explain how to use some advanced types that aren’t built-in, so you'll need to import the typing module.
 > **import typing:** `import typing`
 
-I’ll cover a few of the most useful types, such as Optional, Union, and others. For a full list of types in the typing module, you can refer to the documentation or use these commands to check available options:
+I’ll cover a few of the most useful types, such as `optional`, `union`, and others. For a full list of types in the typing module, you can refer to the documentation or use these commands to check available options:
 
->  Lists all items in the typing module: `dir(typing)`
-> Shows detailed help for the typing module: `help(typing)`
+> **Lists all items in the typing module:** `dir(typing)`
+
+> **Shows detailed help for the typing module:** `help(typing)`
 
 To import specific types directly, use the following syntax:
 > **specify typing option:** `from typing import Union, Any, cast, Sequence, Optional`
 
-- any option: indicates that a variable can be of any type
-This is useful to restrict any data type is accepted. 
+#### Any
+This indicates that a variable can be of any type, and is useful to restrict any data type is accepted
+
 ```
 from typing import Union, Any, cast, Sequence, Optional
 #any type
@@ -190,8 +203,8 @@ print(type(a1)) #<class 'str'>
 print(type(a2)) #<class 'str'>
 print(type(a3)) #<class 'list'
 ```
-- union: Allows a variable or collection to hold multiple specified types
-The Union allows multiple types to be used in the list, and the order of the types doesn't matter.
+#### union
+Allows a variable or collection to hold multiple specified types to be used in the list, and the order of the types doesn't matter.
 
 ```
 b1: list[Union[str, int, bool]] = ['world', 50, True]
@@ -210,8 +223,9 @@ in b1 it's valid, but b2 is invalid will occur error, because in b2 None does no
 As long as the values in the list match one of the types in the Union, they are valid
 
 
-- casting option: Used to override or "hint" a variable's type without modifying the actual object at runtime.
-Casting is for telling the type checker to treat a variable as a different type
+#### cast
+
+Cast is for telling the type checker to treat a variable as a different type
 ```
 #casting help overwrite on
 c1: Any="hello"
@@ -224,13 +238,26 @@ print(type(c4)) #<class 'int'>
 ```
 c1 is a string ("hello"), because Any allows it to hold any type, and it was assigned a string value. With cast(list[str], c1), you are telling the type checker to treat c1 as a list[str]. This means that while the type checker will consider c1 as a list of strings (even though it's actually a string), the actual value of c1 at runtime is still a string.
 
-- Optional option: Indicates that a value can either be of the specified type or None.
-Optional[X] is equivalent to Union[X, None]. `|` operator in type hints is essentially a shorthand for Optional, for example:
+#### Optional
+The `Optional` type is often used to indicate that a value can either be of the specified `type` or `None`.It is equivalent to Union[X, None], and the | operator in type hints is a shorthand for Optional. For example:
 
-> `str | None`: shorter for Optional[str],below are same thing:
->> example using |: `name: str| None= "Hello"`: accepting string or none 
->> example using optional: `new: Optional[str]="happy"`
+- > `variable: Optional[type] = value` is equivalent to `variable: Union[type, None] = value` which means it can accept value and none value. 
+- > `str | None`: is a shorter way of writing Optional[str] below are same thing:
 
+Below examples behave the same way, one with `optional` and the other without `optional`
+```
+# With Optional
+name: Optional[str] = None
+new: Optional[str] = "happy"
+
+# Without Optional (equivalent to the above)
+name: str | None = "Hello"  # Accepts string or None
+name: Union[str, None] = None
+```
+
+**Optional in Functions**
+
+The Optional type is commonly used in function parameters or return types to indicate that a value might not be provided. Here's an example:
 
 ```
 #optional
@@ -240,19 +267,26 @@ testing() #output can be bool or None.
 testing(True)  # No error
 testing(False)  # No error
 testing(None)  # No error
-testing('ddd')  # Error
+testing('ddd')  #  Error: 'output' must be bool or None
+```
+>> In the above function, the default value is `False`, but if no value is passed, Python interprets it as `None`.
+>> The type hint `Optional[bool]` means the parameter accepts either a `bool` (True or False) or `None`. Any other type, such as a string, will raise a type-checking error.
 
-
+**Example**
 
 ```
+def process_data(data: Optional[int] = None) -> str:
+    if data is None:
+        return "No data provided"
+    return f"Processing data: {data}"
 
-Default value is `False`, but if no value is passed, Python will interpret it as `None`.'  is commonly used for function parameters or return types where a value might not be provided, and thus could be None.
+print(process_data())  # Output: "No data provided"
+print(process_data(42))  # Output: "Processing data: 42"
+```
+In this example the data parameter can be either an int or None valid types. The function always returns a `string (-> str)`, so no type errors will occur if the return value matches this type.
 
-`variable: Optional[type] = value` is the same as `variable: Union[type, None] = value` which means it can accept value and none value. 
-
-
-- Sequency: Represents an immutable or mutable sequence (e.g., list, tuple, str).
-Sequence can be a list, a tuple, or even a string because they all follow the concept of being ordered and indexable collections.
+#### Sequency
+Represents an immutable or mutable sequence (e.g., list, tuple, str). Sequence can be a list, a tuple, or even a string because they all follow the concept of being ordered and indexable collections.
 It could also be immutable (like a tuple or string) or mutable (like a list). All elements within the sequence should be of the same data type.
 
 ```
