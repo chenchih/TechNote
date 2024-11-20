@@ -1,7 +1,8 @@
 ## Uodate 
 - inital: 2024.11.17
 - updated note: 2024.11.19
-
+	-  change img location
+	
 ## Python Path Operations (pathlib) with file and directory
 
 I want to show using `pathlib`, however you can also use the `os` module to establish it, some example I will show using these module to implement it. 
@@ -11,8 +12,6 @@ I want to show using `pathlib`, however you can also use the `os` module to esta
 - check file and folder in current directory use both os and pathlib module
 - rename, delete file or folder
 - write into file like txt, csv
-
-
 
 > **Pathlib** is module that allow you to check your full **path location**, **filter** specific **file or folder**. There is also another **alternative module** which use like `os` module. 
 > - **import pathlib module:** `from pathlib import Path`
@@ -38,8 +37,6 @@ Path.touch() # Creates a new file.
 Path.joinpath() or / operator #Combines paths.
 Path.glob() #Searches for files matching a pattern
 ```
-
-
 <a name="content"></a>
 **Click on the section you want to see:**
 - [Part1 Path Displaying ](#part1)
@@ -63,7 +60,7 @@ Path.glob() #Searches for files matching a pattern
 		- [read file](#read-file)
 		- [write file](#write-file)
 		- [write file to csv](#write_csv) 
-		- [zip file folder: compress file ](#zip)
+		- [zip file folder: extract, and compress file](#zip)
 - [Part3 Limitations of pathlib:create and remove](#part3)
 	- [1. Directory Creation and Removal](#part3-1)
 		- [mkdir: create Directory](#part3-1_create_subdir)
@@ -82,6 +79,21 @@ Path.glob() #Searches for files matching a pattern
 <a name="part1"></a>
 ## Part1 Path Displaying [🔝](#content)
 This section will show your current full path location, and list file files. 
+
+**Click on the section you want to see:**
+- [1. Displaying and Navigating Paths](#part1-1)
+- [2. Path Object File Extensions](#part1-2)
+	- [suffix and stem: filter file or extension name](#suffix_stem)
+	- [endswith: filter extension name](#endswith)
+- [3. Combining and Creating Paths](#part1-3)
+- [4 Checking File Existence](#part1-4)
+- [5 Absolute and Relative Paths](#part1-5)
+	- [Parent()](#parent)
+	- [absolute()](#absolute)
+	- [resolve()](#resolve)
+- [6. User Home Directory Access](#part1-6)
+
+
 <a name="part1-1"></a>
 ### 1. Displaying and Navigating Paths [🔼](#part1)
 
@@ -114,7 +126,7 @@ os.listdir(target_path) #list specify path folder and files
 ### 2. Path Object File Extensions [🔼](#part1)
 
 <a name="suffix_stem"></a>
-#### suffix and stem: filter file or extension name [⏫](#part1-2)
+#### 2.1 suffix and stem: filter file or extension name [⏫](#part1-2)
 You can use below to display your file extension name or just show file name. 
 
 > show the file/directory **with extension name**: `.suffix`
@@ -137,7 +149,7 @@ print(my_file.stem) #file_1
 ![Path_extension](img/path_extension.png)
 
 <a name="endswith"></a>
-#### endswith: filter extension name [⏫](#part1-2)
+#### 2.2 endswith: filter extension name [⏫](#part1-2)
 
 You can also use `endswith` to filter your file name
 ```
@@ -245,20 +257,31 @@ p=Path.home().parent #C:/Users
 p= Path.home().parent / "test" #C:/test
 ```
 
+
 <a name="part2"></a>
 ## Part2 Searching and Opening Files[🔝](#content)
 This section will show you 
 - how to search or filter specfic file extension and directory. 
 - open and write into file 
 
+**Click on the section you want to see:**
+- [Searching File](#part2-1)
+	- [glob():Case-Sensitive Search](#glob)
+	- [rglob: recursive Search](#rglob)
+	- [os.walk(): list all file from subdirectory](#os.walk)
+- [Opening and reading Files](#part2-2)
+	- [read file](#read-file)
+	- [write file](#write-file)
+	- [write file to csv](#write_csv) 
+	- [zip file folder: compress file ](#zip)
+
 <a name="part2-1"></a>
-### 1.Searching File: 
+### 1. Searching File: 
 
 <a name="glob"></a>
 #### glob():Case-Sensitive Search [⏫](#part2-1)
 
 > **glob method** searches for files and directories that match a specific pattern in the current directory (non-recursively). It combines files or directories that match the given pattern
-
 
 **search for files or directories** that contain the pattern `py` in their names(any file or directory name)
 
@@ -282,7 +305,6 @@ dotfiles=Path.home() #accessing to C:/Users/test/
 for p in dotfiles.rglob("*.pdf"):
     print(p)
 ```
-
 
 <a name="os.walk"></a>
 #### os.walk(): list all file from subdirectory [⏫](#part2-1)
@@ -320,7 +342,7 @@ for root, dirname, files in os.walk(target):
         file.write(root+'\\'+x +'\n')
 ```
 <a name="part2-2"></a>
-### Opening and reading Files [🔼](#part2)
+### 2. Opening and reading Files [🔼](#part2)
 
 #### read file[⏫](#part2-2)
 
@@ -444,6 +466,22 @@ There are some limiatation of pathlib:
 	- **Create File:** Only **creates an empty file**; no direct content creation
 	- **Rename/Move File:**	Overwrites destination file if it exists, no way to prevent this directly
 	- **Delete File:**	Only **deletes individual files**, not directories or recursive deletion
+
+**Click on the section you want to see:**
+- [1. Directory Creation and Removal](#part3-1)
+	- [mkdir: create Directory](#part3-1_create_subdir)
+	- [parents=True: Create Directory with Subdirectories](#part3-1_create_subdir)
+	- [rmdir: remove Directory](#part3-1_remove)
+		- [rmdir: remove empty directory](#rmdir)
+		- [rmtree: remove non empty directory or folder](#rmtree)
+- [2. File Creation, copy, rename, and delete](#part3-2)
+	- [touch: Create File](#create-file_touch)
+	- [rename() and replace(): reaname and replace file](#renamefiles)
+	- [copy(): copy files](#copyfile)
+	- [Delete File](#delete-file)
+		- [unlink](#unlink)
+		- [send2trash](#send2trash)
+
 	
 <a name="part3-1"></a>
 ### 1. Directory Creation and Removal)[🔼](#part3)
