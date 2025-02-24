@@ -32,21 +32,21 @@ git pull origin tmp
 The point of setting upstream is to then simply use git push in the future.
 
 - `git branch --set-upstream-to=origin/branchname`
-> - This command only establishes the upstream tracking. It tells your local branch, "This remote branch (origin/branchname) is where I should be pushing to by default."
-> - It does not push any code.
+>> - This command only establishes the upstream tracking. It tells your local branch, "This remote branch (origin/branchname) is where I should be pushing to by default."
+>> - It does not push any code.
 
 - `git push -u origin branchname`
-> - It pushes your local branch to the remote branch (origin/branchname).
-> - It sets the upstream tracking for your local main branch to origin/main
-> - Prepares your local branch and pushes the code in one command.
+>> - It pushes your local branch to the remote branch (origin/branchname).
+>> - It sets the upstream tracking for your local main branch to origin/main
+>> - Prepares your local branch and pushes the code in one command.
 
 - `git branch -vv` : Checking Upstream Settings
 
 #### git push 
 - `git push origin main`
-> - Bypassing Upstream
-> - you're explicitly telling Git: "Push my current branch to origin/main, regardless of what my upstream setting is
-> - This command pushes your local branch to the remote branch (`origin/branchname`).
+>> - Bypassing Upstream
+>> - you're explicitly telling Git: "Push my current branch to origin/main, regardless of what my upstream setting is
+>> - This command pushes your local branch to the remote branch (`origin/branchname`).
 
 ## PYTHON
 
