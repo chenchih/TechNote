@@ -1,8 +1,8 @@
 ## Uodate 
 - inital: 2024.11.17
 - updated note: 2024.11.19
-	-  change img location
-	
+	- change img location
+	- change some md error and adding some item 
 ## Python Path Operations (pathlib) with file and directory
 
 I want to show using `pathlib`, however you can also use the `os` module to establish it, some example I will show using these module to implement it. 
@@ -51,6 +51,7 @@ Path.glob() #Searches for files matching a pattern
 		- [absolute()](#absolute)
 		- [resolve()](#resolve)
 	- [6. User Home Directory Access](#part1-6)
+	- [Summary of pathlib listing dir](#part1-7)
 - [Part2 Searching and Opening Files](#part2)
 	- [Searching File](#part2-1)
 		- [glob():Case-Sensitive Search](#glob)
@@ -196,13 +197,30 @@ print(newfile)
 
 <a name="part1-4"></a>
 ### 4. Checking File Existence [🔼](#part1)
+Using this to check your file exist or not:
+> You can use these function to check your path:
+>> - `exists()`: check path is file or directory exist or not
+>> - `is_file()`: checking path is file
+>> - `is_dir()`: checking path is a directory
+>> - `is_absolute()`: check if it's absolute path
 
-Using this to check your file exist or not
 ```
-print(my_dir.exists())  # Check if directory exists
-print(my_file.exists())  # Check if file exists
-print(newfile.exists())  # Check if newfile exists
+mydir=Path(r'C:\demo_testfile')
+myfile=Path('index.html')
+
+# Check if directory exists
+print(mydir.exists())  
+
+# Check if file exists
+print(myfile.exists()) #True
+
+# Check is it's absolute path 
+print(myfile.is_absolute())#False
+print(mydir.is_absolute())#True
+
+print(f"checking exist directory: {(Path.cwd()/ 'notes').is_dir()}") #True
 ```
+
 <a name="part1-5"></a>
 ### 5. Absolute and Relative Paths [🔼](#part1)
 > **File name:**
@@ -211,9 +229,12 @@ print(newfile.exists())  # Check if newfile exists
 
 #### Parent()[⏫](#part1-5)
 ```
-print(my_dir.parent) #.
-print(newfile.parent)#directory_1
-print(newfile.parent.parent)#.
+mydirdata=Path(r'C:\demo_testfile\data')
+print(mydirdata.parent) #C:\demo_testfile
+
+myfiledata=Path(r'C:\demo_testfile\data\copy2_ex1.py')
+print(myfiledata.parent)#C:\demo_testfile\data
+print(myfiledata.parent.parent)#C:\demo_testfile
 ```
 It will show `.` when the file is in the current directory (relative to where your script is running or the current working directory).  For example, if you are running the script in  `C:\pathlib_test`, then `run my_dir.parent` it will show `.`.
 > - `newfile.parent` it will show `directory_1`, because newfile parent is `directory_1` because newfile was defined with a path like "directory_1/file_1.txt", the parent of newfile is explicitly set to directory_1.
@@ -223,8 +244,10 @@ It will show `.` when the file is in the current directory (relative to where yo
 > `.absolute` will return the **full absolute of the directory or file** as a string.
 
 ```
+my_dir = Path("directory_1")
+my_file = Path("file_1.txt")
 print(my_dir.absolute())  #C:\pathlib_test\directory_1
-print(newfile.absolute()) #C:\pathlib_test\directory_1\newfile.txt
+print(my_file.absolute()) #C:\pathlib_test\directory_1\newfile.txt
 ```
 
 #### resolve[⏫](#part1-5)
@@ -234,13 +257,16 @@ print(newfile.absolute()) #C:\pathlib_test\directory_1\newfile.txt
 > - **Current directory:** `Path(".").resolve()` → C:\Users\test
 
 ```
-p = Path(".").resolve()  
-print(p) # C:\Users\test
-p = Path("..").resolve()  # Get full path of the parent directory
-print(p) #C:\
+p = Path(".")
+print(p) #.
+print(p.resolve()) #C:\Users\User
+
+# Get full path of the parent directory
+p = Path("..").resolve() 
+print(p) #C:\Users
 ```
 
-The key difference is that `.resolve()` can handle relative components like `..`, resolving them to the actual absolute path, whereas `.absolute()` does not process `..` and simply returns the **absolute path** as-is.
+The key difference is that `.resolve()` can handle relative components like `..`, resolving them to the actual absolute path, whereas `.absolute()` does not process `..` and simply returns the **absolute path** as-is. Converts a relative path to an absolute path and normalizes . or ...
 
 <a name="part1-6"></a>
 ### 6. User Home Directory Access [🔼](#part1)
@@ -255,6 +281,52 @@ print(p) #C:/Users/test/Picture
 p=Path.home() #C:/Users/test/
 p=Path.home().parent #C:/Users
 p= Path.home().parent / "test" #C:/test
+```
+
+<a name="part1-7"></a>
+### Summary of pathlib listing dir [🔼](#part1)
+#### list content working directory
+- list only directory with `iterdir`
+```
+#list content in current working directory
+for item in Path().iterdir():  
+    if item.is_dir():
+        print(item)
+```
+- list only directory with `iterdir` with comprehension 
+```
+directories = [entry.name for entry in Path().iterdir() if entry.is_dir()]
+directories
+```
+
+- list using `glob`
+```
+#list all content
+for item in Path().glob("*"):  
+    print(item)
+    
+#list content with end with txt file
+for item in Path().glob("*.txt"): 
+    print(item)
+```
+#### list exclude directory 
+```
+SKIP_DIRS = ["notes", "data","renamefile"]
+directory = Path('c:\demo_testfile')
+#With a for loop
+for item in directory.glob("*"):
+     if set(item.parts).isdisjoint(SKIP_DIRS):
+         print(item)
+```
+#### recursive directory
+```
+#list recursive(dsubdirectory)
+subdirs = [subdir for subdir in Path().rglob('*') if subdir.is_dir()]
+if not subdirs:
+    print('empty subdirectory')
+else:
+    for subdir in subdirs:
+        print(subdir)
 ```
 
 
@@ -486,7 +558,7 @@ There are some limiatation of pathlib:
 <a name="part3-1"></a>
 ### 1. Directory Creation and Removal)[🔼](#part3)
 
-<a name=part3-1_create_subdir"></a>
+<a name="part3-1_create_subdir"></a>
 #### mkdir: Create Directory [⏫](#part3-1)
 
 There are some limiation with `mkdir()`:

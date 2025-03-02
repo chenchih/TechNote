@@ -7,8 +7,8 @@ Share Sone note for Python and using different module examples.
 - JupyterNotebook
 - Python Note
 	- Basic 
-		- [ X] Basic DataType: Data Type_Dictionary
-		- [ X] Comprehension: Example of Comprehension on List, Dict, and Set
+		- [X] Basic DataType: Data Type_Dictionary
+		- [X] Comprehension: Example of Comprehension on List, Dict, and Set
 	- [X] Module_Note
 		- [X] FastAPI (create and test api)
 		- [X] Pytest (automation module)
@@ -17,7 +17,7 @@ Share Sone note for Python and using different module examples.
 		- [X] Closure
 		- [X] Type Hint anotation (understand how to use typing module)
 		- [X] Path_FileHandling(checking current path, rename,write,copy file and directory)
-		- [ ]Glob and fnmatch: search file type or exist  
+		- [X] glob_fnmatch_filematching: search file type or exist  
 		- [ ] OCR
 		
 	- Project_Youtube
