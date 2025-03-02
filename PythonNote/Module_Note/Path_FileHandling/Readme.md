@@ -3,6 +3,7 @@
 - updated note: 2024.11.19
 	- change img location
 	- change some md error and adding some item 
+	- upload path example folder to playe around
 ## Python Path Operations (pathlib) with file and directory
 
 I want to show using `pathlib`, however you can also use the `os` module to establish it, some example I will show using these module to implement it. 

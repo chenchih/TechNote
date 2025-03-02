@@ -18,7 +18,7 @@ Share Sone note for Python and using different module examples.
 		- [X] Type Hint anotation (understand how to use typing module)
 		- [X] Path_FileHandling(checking current path, rename,write,copy file and directory)
 		- [X] glob_fnmatch_filematching: search file type or exist  
-		- [ ] OCR
+		- [X] OCR: extract image to txt
 		
 	- Project_Youtube
 - Tool_Note	
