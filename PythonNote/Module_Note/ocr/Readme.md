@@ -18,7 +18,8 @@ link: https://tesseract-ocr.github.io/tessdoc/Installation.html
 Please download tesseract on above link and install into your computer. 
 
 ### Step 2 Setup environment variable
-After you install `tesseract`, it should located under `C:\Program Files\Tesseract-OCR`. Please add this location into your envirnoment `PATH`. 
+After you install `tesseract`, it should located under `C:\Program Files\Tesseract-OCR`. Please add this location into your environment `PATH`. 
+
 ![list_path](img/setup_env_var.png)
 
 ### Step 3: run with this command under command prompt to make sure it been install properly
@@ -40,7 +41,7 @@ The default is English package, which means it allow picture with english string
 	- english: `eng.traineddata`
 - Download langauge: https://github.com/tesseract-ocr/tessdata 
 
-Please download language package and store in the testdatalocation
+Please download language package and store in the `tessdata` location
 ![lang_locationpath](img/language_location.png)
 
 -	specify lang: `tesseract chi_tra .\chinese.jpg stdout`
@@ -107,8 +108,8 @@ for file in files:
 ```
 
 ## Link to Download summary:
-- [Tesseract](#https://tesseract-ocr.github.io/tessdoc/Installation.html)
-- [langauge dowwload](#https://github.com/tesseract-ocr/tessdata)
+- [Tesseract](https://tesseract-ocr.github.io/tessdoc/Installation.html)
+- [Tesseract testdata dowload](https://github.com/tesseract-ocr/tessdata)
 
 ## Reference
 - https://www.youtube.com/watch?v=tFW0ExG4QZ4

@@ -22,6 +22,7 @@ Share Sone note for Python and using different module examples.
 		
 	- Project_Youtube
 - Tool_Note	
+	- [ ] AI Tool 
 
 ## Modify Note record
 - 20250223: 
