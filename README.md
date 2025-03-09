@@ -19,10 +19,12 @@ Share Sone note for Python and using different module examples.
 		- [X] Path_FileHandling(checking current path, rename,write,copy file and directory)
 		- [X] glob_fnmatch_filematching: search file type or exist  
 		- [X] OCR: extract image to txt
-		
+		- [X] sys_arg_subprocess: 
+			- sys_arg: Reads command-line arguments passed to a script
+			- subprocess: Runs external programs, manages system processes
 	- Project_Youtube
 - Tool_Note	
-	- [ ] AI Tool 
+	- [X] AI Tool 
 
 ## Modify Note record
 - 20250223: 
