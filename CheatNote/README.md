@@ -1,6 +1,8 @@
 # Cheat Sheet
 Record Cheat Sheet Note
 ## Update Record
+- 2025/3/10:
+	- adding remove branch, remove remote branch, fetch -- plume
 - 2025.2.24: 
 	- update git push setting
 	- window shortcut	
@@ -12,25 +14,31 @@ Record Cheat Sheet Note
 The point of setting upstream is to then simply use git push in the future.
 
 - `git branch --set-upstream-to=origin/branchname`
->> - This command only establishes the upstream tracking. It tells your local branch, "This remote branch (origin/branchname) is where I should be pushing to by default."
->> - It does not push any code.
+	- This command only establishes the upstream tracking. It tells your local branch, "This remote branch (origin/branchname) is where I should be pushing to by default."
+	- It does not push any code.
 
 - `git push -u origin branchname`
->> - It pushes your local branch to the remote branch (origin/branchname).
->> - It sets the upstream tracking for your local main branch to origin/main
->> - Prepares your local branch and pushes the code in one command.
+	- It pushes your local branch to the remote branch (origin/branchname).
+	- It sets the upstream tracking for your local main branch to origin/main
+	- Prepares your local branch and pushes the code in one command.
 
 - `git branch -vv` : Checking Upstream Settings
 
 #### git push 
 - `git push origin main`
->> - **Bypassing Upstream**
->> - Explicitly telling Git push my current branch to origin/main, regardless of what my upstream setting is
->> - This command pushes your local branch to the remote branch (`origin/branchname`).
+	- **Bypassing Upstream**
+	- Explicitly telling Git push my current branch to origin/main, regardless of what my upstream setting is
+	- This command pushes your local branch to the remote branch (`origin/branchname`).
 
 
 ###  Create, Push and Pull from local to server
 imagine PC1 use at office, and PC2 use at home. 
+
+- create branch:`git checkout <branch_name>`
+- remove local branch: `git branch [-D|-d] <branch_name>`
+	- `-d`: checks if the branch has been fully merged into its upstream branch. If it has, it deletes the branch. If not, it will return an error.
+	- `-D`: If you want to force deletion (even if it's not fully merged)
+- remove remote branch: `git push origin --delete <branch_name>` or `git push origin :<branch_name>`
 
 #### Case1: Push remote branch with same and different branch name
 
@@ -115,6 +123,49 @@ This command will lists your remote-tracking branches
   Local ref configured for 'git push':
     main pushes to main (up to date)
 ```
+
+#### Remote Tracking Branches
+`--prune` is used to clean up  remote-tracking branches in your local repository. When you delete a branch on your GitHub server, Git doesn't automatically remove the corresponding remote-tracking branch from your local repository.
+
+**When using it?**
+When you delete a branch on GitHub (or any remote), the corresponding remote-tracking branch in your local repository are old. It still exists locally, but it no longer matches the state of the remote
+
+**Sumamry:**
+When you delete a branch on GitHub, you need to use git fetch --prune (or its variations) to remove the stale remote-tracking branch from your local repository.
+This command fetches the latest changes from the remote and removes any remote-tracking branches that no longer exist on the remote.
+
+- `git fetch --prune`: remove remote-tracking branches 
+	- `git fetch origin --prune`: Specific to the origin remote, working with a single remote
+	- `git fetch --prune`: Specific to the default or tracked remote. Unsure which remote you are tracking, and want to prune the remote you are tracking
+	- `git fetch --all --prune`: Applies to all configured remotes, working with multiple remotes
+
+if you are working with a repository where origin is your primary remote and most of your branches track origin, then these two commands will produce the same result.
+```
+# some remote tracking is been remote
+PS C:\gitfile\TechNote> git branch -r
+  origin/HEAD -> origin/main
+  origin/main
+  origin/tmp
+  origin/tmp_pathlib
+
+# using prune the not exist wil remove 
+PS C:\gitfile\TechNote> git fetch --prune
+  origin/HEAD -> origin/main
+  origin/main
+  origin/tmp
+```
+### git stash
+- `git stash`: is a local operation. It does not interact with remote repositories. It is a temporary holding area for your uncommitted changes.
+update from the remote, and then reapply your work.This helps you avoid conflicts during the git pull process. If the remote changes and your local changes affect the same lines in the same file, you will need to manually solve the merge conflicts. 
+
+- `git stash pop`: apply the changes I made earlier in tmp and apply to it (attempts to merge your stashed changes with the current state of your working directory) and will alert you to any conflicts that arise. **It apply and delete**
+- `git stash apply`: is similar to git stash pop, it **apply and keep**, allow to apply stashed changes repeatedly..
+
+I am editing test.py. Then, there are some new updates on the remote. I need to save my uncommitted changes and perform a git pull to update my local repository with the latest changes from the remote. In this case, I will use git stash to save my uncommitted changes to a temporary location (the stash).
+
+Now, I will use git pull to fetch and merge the latest changes from the remote into my current local branch. After the git pull is complete, I will use git stash pop to reapply the changes I made to test.py before the pull.
+
+
 
 
 ## PYTHON
