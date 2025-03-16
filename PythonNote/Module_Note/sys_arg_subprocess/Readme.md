@@ -1,21 +1,23 @@
 #Understand how to use sys.argv and subprocess
 
 ## using sys.argv
-It retrieve command-line arguments passed to a script. This is helpful when you want to pass arguments as input without hardcoding the input values in the code.
 
-Run the code by passing two argument: `python example.py arg1 arg2`
+It retrieves command-line arguments passed to a script. This is helpful when you want to pass arguments as input without hardcoding the input values in the code.
+
+Run the code by passing two arguments: `python example.py arg1 arg2`
 
 > Output: `['example.py', 'arg1', 'arg2']`
->> `sys.argv[0]` is 'example.py'.
->> `sys.argv[1]` is 'arg1'.
->> `sys.argv[2]` is 'arg2'.
+
+- `sys.argv[0]` is `example.py`.
+- `sys.argv[1]` is `arg1`.
+- `sys.argv[2]` is `arg2`.
 
 The first element (`sys.argv[0]`) is the name of the script (or its path). Subsequent elements (`sys.argv[1]`, `sys.argv[2]`, etc.) are the additional arguments passed to the script.
 
 ### passing argument example
 
 
-Run below code like this: `py sys_argvSample.py hello`
+Run code below like this: `py sys_argvSample.py hello`
 ```
 import sys
 
@@ -30,7 +32,6 @@ if __name__ == '__main__':
 
 The script checks if additional arguments are provided by evaluating `len(sys.argv) < 2`. If no arguments are provided, it prints 'no argument' and exits. If arguments are provided, it displays the script name (`sys.argv[0]`) and the value of each subsequent argument based on their index in `sys.argv`.
 
-
 ### use window script to run it 
 If you want to run with window batch script you can do like this, it will auto run your python file.
 
@@ -40,23 +41,23 @@ If you want to run with window batch script you can do like this, it will auto r
 python sys_argvSample.py %*
 ```
 
-- run the script with argument: ` testscript.bat hello`
+- run the script with argument: `testscript.bat hello`
 
 You can pass an argument string after the script name. 
-
-
-
 
 ## using subprocess
 
 `subprocess.run` is a Python function from the subprocess module that allows you to run system commands directly from your Python script. It provides a way to execute shell commands and interact with external programs, such as `FFmpeg`, `Git`, or any other `CLI tool`.
 
-- >syntax: `subprocess.run(args, *, stdin=None, input=None, stdout=None, stderr=None, shell=False, check=False, timeout=None, text=None)` 
->> - `args`: A list of the command and its arguments, e.g., ['ls', '-l']. Alternatively, a single string if shell=True.
->> - `shell`: If True, runs the command in a shell. (Caution: this can be unsafe with untrusted input.)
->> - `check`: If True, raises an exception if the command exits with a non-zero status.
->> - `stdout/stderr`: Where to redirect the output (e.g., subprocess.PIPE to capture it).
->> - `text`: If True, treats output as a string (instead of bytes).
+> syntax: 
+>> `subprocess.run(args, *, stdin=None, input=None, stdout=None, stderr=None, shell=False, check=False, timeout=None, text=None)` 
+
+- `args`: A list of the command and its arguments, e.g., [`ls`, `-l`]. Alternatively, a single string if `shell=True`.
+- `shell`: If True, runs the command in a shell. (Caution: this can be unsafe with untrusted input.)
+- `check`: If `True`, an exception is raised if the command exits with a non-zero status.
+- `stdout/stderr`: Where to redirect the output (e.g., subprocess.PIPE to capture it).
+- `text`: If True, treats output as a string (instead of bytes).
+
 
 ### Simple example
 ```

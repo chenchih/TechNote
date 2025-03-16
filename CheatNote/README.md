@@ -8,6 +8,12 @@ Record Cheat Sheet Note
 	- window shortcut	
 ## Git Command 
 
+- `git reset ` -> change to `git restore`
+- `git status`  -> change to `git status -sb`
+- `git pull` -> change to `git pull --rebase`
+- `git checkout` -> change to `git switch`
+- `git stash` -> change to `git worklist`
+- `git merge` ->  change to `git rebase`
 ### Git push and upstream setting
 
 #### setting git push:`upsteam` and `-u`
@@ -58,6 +64,15 @@ git push -u origin <remote branch name, ex:tmp>
 ```
 ##### 1.2 PC1 push local main branch to remote with different name
 Pushes the local main branch to the remote tmp branch. If tmp doesn't exist on the remote, it will be created.
+```
+#better way of using git pul:
+git pull #git fetch+git merge
+git pull --rebase #use this instead of git pull
+#these are other option:
+git pull --ff only #only fetch new commit 
+git pull -- ff
+
+```
 
 > - Push local `main` branch to remote branch `tmp`(or different remote branch name)
 Local branch and remote branch use different name
@@ -127,6 +142,8 @@ This command will lists your remote-tracking branches
 #### Remote Tracking Branches
 `--prune` is used to clean up  remote-tracking branches in your local repository. When you delete a branch on your GitHub server, Git doesn't automatically remove the corresponding remote-tracking branch from your local repository.
 
+
+
 **When using it?**
 When you delete a branch on GitHub (or any remote), the corresponding remote-tracking branch in your local repository are old. It still exists locally, but it no longer matches the state of the remote
 
@@ -154,18 +171,30 @@ PS C:\gitfile\TechNote> git fetch --prune
   origin/main
   origin/tmp
 ```
+
+
 ### git stash
 - `git stash`: is a local operation. It does not interact with remote repositories. It is a temporary holding area for your uncommitted changes.
 update from the remote, and then reapply your work.This helps you avoid conflicts during the git pull process. If the remote changes and your local changes affect the same lines in the same file, you will need to manually solve the merge conflicts. 
 
-- `git stash pop`: apply the changes I made earlier in tmp and apply to it (attempts to merge your stashed changes with the current state of your working directory) and will alert you to any conflicts that arise. **It apply and delete**
-- `git stash apply`: is similar to git stash pop, it **apply and keep**, allow to apply stashed changes repeatedly..
+- commonly use:
+	- `git stash`
+	- `git stash pop` : apply the changes I made earlier in tmp and apply to it (attempts to merge your stashed changes with the current state of your working directory) and will alert you to any conflicts that arise. **It apply and delete**
+	- `git stash apply`: is similar to git stash pop, it **apply and keep**, allow to apply stashed changes repeatedly..
+- other option can use:
+	- `git stash list`: list multiple stash if you create multiple 
+	- `git stash apply stash@{}`: switch to specific stash 
+	- `git stash drop stash@{id}`: remove git stash
+	- `git clear`: clear all stash
 
 I am editing test.py. Then, there are some new updates on the remote. I need to save my uncommitted changes and perform a git pull to update my local repository with the latest changes from the remote. In this case, I will use git stash to save my uncommitted changes to a temporary location (the stash).
 
 Now, I will use git pull to fetch and merge the latest changes from the remote into my current local branch. After the git pull is complete, I will use git stash pop to reapply the changes I made to test.py before the pull.
 
 
+### Visualize your Git branch graph 
+- `git log --graph --oneline --decorate --all`
+- `gitk --all` : (GUI)
 
 
 ## PYTHON
