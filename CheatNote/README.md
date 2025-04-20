@@ -199,6 +199,16 @@ Now, I will use git pull to fetch and merge the latest changes from the remote i
 
 ## PYTHON
 
+### Convert python to executable file
+
+Convert your code to executable file in different envirnoment without install package
+```
+pyinstaller --onefile --icon=desktop.ico  xxx.py
+```
+- Icon URL: `https://www.flaticon.com/`
+- convert `.png` to `ico`: https://convertio.co/zh/
+
+
 ## Window 
 
 ### Shortcut command
@@ -227,3 +237,78 @@ Press `window+R` to run some shortcut and enter below command:
 - check recursive of working directory: `tree /f pathname` 
 
 ## Linux
+
+
+## Emoji 
+
+### ✅ Status / Progress
+| Emoji | Meaning                |
+|-------|------------------------|
+| ✅     | Success / Done         |
+| ❌     | Error / Failed         |
+| ⚠️     | Warning               |
+| 🔄     | In Progress / Refresh  |
+| 🔍     | Searching / Scanning   |
+| 🔧     | Config / Setup         |
+| 💾     | Saving / Backup        |
+| 🛠️     | Tools / Processing     |
+| ⏳     | Waiting / Loading      |
+
+### 📂 Files & Folders
+| Emoji | Meaning                |
+|-------|------------------------|
+| 📂     | Open folder            |
+| 📁     | Closed folder          |
+| 📄     | Document / File        |
+| 📑     | Section / Bookmark     |
+| 🗂️     | File Organizer         |
+| 📝     | Writing / Notes        |
+
+### 📶 Network & Data Transfer
+| Emoji | Meaning                |
+|-------|------------------------|
+| 📶     | Signal / Network       |
+| 📡     | Download / Comm        |
+| 📲     | Upload / Mobile        |
+| 🔌     | Connect / Plug         |
+| 🌐     | Internet / Web         |
+
+### 📊 Data & Analytics
+| Emoji | Meaning                |
+|-------|------------------------|
+| 📊     | Bar Chart              |
+| 📈     | Line Chart Up          |
+| 📉     | Line Chart Down        |
+| 🧮     | Calculation / Stats    |
+
+### 🧪 Testing & Debugging
+| Emoji | Meaning                |
+|-------|------------------------|
+| 🧪     | Testing / Experiment   |
+| 🧬     | Data Science / DNA     |
+| 🔬     | Debug / Inspection     |
+
+### 👨‍💻 Coding & Terminal
+| Emoji | Meaning                |
+|-------|------------------------|
+| 💻     | Laptop / Dev Work      |
+| 👨‍💻    | Programmer             |
+| ⌨️     | Keyboard               |
+| 🖥️     | Monitor / Desktop      |
+| 🧾     | Logs / Reports         |
+
+### 🚀 Deployment & Lifecycle
+| Emoji | Meaning                |
+|-------|------------------------|
+| 🚀     | Launch / Deploy        |
+| 🛫     | Begin / Takeoff        |
+| 🛬     | End / Landing          |
+| 🔚     | Finish / End           |
+
+## 📌 How to Use
+```python
+print("✅ Process completed.")
+print("📂 Opening file...")
+print("📊 Generating report...")
+print("🛠️ Running diagnostics...")
+```
