@@ -195,18 +195,71 @@ Now, I will use git pull to fetch and merge the latest changes from the remote i
 ### Visualize your Git branch graph 
 - `git log --graph --oneline --decorate --all`
 - `gitk --all` : (GUI)
+- `git log  --pretty=format:"%h %s"`
+`%h` is shorthand for hash_id and `%s` shorthand for subjectName[message_name]
+```
+git log  --pretty=format:"%h %s"
+#output
+5e923eb to organize note for readme
+ce17fb7 adding link to each section of a page, and examples folder
+8976dcd adding response model's account normal usage example
 
+git log --pretty=format:%s # first line of the messages
+
+#output
+to organize note for readme
+adding link to each section of a page, and examples folder
+adding response model's account normal usage example
+```
+
+- `git log --pretty=format:"%h   %s %C(yellow)(%cr)"`
+%C is a shorthand for color
+```
+ show date behind commit-id and message
+```
+
+- git log --oneline --grep="add"
 
 ## PYTHON
 
-### Convert python to executable file
+### Create virtual env
 
-Convert your code to executable file in different envirnoment without install package
+#### using venv:
+	- `python3.13 -m venv testbuild`
+	
+#### using virtualenv: 
+- install with pip
+
+- `virtualenv <venv_name>`
+When you run virtualenv <venv_name> without specifying a Python interpreter, virtualenv typically uses the Python interpreter that is first in your system's PATH environment variable.
+
+- specific version: `virtualenv -p py -3.12 <venv_name>` 
+- Explicitly Specifying the Interpreter Path: 
+	- window: `virtualenv -p "C:\path\python3.12\python.exe" <venv_name>`, use `<venv_name>\Scripts\activate` to activate
+	- linux: `virtualenv -p "/usr/bin/python3.12" <venv_name>`, use `source <venv_name>/bin/activate` to activate
+
+### Convert python to executable file
+Convert your python code to an executable file (`.exe`) which allow to run code in  different environment without install python or pkg
+
+Install pyinstaller pkg: `pip install pyinstaller`
+
 ```
+#simple convert 
+pyinstaller your_script.py
+#include icon
 pyinstaller --onefile --icon=desktop.ico  xxx.py
+
 ```
-- Icon URL: `https://www.flaticon.com/`
-- convert `.png` to `ico`: https://convertio.co/zh/
+
+- Please refer other option command you can use:
+	- Single File: `pyinstaller  --onefile  your_script.py`
+	- Adding Icons: `pyinstaller --onefile --icon=myicon.ico your_script.py`
+	- no console window: `pyinstaller --onefile --windowed your_script.py`
+	- Adding Data Files: `pyinstaller --onefile --add-data "data_file.txt;." your_script.py`
+
+- Ico download link:
+	- Icon URL: `https://www.flaticon.com/`
+	- convert `.png` to `ico`: https://convertio.co/zh/
 
 
 ## Window 
@@ -305,10 +358,3 @@ Press `window+R` to run some shortcut and enter below command:
 | 🛬     | End / Landing          |
 | 🔚     | Finish / End           |
 
-## 📌 How to Use
-```python
-print("✅ Process completed.")
-print("📂 Opening file...")
-print("📊 Generating report...")
-print("🛠️ Running diagnostics...")
-```
