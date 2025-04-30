@@ -142,8 +142,6 @@ This command will lists your remote-tracking branches
 #### Remote Tracking Branches
 `--prune` is used to clean up  remote-tracking branches in your local repository. When you delete a branch on your GitHub server, Git doesn't automatically remove the corresponding remote-tracking branch from your local repository.
 
-
-
 **When using it?**
 When you delete a branch on GitHub (or any remote), the corresponding remote-tracking branch in your local repository are old. It still exists locally, but it no longer matches the state of the remote
 
@@ -191,8 +189,57 @@ I am editing test.py. Then, there are some new updates on the remote. I need to 
 
 Now, I will use git pull to fetch and merge the latest changes from the remote into my current local branch. After the git pull is complete, I will use git stash pop to reapply the changes I made to test.py before the pull.
 
+### Interactive rebase
+interactive rebase to modify history you can use these option below:
+- `pick` (or p): Use this commit as is.
+- `squash` (or s): Combine this commit into the previous commit. You'll get a chance to edit the combined commit message.
+- `fixup` (or f): Combine this commit into the previous commit, discarding this commit's log message.
+- `reword` (or r): Use this commit, but edit the commit message.
+- `drop (or d)`: Remove this commit entirely.
 
-### Visualize your Git branch graph 
+#### squash commit (squeeze multiple commit into one)
+If you have long commit history, you can use the squash with interactive rebase command (`git rebase -i`). This method will make history cleaner and easier to follow, especially if many of those commits are small fixes.
+
+Step1: check log `git log --graph --oneline #show log` 
+```
+git log --graph --oneline #show log 
+* f764533 (HEAD -> main) 4/23 update cheatheet 
+* 00f963e (origin/tmp) remove ffmegp exe file
+* 4f81424 update cheatsheet emoji, and fgmepg
+* 30fbb20 adding cheatsheet:git note
+```
+
+Step2: squash 00f963e and 4f81424 into 30fbb20: ` git rebase -i 30fbb20^`
+
+The `<commitID>^` for example: 4f81424^ refers to the parent commit of 4f81424, so in the log the parent of 4f81424 is 30fbb20.
+
+When you use `rebase -i` which will go to inactivate mode, which allow you to modify commit. Change the commit you want to squash with `squash`, and save the file.  
+```
+pick 30fbb20 adding cheatsheet:git note
+squash 4f81424 update cheatsheet emoji, and fgmepg
+squash 00f963e remove ffmegp exe file
+pick f764533 4/23 update cheatheet
+```
+
+Step3: check the log again
+When you chek the log, you will have realize the orginal commit is been squash. 
+After squashed commit will have a brand new and different Git commit ID, please keep in mind. 
+```
+git log --graph --oneline #show log 
+* bb46a24 (HEAD -> main) 4/23 update cheatheet
+* c7448f0 adding cheatsheet:git note
+* 8d04e9c (origin/main, origin/HEAD) adding git command in cheatsheet
+```
+
+Please refer below picture for more detail:
+[rebase_squash](img/git_squashcommit.PNG)
+
+#### reword commit(edit your commit msg)
+If you want to modify your commit msg, you can use the `reword` like above rebase inactive. Please refer below picture for more detail. 
+[rebase_reword](img/git_rewordcommit.PNG)
+
+
+### check commit log: gitlog 
 - `git log --graph --oneline --decorate --all`
 - `gitk --all` : (GUI)
 - `git log  --pretty=format:"%h %s"`
@@ -220,12 +267,246 @@ adding response model's account normal usage example
 
 - git log --oneline --grep="add"
 
+
+### Undo and recover commit
+- `Reset`: Primarily used to move the branch pointer (HEAD) to a specific commit, effectively undoing commits on the current branch. Options like --hard can also discard changes, potentially rewriting history
+	- `hard`: Undo everything (commits, staging, working directory) back to the specified point.
+	- `soft`: Move back to uncommit (changes are staged, ready to commit again).
+	- `mixed(default)`: Move back to unstaged (changes are in the working directory, ready to be staged).
+- `restore`:  Used to undo changes in the working directory (unstaged) or to unstage files (move from staging back to working directory). It operates on the current working state and staging area, not directly on committed history
+- `revert`: sed to undo a specific commit by creating a new commit that reverses its changes. This preserves the original commit and the history, making it safe for shared branches
+
+#### Case1 git reset: if accident remove commit
+
+Step1: check you log status
+```
+PS C:\gitfile\testlog> git log --oneline
+c153b52 (HEAD) add comment
+d0159e4 add python file name testhello
+6c097d5 update
+aa60785 Revert "modify xx to real name"
+44bb243 hello added
+
+```
+Step2: accident delete a commit
+```
+PS C:\gitfile\testlog> git reset --hard d0159e4
+HEAD is now at d0159e4 add python file name testhello
+
+#check log again
+PS C:\gitfile\testlog> git log --oneline
+d0159e4 (HEAD) add python file name testhello
+6c097d5 update
+```
+Step3: reflog to check delete commit id
+```
+#use reflog to check remove commit
+PS C:\gitfile\testlog> git reflog
+d0159e4 (HEAD) HEAD@{0}: reset: moving to d0159e4
+c153b52 HEAD@{1}: commit: add comment
+d0159e4 (HEAD) HEAD@{2}: commit: add python file name testhello
+6c097d5 HEAD@{3}: commit: update
+```
+
+Step4: recovery d0159e4
+```
+PS C:\gitfile\testlog> git reset --hard c153b52
+#check log again, add comment is been recover
+PS C:\gitfile\testlog> git log --oneline
+c153b52 (HEAD) add comment
+d0159e4 add python file name testhello
+6c097d5 update
+```
+#### Case2 git restore: restore to untrack 
+
+Restore undoing changes in your local, uncommitted work (working directory and staging area). It only operates on the working directory and the staging area, fter commit will not be able to undo. 
+
+It have two method one is to undo your editing file, and another one is adding `staged` option to move back to unstaged. 
+
+
+- Restore
+```
+#edit your file add hello to it
+PS C:\gitfile\gitdemotest> notepad.exe .\note.txt
+#it will undo file to orginal file content
+PS C:\gitfile\gitdemotest> git restore .\note.txt
+```
+
+- Restore with staged
+
+Create file and stage it
+```
+PS C:\gitfile\gitdemotest> notepad.exe .\note.txt
+PS C:\gitfile\gitdemotest> git add .\note.txt #stage your file
+PS C:\gitfile\gitdemotest> git status
+On branch master
+Changes to be committed: #change to stage
+  (use "git restore --staged <file>..." to unstage)
+        modified:   note.txt
+```
+
+Resore back to unstage:
+```
+PS C:\gitfile\gitdemotest> git  restore --staged note.txt
+PS C:\gitfile\gitdemotest> git status
+On branch master
+Changes not staged for commit:   #change not staged
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   note.txt
+```
+
+#### Case3 git revert: undo commit 
+
+git revert provides a safe way to undo changes because it adds a new commit, instead of remove it. It focuses on **creating a new commit that explicitly reverses the changes introduced by a specific past commit**.
+
+It designed to undo the changes of a commit by creating a new commit that reverses those changes, thereby preserving the history of the repository. It's the safe and recommended way to undo changes in a collaborative environment.
+
+Step1: add and commit file 
+```
+git init
+echo "Initial text" > README.md
+git add README.md
+git commit -m "initial commit"
+
+# in case this is a typo which we want to undo 
+echo "bad update" > README.md
+git commit -am "bad update"
+```
+
+Check log:
+```
+PS C:\gitfile\test_revert> git log --oneline
+568e132  (HEAD -> master) bad update
+7b5b95b ading readme
+```
+
+Step2: revert the head which is the typo we want to undo it
+```
+git revert HEAD
+
+Revert "bad update"
+
+This reverts commit 568e132b11facae397b05902d9234d0739fc06a6.
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch master
+# Changes to be committed:
+#       modified:   README.md
+
+```
+
+If you want to leave default message just press `wq` to save and exit 
+
+Step3: check log 
+```
+PS C:\gitfile\test_revert> git log --oneline
+1ede0b9 (HEAD -> master) Revert "bad update"
+568e132 bad update
+7b5b95b ading readme
+```
+You can see it create a new commit `1ede0b9 (HEAD -> master) Revert "bad update"` instead of removing the `568e132 bad update`. 
+using revert will be safer, which preserving commit in the history. This allow you to switch back in future if you want to use. 
+
+#### Case4 reset back to uncommit 
+In this example I will show you how to reset back to uncommit status and return back to commit status:
+- step2: undo commit(return to step1)
+- step3: undo step2 (return to step1)
+
+Step1: add and commit file 
+```
+git init
+echo "Initial text" > README.md
+git add README.md
+git commit -m "initial commit"
+
+# in case this is a typo which we want to undo 
+echo "bad update" > README.md
+git commit -am "bad update"
+```
+Check log:
+```
+PS C:\gitfile\reset_test> git log --oneline
+bf82263 (HEAD -> master) bad update
+29938d0 initial commit
+```
+
+Step2: undo commit by `reset --soft`
+moves the master branch pointer back 
+```
+PS C:\gitfile\reset_test> git reset --soft HEAD^
+PS C:\gitfile\reset_test> git log --oneline
+29938d0 (HEAD -> master) initial commit
+```
+
+Step3: undo commit by `reset --soft`
+In case in you want to undo step2 to orginal place, use `git reflog` to find your git ID
+
+```
+PS C:\gitfile\reset_test> git reflog show HEAD
+29938d0 (HEAD -> master) HEAD@{0}: reset: moving to HEAD
+29938d0 (HEAD -> master) HEAD@{1}: reset: moving to HEAD
+29938d0 (HEAD -> master) HEAD@{2}: reset: moving to HEAD
+29938d0 (HEAD -> master) HEAD@{3}: reset: moving to HEAD^
+```
+git reset to step1
+
+```
+git reset --hard bf82263
+
+PS C:\gitfile\reset_test> git log --oneline
+bf82263 (HEAD -> master) bad update
+29938d0 initial commit
+```
+
+#### Case5 reset back to unstage
+Undoing git reset --soft HEAD^ to go back to the unstaged state
+
+Step1: continue Case4 and check log
+```
+PS C:\gitfile\reset_test> git log --oneline
+bf82263 (HEAD -> master) bad update
+29938d0 initial commit
+```
+Step2: reset to uncommit to stage
+```
+git reset --soft HEAD^
+
+PS C:\gitfile\reset_test> git log --oneline
+29938d0 initial commit
+
+PS C:\gitfile\reset_test> git status
+On branch master
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        modified:   README.md
+```		
+Step3 reset to unstage `git reset` or `git reset --mixed` as default
+```
+PS C:\gitfile\reset_test> git reset
+Unstaged changes after reset:
+M       README.md
+
+PS C:\gitfile\reset_test> git status
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   README.md
+```
+
+
 ## PYTHON
 
 ### Create virtual env
+This is a useful way to isolation your current environment with new environment. Sometimes some pakage might conflict with specfic version and cause not able to install or run.  You can just create a virtual environment with a fresh environment  which will not effect your current environment. 
+
 
 #### using venv:
-	- `python3.13 -m venv testbuild`
+
+- `python3.13 -m venv testbuild`
 	
 #### using virtualenv: 
 - install with pip
@@ -288,7 +569,7 @@ Press `window+R` to run some shortcut and enter below command:
 	- stop python: `taskkill /IM python.exe /f` 
 	- stop cmd: `Get-Process -Name "cmd" | Stop-Process`
 - check recursive of working directory: `tree /f pathname` 
-
+- remove unempty dirctory: `Remove-Item <foldername>  -Recurse -Force`
 ## Linux
 
 
