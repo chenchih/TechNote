@@ -14,6 +14,7 @@ Record Cheat Sheet Note
 - `git checkout` -> change to `git switch`
 - `git stash` -> change to `git worklist`
 - `git merge` ->  change to `git rebase`
+
 ### Git push and upstream setting
 
 #### setting git push:`upsteam` and `-u`
@@ -199,7 +200,7 @@ interactive rebase to modify history you can use these option below:
 - `reword` (or r): Use this commit, but edit the commit message.
 - `drop (or d)`: Remove this commit entirely.
 
-<<<<<<< HEAD
+
 #### squash commit (squeeze multiple commit into one)
 If you have long commit history, you can use the squash with interactive rebase command (`git rebase -i`). This method will make history cleaner and easier to follow, especially if many of those commits are small fixes.
 
@@ -499,16 +500,15 @@ Changes not staged for commit:
   (use "git restore <file>..." to discard changes in working directory)
         modified:   README.md
 ```
-=======
+
 ### Visualize your Git branch graph 
 - `git log --graph --oneline --decorate --all`
 - `gitk --all` : (GUI)
->>>>>>> origin/tmp
 
 
 ## PYTHON
 
-<<<<<<< HEAD
+
 ### Create virtual env
 This is a useful way to isolation your current environment with new environment. Sometimes some pakage might conflict with specfic version and cause not able to install or run.  You can just create a virtual environment with a fresh environment  which will not effect your current environment. 
 
@@ -550,7 +550,8 @@ pyinstaller --onefile --icon=desktop.ico  xxx.py
 - Ico download link:
 	- Icon URL: `https://www.flaticon.com/`
 	- convert `.png` to `ico`: https://convertio.co/zh/
-=======
+
+
 ### Convert python to executable file
 
 Convert your code to executable file in different envirnoment without install package
@@ -559,7 +560,7 @@ pyinstaller --onefile --icon=desktop.ico  xxx.py
 ```
 - Icon URL: `https://www.flaticon.com/`
 - convert `.png` to `ico`: https://convertio.co/zh/
->>>>>>> origin/tmp
+
 
 
 ## Window 
@@ -658,82 +659,3 @@ Press `window+R` to run some shortcut and enter below command:
 | 🛬     | End / Landing          |
 | 🔚     | Finish / End           |
 
-<<<<<<< HEAD
-=======
-## Linux
-
-
-## Emoji 
-
-### ✅ Status / Progress
-| Emoji | Meaning                |
-|-------|------------------------|
-| ✅     | Success / Done         |
-| ❌     | Error / Failed         |
-| ⚠️     | Warning               |
-| 🔄     | In Progress / Refresh  |
-| 🔍     | Searching / Scanning   |
-| 🔧     | Config / Setup         |
-| 💾     | Saving / Backup        |
-| 🛠️     | Tools / Processing     |
-| ⏳     | Waiting / Loading      |
-
-### 📂 Files & Folders
-| Emoji | Meaning                |
-|-------|------------------------|
-| 📂     | Open folder            |
-| 📁     | Closed folder          |
-| 📄     | Document / File        |
-| 📑     | Section / Bookmark     |
-| 🗂️     | File Organizer         |
-| 📝     | Writing / Notes        |
-
-### 📶 Network & Data Transfer
-| Emoji | Meaning                |
-|-------|------------------------|
-| 📶     | Signal / Network       |
-| 📡     | Download / Comm        |
-| 📲     | Upload / Mobile        |
-| 🔌     | Connect / Plug         |
-| 🌐     | Internet / Web         |
-
-### 📊 Data & Analytics
-| Emoji | Meaning                |
-|-------|------------------------|
-| 📊     | Bar Chart              |
-| 📈     | Line Chart Up          |
-| 📉     | Line Chart Down        |
-| 🧮     | Calculation / Stats    |
-
-### 🧪 Testing & Debugging
-| Emoji | Meaning                |
-|-------|------------------------|
-| 🧪     | Testing / Experiment   |
-| 🧬     | Data Science / DNA     |
-| 🔬     | Debug / Inspection     |
-
-### 👨‍💻 Coding & Terminal
-| Emoji | Meaning                |
-|-------|------------------------|
-| 💻     | Laptop / Dev Work      |
-| 👨‍💻    | Programmer             |
-| ⌨️     | Keyboard               |
-| 🖥️     | Monitor / Desktop      |
-| 🧾     | Logs / Reports         |
-
-### 🚀 Deployment & Lifecycle
-| Emoji | Meaning                |
-|-------|------------------------|
-| 🚀     | Launch / Deploy        |
-| 🛫     | Begin / Takeoff        |
-| 🛬     | End / Landing          |
-| 🔚     | Finish / End           |
-
-## 📌 How to Use
-```python
-print("✅ Process completed.")
-print("📂 Opening file...")
-print("📊 Generating report...")
-print("🛠️ Running diagnostics...")
-```
->>>>>>> origin/tmp
