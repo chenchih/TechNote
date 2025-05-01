@@ -18,41 +18,56 @@ Record Cheat Sheet Note
 ### Git push and upstream setting
 
 #### setting git push:`upsteam` and `-u`
-The point of setting upstream is to then simply use git push in the future.
+The point of setting upstream is to then simply use `git push` in the future, instead of entering full remote name.
 
-- `git branch --set-upstream-to=origin/branchname`
-	- This command only establishes the upstream tracking. It tells your local branch, "This remote branch (origin/branchname) is where I should be pushing to by default."
-	- It does not push any code.
-
-- `git push -u origin branchname`
+- `git branch --set-upstream-to=origin/<branchname>`
+	- This command only establishes the upstream tracking. It tells your local branch "This remote branch (origin/branchname) is where I should be pushing to by default."
+	
+- `git push -u origin <branchname>`
 	- It pushes your local branch to the remote branch (origin/branchname).
 	- It sets the upstream tracking for your local main branch to origin/main
-	- Prepares your local branch and pushes the code in one command.
-
-- `git branch -vv` : Checking Upstream Settings
+	- summary: it create upstream tracking and push local to remote. 
+	
+#### Check tracking status
+- `git branch -vv` : Checking Upstream tracking Settings
+It lists your local branches and shows which remote branch they are tracking, I had use checkout to track local and remote. If I use git pull, it will automatic pull track from remote to local side. 
+```
+git branch -vv
+  main c8c14dd [origin/main: behind 3] adding ocr note, and upload pathlib demo_testfile
+* tmp  00f963e [origin/tmp] remove ffmegp exe file
+```
 
 #### git push 
-- `git push origin main`
+- `git push origin main` or `git pull`
 	- **Bypassing Upstream**
 	- Explicitly telling Git push my current branch to origin/main, regardless of what my upstream setting is
 	- This command pushes your local branch to the remote branch (`origin/branchname`).
 
-
 ###  Create, Push and Pull from local to server
-imagine PC1 use at office, and PC2 use at home. 
 
 - create branch:`git checkout <branch_name>`
 - remove local branch: `git branch [-D|-d] <branch_name>`
 	- `-d`: checks if the branch has been fully merged into its upstream branch. If it has, it deletes the branch. If not, it will return an error.
 	- `-D`: If you want to force deletion (even if it's not fully merged)
 - remove remote branch: `git push origin --delete <branch_name>` or `git push origin :<branch_name>`
+- git pull: download and merge
+```
+#better way of using git pull:
+git pull #git fetch+git merge
+git pull --rebase #use this instead of git pull
+#these are other option:
+git pull --ff only #only fetch new commit 
+git pull -- ff
+
+```
 
 #### Case1: Push remote branch with same and different branch name
+Imagine PC1 use at office, and PC2 use at home. 
 
-##### 1.1 PC1 push same branch name as local and remote
+##### 1.1 PC1 push: both local and remote branch with same name
 This example will show using same branch name on both local and remote. 
 
-> - Create local `tmp` branch and push to remote branch `tmp` 
+- Create local `tmp` branch and push to remote branch `tmp` 
 Local branch and remote branch use the same name
 ```
 git checkout -b tmp #create and change new branch in local side
@@ -63,19 +78,10 @@ git commit -m <message to commit>
 git push -u origin <remote branch name, ex:tmp>
 
 ```
-##### 1.2 PC1 push local main branch to remote with different name
-Pushes the local main branch to the remote tmp branch. If tmp doesn't exist on the remote, it will be created.
-```
-#better way of using git pul:
-git pull #git fetch+git merge
-git pull --rebase #use this instead of git pull
-#these are other option:
-git pull --ff only #only fetch new commit 
-git pull -- ff
+##### 1.2 [Git push] PC1 push: local and remote branch with same different name
+Push the local main branch to the remote branch name `tmp`. If `tmp` doesn't exist on the remote, it will auto created.
 
-```
-
-> - Push local `main` branch to remote branch `tmp`(or different remote branch name)
+- Push local `main` branch to remote branch `tmp`(or different remote branch name)
 Local branch and remote branch use different name
 ```
 #main branch 
@@ -85,7 +91,7 @@ git commit -m <message to commit>
 git push origin main:tmp #Does not set upstream tracking.
 ```
 
-#### Case2 PC2 pull remote origin/tmp to local tmp branch(auto create it)
+#### Case2 [Git pull] PC2 pull remote origin/tmp to local tmp branch(auto create it)
 This command creates a new local branch tmp that tracks the remote `origin/tmp branch` and switches to it. 
 This is PC2 which don't have `tmp` branch in local side, and want to download remote `origin/tmp` data to local side. In PC2 just `case1-1` or `case1-2` create a remote branch `tmp`, if you want the branch to download local branch, just this method. 
 
@@ -99,7 +105,7 @@ git push -u origin tmp
 you can use the `remote branch -r` to see your updated remote list. 
 
 
-#### Case3: PC1 pull origin/tmp to local main without create any branch
+#### Case3: [Git pull] PC1 pull origin/tmp to local main without create `tmp` or any branch 
 In PC2 push to remote tmp, now what if I want to pull down to main branch. 
 
 - > Pull `Remote tmp -> local main branch`
@@ -173,9 +179,8 @@ PS C:\gitfile\TechNote> git fetch --prune
   origin/tmp
 ```
 
-
 ### git stash
-- `git stash`: is a local operation. It does not interact with remote repositories. It is a temporary holding area for your uncommitted changes.
+- `git stash`: is a local operation. It does not interact with remote repositories. It is a **temporary** holding area for your **uncommitted changes**.
 update from the remote, and then reapply your work.This helps you avoid conflicts during the git pull process. If the remote changes and your local changes affect the same lines in the same file, you will need to manually solve the merge conflicts. 
 
 - commonly use:
@@ -188,12 +193,12 @@ update from the remote, and then reapply your work.This helps you avoid conflict
 	- `git stash drop stash@{id}`: remove git stash
 	- `git clear`: clear all stash
 
-I am editing test.py. Then, there are some new updates on the remote. I need to save my uncommitted changes and perform a git pull to update my local repository with the latest changes from the remote. In this case, I will use git stash to save my uncommitted changes to a temporary location (the stash).
+I am editing `test.py`, then there are some new updates on the remote. I need to save my uncommitted changes and perform a git pull to update my local repository with the latest changes from the remote. In this case, I will use git stash to save my uncommitted changes to a temporary location (the stash).
 
 Now, I will use git pull to fetch and merge the latest changes from the remote into my current local branch. After the git pull is complete, I will use git stash pop to reapply the changes I made to test.py before the pull.
 
 ### Interactive rebase
-interactive rebase to modify history you can use these option below:
+interactive rebase `git rebase -i` to modify history you can use these option below:
 - `pick` (or p): Use this commit as is.
 - `squash` (or s): Combine this commit into the previous commit. You'll get a chance to edit the combined commit message.
 - `fixup` (or f): Combine this commit into the previous commit, discarding this commit's log message.
