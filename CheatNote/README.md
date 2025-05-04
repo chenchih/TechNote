@@ -29,6 +29,7 @@ Record Cheat Sheet Note
   - [Squashing Commits](#5.1squash)
   - [Rewording Commits](#5.2reword)
 - [6. Checking Commit Logs (`git log`)](#6.gitLog)
+	- [log other option](#logoption)
 	- [Visualize your Git branch graph](#VisualizeLog)
 - [7. Undoing and Recovering Commits](#7.reset)
   - [Case 1: `git reset` - Accidentally Removing a Commit](#7.case1)
@@ -167,15 +168,15 @@ git push -u origin tmp
 you can use the `remote <branch> -r` to see your updated remote list. 
 
 <a name="2.case3"></a>
-#### Case3: [Git pull] PC1 pull origin/tmp to local main without create `tmp` or any branch  [🔙](#2.Common-case-usecase)
-In PC2 push to remote tmp, now what if I want to pull down to main branch. 
+#### Case3: [Git pull] PC1 pull origin/tmp to local main without creating `tmp` or any branch  [🔙](#2.Common-case-usecase)
+In PC2 push to remote tmp, now what if I want to pull down to the main branch? 
 
-- > Pull `Remote tmp -> local main branch`
+- git Pull `Remote tmp -> local main branch`
 ```
 method1:
 #Fetch the Remote tmp Branch
 git fetch origin
-#switch to main, in case only main branch can ignoire)
+#switch to main, in case only main branch can ignore)
 git checkout main
 #Merge origin/tmp into main(local)
 git merge origin/tmp
@@ -214,7 +215,7 @@ This command will lists your remote-tracking branches
 **When using it?**
 When you delete a branch on GitHub (or any remote), the corresponding remote-tracking branch in your local repository are old. It still exists locally, but it no longer matches the state of the remote
 
-**Sumamry:**
+**Summary:**
 When you delete a branch on GitHub, you need to use git fetch --prune (or its variations) to remove the stale remote-tracking branch from your local repository.
 This command fetches the latest changes from the remote and removes any remote-tracking branches that no longer exist on the remote.
 
@@ -232,7 +233,7 @@ PS C:\gitfile\TechNote> git branch -r
   origin/tmp
   origin/tmp_pathlib
 
-# using prune the not exist wil remove 
+# using prune to remove the non-existent will remove 
 PS C:\gitfile\TechNote> git fetch --prune
   origin/HEAD -> origin/main
   origin/main
@@ -241,13 +242,13 @@ PS C:\gitfile\TechNote> git fetch --prune
 <a name="4.gitstash"></a>
 ### 4. git stash [🔝](#top)
 - `git stash`: is a local operation. It does not interact with remote repositories. It is a **temporary** holding area for your **uncommitted changes**.
-update from the remote, and then reapply your work.This helps you avoid conflicts during the git pull process. If the remote changes and your local changes affect the same lines in the same file, you will need to manually solve the merge conflicts. 
+Update from the remote, and then reapply your work.This helps you avoid conflicts during the git pull process. If the remote changes and your local changes affect the same lines in the same file, you will need to manually solve the merge conflicts. 
 
 - commonly used:
 	- `git stash`
 	- `git stash pop` : apply the changes I made earlier in tmp and apply to it (attempts to merge your stashed changes with the current state of your working directory) and will alert you to any conflicts that arise. **It applies and deletes**
 	- `git stash apply`: is similar to git stash pop, it **apply and keep**, allow to apply stashed changes repeatedly..
-- Other option can use:
+- Other options can use:
 	- `git stash list`: list multiple stash if you create multiple 
 	- `git stash apply stash@{}`: switch to specific stash 
 	- `git stash drop stash@{id}`: remove git stash
@@ -292,7 +293,7 @@ pick f764533 4/23 update cheatheet
 ```
 
 Step3: Check the log again
-When you chek the log, you will realize the original commit is been squashed. 
+When you check the log, you will realize the original commit is been squashed. 
 After squashing commit will have a brand new and different Git commit ID, please keep in mind. 
 ```
 git log --graph --oneline #show log 
@@ -302,35 +303,36 @@ git log --graph --oneline #show log
 ```
 
 Please refer picture below for more details:
+
 ![rebase_squash](img/git_squashcommit.PNG)
 
 <a name="5.2reword"></a>
 #### 5.2 reword commit(edit your commit msg)
-If you want to modify your commit msg, you can use the `reword` like above rebase inactive. Please refer below picture for more detail. 
+If you want to modify your commit msg, you can use the `reword` like above, rebase inactive. Please refer picture below for more details. 
+
 ![rebase_reword](img/git_rewordcommit.PNG)
+
 
 <a name="6.gitLog"></a>
 ### 6. gitlog [🔝](#top)
 - `git log --graph --oneline --decorate --all`
-- `gitk --all` : (GUI)
+- `gitk --all`: list all log status
+###
 - `git log  --pretty=format:"%h %s"`
-`%h` is shorthand for hash_id and `%s` shorthand for subjectName[message_name]
+	- `%h` is shorthand for hash_id and `%s` shorthand for subjectName[message_name]
+ - 
+<a name="logoption"></a>
+#### log other option
+- git log  --pretty=format:"%h %s"
 ```
-git log  --pretty=format:"%h %s"
-#output
 5e923eb to organize note for readme
 ce17fb7 adding link to each section of a page, and examples folder
 8976dcd adding response model's account normal usage example
-
 git log --pretty=format:%s # first line of the messages
 ```
 
-- `git log --pretty=format:"%h   %s %C(yellow)(%cr)"`
-`%C` is a shorthand for color
-
-```
- show date behind commit-id and message
-```
+- `git log --pretty=format:"%h   %s %C(yellow)(%cr)"`: show date behind commit-id and message
+	- `%C` is a shorthand for color
 
 - `git log --oneline --grep="add"`
 
@@ -356,8 +358,8 @@ git log --pretty=format:%s # first line of the messages
 - [Case 5: `git reset` - Back to Unstaged](#7.case5)
 
 
-<a name="7.case1">
-#### Case1 git reset: if accidentally remove commit [🔙](#7.reset)
+<a name="7.case1"></a>
+#### Case1 git reset: if accidentally remove commit[🔙](#7.reset)
 
 Step 1: Check your log status
 ```
@@ -399,24 +401,24 @@ d0159e4 add python file name testhello
 6c097d5 update
 ```
 
-<a name="7.case2">
+<a name="7.case2"></a>
 #### Case2 git restore: restore to untrack [🔙](#7.reset)
 
 Restore undoing changes in your local, uncommitted work (working directory and staging area). It only operates on the working directory and the staging area, fter commit will not be able to undo. 
 
-It have two method one is to undo your editing file, and the one is adding `staged` option to move back to unstaged. 
+It have two methods one is to undo your editing file, and the one is adding `staged` option to move back to unstaged. 
 
 - Restore
 ```
 #edit your file, add hello to it
 PS C:\gitfile\gitdemotest> notepad.exe .\note.txt
-#it will undo the file to original file content
+#it will undo the file to the original file content
 PS C:\gitfile\gitdemotest> git restore .\note.txt
 ```
 
 - Restore with staged
 
-Create file and stage it
+Create a file and stage it
 ```
 PS C:\gitfile\gitdemotest> notepad.exe .\note.txt
 PS C:\gitfile\gitdemotest> git add .\note.txt #stage your file
@@ -438,14 +440,14 @@ Changes not staged for commit:   #change not staged
         modified:   note.txt
 ```
 
-<a name="7.case3">
+<a name="7.case3"></a>
 #### Case3 git revert: undo commit [🔙](#7.reset)
 
 git revert provides a safe way to undo changes because it adds a new commit, instead of remove it. It focuses on **creating a new commit that explicitly reverses the changes introduced by a specific past commit**.
 
 It designed to undo the changes of a commit by creating a new commit that reverses those changes, thereby preserving the history of the repository. It's the safe and recommended way to undo changes in a collaborative environment.
 
-Step1: add and commit file 
+Step1: Add and commit the file 
 ```
 git init
 echo "Initial text" > README.md
@@ -493,7 +495,7 @@ PS C:\gitfile\test_revert> git log --oneline
 You can see it create a new commit `1ede0b9 (HEAD -> master) Revert "bad update"` instead of removing the `568e132 bad update`. 
 Using revert will be safer, which preserves the commit in the history. This allows you to switch back in future if you want to use. 
 
-<a name="7.case4">
+<a name="7.case4"></a>
 #### Case4 reset back to uncommit [🔙](#7.reset)
 In this example, I will show you how to reset back to uncommitted status and return to commit status:
 - step2: undo commit(return to step1)
@@ -526,7 +528,7 @@ PS C:\gitfile\reset_test> git log --oneline
 ```
 
 Step3: undo commit by `reset --soft`
-In case in you want to undo step2 to original place, use `git reflog` to find your git ID
+In case in you want to undo step2 to the original place, use `git reflog` to find your git ID
 
 ```
 PS C:\gitfile\reset_test> git reflog show HEAD
@@ -545,7 +547,7 @@ bf82263 (HEAD -> master) bad update
 29938d0 initial commit
 ```
 
-<a name="7.case5">
+<a name="7.case5"></a>
 #### Case5 reset back to unstage [🔙](#7.reset)
 Undoing git reset --soft HEAD^ to go back to the unstaged state
 
