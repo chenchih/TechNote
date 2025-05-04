@@ -5,67 +5,125 @@ Record Cheat Sheet Note
 	- adding remove branch, remove remote branch, fetch -- plume
 - 2025.2.24: 
 	- update git push setting
-	- window shortcut	
-## Git Command 
+	- window shortcut
+- 2025.05.04: reedit git note	
 
-- `git reset ` -> change to `git restore`
-- `git status`  -> change to `git status -sb`
-- `git pull` -> change to `git pull --rebase`
-- `git checkout` -> change to `git switch`
-- `git stash` -> change to `git worklist`
-- `git merge` ->  change to `git rebase`
+## Git Command Notes
+<a name="top"></a>
+- [1. Git Push and Upstream Settings](#1.Git_push_upstream)
+  - [setting git upstream](#1.1git_set_upstream)
+  - [Checking Tracking Status](#1.2_checktracking)
+  - [Git Push](#1.3_gitpush)
+  - [Git Pull](#1.4_gitpull)
+- [2. Creating, Pushing, and Pulling Branches](#2.Common-case-usecase)
+  - [Case 1: Pushing to Remote Branches](#2.case1)
+    - [1.1 PC1 Push: Same Local and Remote Branch Name](#2.case1.1)
+    - [1.2 PC1 Push: Different Local and Remote Branch Names](#2.case1.2)
+  - [Case 2: PC2 Pulling a Remote Branch to a New Local Branch](#2.case2)
+  - [Case 3: PC1 Pulling a Remote Branch to the Current Local Branch](#2.case3)
+- [3. Checking Remote Branches](#3.CheckRemoteBranch)
+  - [Remote Tracking Branches and Pruning](#Remote-Tracking-Branches) 
+- [4. Git Stash](#4.gitstash)
+- [5. Interactive Rebase (`git rebase -i`)](#5.InteractiveRebase)
+  - [Squashing Commits](#squashing-commits)
+  - [Rewording Commits](#rewording-commits)
+- [6. Checking Commit Logs (`git log`)](#6.gitLog)
+	- [Visualize your Git branch graph](#VisualizeLog)
+- [7. Undoing and Recovering Commits](#gitLog)
+  - [Case 1: `git reset` - Accidentally Removing a Commit](#7.case1)
+  - [Case 2: `git restore` - Undoing Uncommitted Changes](#7.case2)
+  - [Case 3: `git revert` - Undoing Commits Safely](#7.case3)
+  - [Case 4: `git reset` - Back to Uncommitted](#7.case4)
+  - [Case 5: `git reset` - Back to Unstaged](#7.case5)
+  
+  <a name="">
 
-### Git push and upstream setting
+**Git Command Summary**
+This section provides a quick overview of some common Git commands and their modern or recommended alternatives.
+- `git reset` -> Use `git restore` for working directory and staging area changes.
+- `git status` -> Consider using `git status -sb` for a more concise output.
+- `git pull` -> It's often recommended to use `git pull --rebase` to maintain a cleaner history.
+- `git checkout` -> Use `git switch` for branch switching and creation.
+- `git stash` -> Explore `git worktree` as a potential alternative for managing multiple working directories.
+- `git merge` -> Consider `git rebase` for integrating changes, especially for a linear history.
 
-#### setting git push:`upsteam` and `-u`
-The point of setting upstream is to then simply use `git push` in the future, instead of entering full remote name.
+<a name="1.Git_push_upstream"></a>
+### 1. Git push and upstream setting [🔝](#top)
+
+- [setting git upstream](#1.1git_set_upstream)
+- [Checking Tracking Status](#1.2_checktracking)
+- [Git Push](#1.3_gitpush)
+- [Git Pull](#1.4_gitpull)
+
+<a name="1.1git_set_upstream"></a>
+#### 1.1 setting git upstream [🔙](#1.Git_push_upstream)
+The point of setting upstream is to then simply use `git push` or `git pull` in the future, instead of entering full remote name like `git push origin main`. Just imagine setting upstream is like setting a `git push` or `git pull` alias, without explicitly including the remote branch name.
 
 - `git branch --set-upstream-to=origin/<branchname>`
-	- This command only establishes the upstream tracking. It tells your local branch "This remote branch (origin/branchname) is where I should be pushing to by default."
+	- This command establishes the tracking relationship between your current local branch and the specified remote branch (`origin/<branchname>`). It tells your local branch where to push to and pull from by default.
 	
 - `git push -u origin <branchname>`
+	- This command pushes your local branch to the remote branch (`origin/<branchname>`) **and** sets up the upstream tracking for your local branch to that remote branch. The `-u` flag is crucial for setting the upstream.
 	- It pushes your local branch to the remote branch (origin/branchname).
-	- It sets the upstream tracking for your local main branch to origin/main
-	- summary: it create upstream tracking and push local to remote. 
+	- It sets the upstream tracking for your local main branch to origin/main. and 
+	- It create upstream tracking , which allow you to `git push` from local to remote. 
 	
-#### Check tracking status
+<a name="1.2_checktracking"></a>
+#### 1.2 Check tracking status [🔙](#1.Git_push_upstream)
 - `git branch -vv` : Checking Upstream tracking Settings
-It lists your local branches and shows which remote branch they are tracking, I had use checkout to track local and remote. If I use git pull, it will automatic pull track from remote to local side. 
-```
-git branch -vv
-  main c8c14dd [origin/main: behind 3] adding ocr note, and upload pathlib demo_testfile
-* tmp  00f963e [origin/tmp] remove ffmegp exe file
-```
+It lists your local branches and shows which remote branch track (which we set in previous section in 1.1) of local to remote side. 
 
-#### git push 
-- `git push origin main` or `git pull`
-	- **Bypassing Upstream**
-	- Explicitly telling Git push my current branch to origin/main, regardless of what my upstream setting is
-	- This command pushes your local branch to the remote branch (`origin/branchname`).
+[list tracking](img/git_trackinglist.png)
 
-###  Create, Push and Pull from local to server
+<a name="1.3_gitpush"></a>
+#### 1.3 git push [🔙](#1.Git_push_upstream)
 
-- create branch:`git checkout <branch_name>`
-- remove local branch: `git branch [-D|-d] <branch_name>`
-	- `-d`: checks if the branch has been fully merged into its upstream branch. If it has, it deletes the branch. If not, it will return an error.
+Once upstream is set, you can simply use:
+- `git push`:will push to the tracked remote branch. Explicitly telling `git push` my current local branch to origin/main, regardless of what my upstream setting is.
+	- `git push origin main`: you can also use this Bypassing Upstream to push to remote, which mean if you didn't set upstream you can use this the original path.  
+	- `git push -f <remote_name ex:origin> <local_branch>:<remote_branch>` ex: `git push origin main:tmp`
+
+You can use `git remote -v` to check remote name default is origin
+<a name="1.4_gitpull"></a>
+#### 1.4 git pull [🔙](#1.Git_push_upstream)
+
+- `git pull`: will pull from the tracked remote branch, it will download and merge. Go to remote repository, download any new changes (git fetch), and then automatically try to combine those changes into my current local branch (git merge).
+- `git fetch`: Download the new change, just like browser refresh key to see the change.
+- `git rebase`: Will automatic take the commit in your current working directory and apply to head of the branch. 
+
+**better way of using git pull**
+- `git pull`: Means `git fetch+git merge`. 
+- `git pull --rebase`: `git fetch+ merge/rebase` use this instead of git pull
+
+**These are other option**
+- `git pull --ff only`: only fetch new commit 
+- `git pull -- ff`: 
+
+<a name="2.Common-case-usecase"></a>
+###  2. Common case of Create, Push and Pull [🔝](#top)
+
+- **Create Branch**:`git checkout <branch_name>`
+- **Remove Local Branch**: `git branch [-D|-d] <branch_name>`
+	- `-d`: Checks if the branch has been fully merged into its upstream branch. If it has, it deletes the branch. If not, it will return an error.
 	- `-D`: If you want to force deletion (even if it's not fully merged)
-- remove remote branch: `git push origin --delete <branch_name>` or `git push origin :<branch_name>`
-- git pull: download and merge
-```
-#better way of using git pull:
-git pull #git fetch+git merge
-git pull --rebase #use this instead of git pull
-#these are other option:
-git pull --ff only #only fetch new commit 
-git pull -- ff
+- **Remove Remote Branch**: `git push origin --delete <branch_name>` or `git push origin :<branch_name>`
+- **Show remote Branch**: `git remote show origin`
 
-```
+[show Remote origin](img/remote_orgin.png)
 
-#### Case1: Push remote branch with same and different branch name
+<a name="2.case1"></a>
+#### Case1: Push remote branch with same and different branch name [🔙](#2.Common-case-usecase)
 Imagine PC1 use at office, and PC2 use at home. 
 
-##### 1.1 PC1 push: both local and remote branch with same name
-This example will show using same branch name on both local and remote. 
+- [Case 1: Pushing to Remote Branches](#2.case1)
+- [Case 2: PC2 Pulling a Remote Branch to a New Local Branch](#2.case2)
+- [Case 3: PC1 Pulling a Remote Branch to the Current Local Branch](#2.case3)
+
+<a name="2.case1.1"></a>
+##### Case1.1 [Git push] PC1 push both local and remote branch with same name
+This example will show using **same branch name** on both local and remote. 
+
+[show Remote origin](img/case1.1.png)
 
 - Create local `tmp` branch and push to remote branch `tmp` 
 Local branch and remote branch use the same name
@@ -76,10 +134,13 @@ git commit -m <message to commit>
 
 #Pushes your current local branch to a remote branch with the same name
 git push -u origin <remote branch name, ex:tmp>
-
 ```
-##### 1.2 [Git push] PC1 push: local and remote branch with same different name
+
+<a name="2.case1.2"></a>
+##### Case1.2 [Git push] PC1 push: local and remote branch with different branch name
 Push the local main branch to the remote branch name `tmp`. If `tmp` doesn't exist on the remote, it will auto created.
+
+[show Remote origin](img/case1.2.png)
 
 - Push local `main` branch to remote branch `tmp`(or different remote branch name)
 Local branch and remote branch use different name
@@ -88,10 +149,10 @@ Local branch and remote branch use different name
 git add .
 git commit -m <message to commit> 
 #Pushes your local main branch to a remote branch named tmp branch
-git push origin main:tmp #Does not set upstream tracking.
+git push origin main:tmp #Does not set upstream tracking, if upstream set can use git push
 ```
-
-#### Case2 [Git pull] PC2 pull remote origin/tmp to local tmp branch(auto create it)
+<a name="2.case2"></a>
+#### Case2 [Git pull] PC2 pull remote origin/tmp to local tmp branch(auto create it) [🔙](#2.Common-case-usecase)
 This command creates a new local branch tmp that tracks the remote `origin/tmp branch` and switches to it. 
 This is PC2 which don't have `tmp` branch in local side, and want to download remote `origin/tmp` data to local side. In PC2 just `case1-1` or `case1-2` create a remote branch `tmp`, if you want the branch to download local branch, just this method. 
 
@@ -102,10 +163,10 @@ git commit -m "commit msg"
 git push -u origin tmp
 ```
 
-you can use the `remote branch -r` to see your updated remote list. 
+you can use the `remote <branch> -r` to see your updated remote list. 
 
-
-#### Case3: [Git pull] PC1 pull origin/tmp to local main without create `tmp` or any branch 
+<a name="2.case3"></a>
+#### Case3: [Git pull] PC1 pull origin/tmp to local main without create `tmp` or any branch  [🔙](#2.Common-case-usecase)
 In PC2 push to remote tmp, now what if I want to pull down to main branch. 
 
 - > Pull `Remote tmp -> local main branch`
@@ -121,8 +182,8 @@ git merge origin/tmp
 #method2: Fetches and merges origin/tmp into the local main branch in a single command.
 git pull origin tmp:main
 ```
-
-### Check Remote branch 
+<a name="3.CheckRemoteBranch"></a>
+### 3. Check Remote branch [🔝](#top)
 This command will lists your remote-tracking branches 
 
 - `git branch -r`: check the available remote branches
@@ -148,8 +209,6 @@ This command will lists your remote-tracking branches
 
 #### Remote Tracking Branches
 `--prune` is used to clean up  remote-tracking branches in your local repository. When you delete a branch on your GitHub server, Git doesn't automatically remove the corresponding remote-tracking branch from your local repository.
-
-
 
 **When using it?**
 When you delete a branch on GitHub (or any remote), the corresponding remote-tracking branch in your local repository are old. It still exists locally, but it no longer matches the state of the remote
@@ -178,8 +237,8 @@ PS C:\gitfile\TechNote> git fetch --prune
   origin/main
   origin/tmp
 ```
-
-### git stash
+<a name="4.gitstash"></a>
+### 4. git stash [🔝](#top)
 - `git stash`: is a local operation. It does not interact with remote repositories. It is a **temporary** holding area for your **uncommitted changes**.
 update from the remote, and then reapply your work.This helps you avoid conflicts during the git pull process. If the remote changes and your local changes affect the same lines in the same file, you will need to manually solve the merge conflicts. 
 
@@ -197,7 +256,8 @@ I am editing `test.py`, then there are some new updates on the remote. I need to
 
 Now, I will use git pull to fetch and merge the latest changes from the remote into my current local branch. After the git pull is complete, I will use git stash pop to reapply the changes I made to test.py before the pull.
 
-### Interactive rebase
+<a name="5.InteractiveRebase"></a>
+### 5.Interactive rebase [🔝](#top)
 interactive rebase `git rebase -i` to modify history you can use these option below:
 - `pick` (or p): Use this commit as is.
 - `squash` (or s): Combine this commit into the previous commit. You'll get a chance to edit the combined commit message.
@@ -206,7 +266,7 @@ interactive rebase `git rebase -i` to modify history you can use these option be
 - `drop (or d)`: Remove this commit entirely.
 
 
-#### squash commit (squeeze multiple commit into one)
+#### 5.1 squash commit (squeeze multiple commit into one)
 If you have long commit history, you can use the squash with interactive rebase command (`git rebase -i`). This method will make history cleaner and easier to follow, especially if many of those commits are small fixes.
 
 Step1: check log `git log --graph --oneline #show log` 
@@ -243,12 +303,12 @@ git log --graph --oneline #show log
 Please refer below picture for more detail:
 [rebase_squash](img/git_squashcommit.PNG)
 
-#### reword commit(edit your commit msg)
+#### 5.2 reword commit(edit your commit msg)
 If you want to modify your commit msg, you can use the `reword` like above rebase inactive. Please refer below picture for more detail. 
 [rebase_reword](img/git_rewordcommit.PNG)
 
-
-### check commit log: gitlog 
+<a name="6.gitLog"></a>
+### 6. gitlog [🔝](#top)
 - `git log --graph --oneline --decorate --all`
 - `gitk --all` : (GUI)
 - `git log  --pretty=format:"%h %s"`
@@ -269,15 +329,21 @@ adding response model's account normal usage example
 ```
 
 - `git log --pretty=format:"%h   %s %C(yellow)(%cr)"`
-%C is a shorthand for color
+`%C` is a shorthand for color
+
 ```
  show date behind commit-id and message
 ```
 
-- git log --oneline --grep="add"
+- `git log --oneline --grep="add"`
 
+<a name="VisualizeLog"></a>
+#### Visualize your Git branch graph 
+- `git log --graph --oneline --decorate --all`
 
-### Undo and recover commit
+<a name="7.reset"></a>
+### 7. Undo and recover commit [🔝](#top)
+
 - `Reset`: Primarily used to move the branch pointer (HEAD) to a specific commit, effectively undoing commits on the current branch. Options like --hard can also discard changes, potentially rewriting history
 	- `hard`: Undo everything (commits, staging, working directory) back to the specified point.
 	- `soft`: Move back to uncommit (changes are staged, ready to commit again).
@@ -285,7 +351,16 @@ adding response model's account normal usage example
 - `restore`:  Used to undo changes in the working directory (unstaged) or to unstage files (move from staging back to working directory). It operates on the current working state and staging area, not directly on committed history
 - `revert`: sed to undo a specific commit by creating a new commit that reverses its changes. This preserves the original commit and the history, making it safe for shared branches
 
-#### Case1 git reset: if accident remove commit
+------------
+- [Case 1: `git reset` - Accidentally Removing a Commit](#7.case1)
+- [Case 2: `git restore` - Undoing Uncommitted Changes](#7.case2)
+- [Case 3: `git revert` - Undoing Commits Safely](#7.case3)
+- [Case 4: `git reset` - Back to Uncommitted](#7.case4)
+- [Case 5: `git reset` - Back to Unstaged](#7.case5)
+
+
+<a name="7.case1">
+#### Case1 git reset: if accident remove commit [🔙](#7.reset)
 
 Step1: check you log status
 ```
@@ -326,12 +401,13 @@ c153b52 (HEAD) add comment
 d0159e4 add python file name testhello
 6c097d5 update
 ```
-#### Case2 git restore: restore to untrack 
+
+<a name="7.case2">
+#### Case2 git restore: restore to untrack [🔙](#7.reset)
 
 Restore undoing changes in your local, uncommitted work (working directory and staging area). It only operates on the working directory and the staging area, fter commit will not be able to undo. 
 
 It have two method one is to undo your editing file, and another one is adding `staged` option to move back to unstaged. 
-
 
 - Restore
 ```
@@ -365,7 +441,8 @@ Changes not staged for commit:   #change not staged
         modified:   note.txt
 ```
 
-#### Case3 git revert: undo commit 
+<a name="7.case3">
+#### Case3 git revert: undo commit [🔙](#7.reset)
 
 git revert provides a safe way to undo changes because it adds a new commit, instead of remove it. It focuses on **creating a new commit that explicitly reverses the changes introduced by a specific past commit**.
 
@@ -419,7 +496,8 @@ PS C:\gitfile\test_revert> git log --oneline
 You can see it create a new commit `1ede0b9 (HEAD -> master) Revert "bad update"` instead of removing the `568e132 bad update`. 
 using revert will be safer, which preserving commit in the history. This allow you to switch back in future if you want to use. 
 
-#### Case4 reset back to uncommit 
+<a name="7.case4">
+#### Case4 reset back to uncommit [🔙](#7.reset)
 In this example I will show you how to reset back to uncommit status and return back to commit status:
 - step2: undo commit(return to step1)
 - step3: undo step2 (return to step1)
@@ -470,7 +548,8 @@ bf82263 (HEAD -> master) bad update
 29938d0 initial commit
 ```
 
-#### Case5 reset back to unstage
+<a name="7.case5">
+#### Case5 reset back to unstage [🔙](#7.reset)
 Undoing git reset --soft HEAD^ to go back to the unstaged state
 
 Step1: continue Case4 and check log
@@ -506,9 +585,6 @@ Changes not staged for commit:
         modified:   README.md
 ```
 
-### Visualize your Git branch graph 
-- `git log --graph --oneline --decorate --all`
-- `gitk --all` : (GUI)
 
 
 ## PYTHON
