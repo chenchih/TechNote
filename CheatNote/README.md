@@ -8,6 +8,12 @@ Record Cheat Sheet Note
 	- window shortcut
 - 2025.05.04: reedit git note	
 
+## Content
+- [Git Note](#Git-Command-Notes)
+- [PYTHON](#PYTHON)
+- [Linux](#Linux)
+- [Emoji](#Emoji)
+
 ## Git Command Notes
 
 <a name="top"></a>
@@ -75,7 +81,7 @@ The point of setting upstream is to then simply use `git push` or `git pull` in 
 - `git branch -vv` : Checking Upstream tracking Settings
 It lists your local branches and shows which remote branch track (which we set in the previous section in 1.1) of the local to the remote side. 
 
-[list tracking](#img/git_trackinglist.png)
+![list tracking](#img/git_trackinglist.png)
 
 <a name="1.3_gitpush"></a>
 #### 1.3 git push [🔙](#1.Git_push_upstream)
@@ -261,11 +267,11 @@ Now, I will use git pull to fetch and merge the latest changes from the remote i
 <a name="5.InteractiveRebase"></a>
 ### 5.Interactive rebase [🔝](#top)
 interactive rebase `git rebase -i` to modify history, you can use these options below:
-- `pick` (or p): Use this commit as is.
-- `squash` (or s): Combine this commit into the previous commit. You'll get a chance to edit the combined commit message.
-- `fixup` (or f): Combine this commit into the previous commit, discarding this commit's log message.
-- `reword` (or r): Use this commit, but edit the commit message.
-- `drop (or d)`: Remove this commit entirely.
+- `pick` (or `p`): Use this commit as is.
+- `squash` (or `s`): Combine this commit into the previous commit. You'll get a chance to edit the combined commit message.
+- `fixup` (or `f`): Combine this commit into the previous commit, discarding this commit's log message.
+- `reword` (or `r`): Use this commit, but edit the commit message.
+- `drop` (or `d`): Remove this commit entirely.
 
 <a name="5.1squash"></a>
 #### 5.1 squash commit (squeeze multiple commit into one)
@@ -312,18 +318,16 @@ If you want to modify your commit msg, you can use the `reword` like above, reba
 
 ![rebase_reword](img/git_rewordcommit.PNG)
 
-
 <a name="6.gitLog"></a>
 ### 6. gitlog [🔝](#top)
 - `git log --graph --oneline --decorate --all`
-- `gitk --all`: list all log status
-###
-- `git log  --pretty=format:"%h %s"`
-	- `%h` is shorthand for hash_id and `%s` shorthand for subjectName[message_name]
- - 
+- `git --all`: list all log status
+	
 <a name="logoption"></a>
 #### log other option
-- git log  --pretty=format:"%h %s"
+- `git log  --pretty=format:"%h %s"`
+	- `%h` is shorthand for hash_id
+	- `%s` shorthand for subjectName[message_name]
 ```
 5e923eb to organize note for readme
 ce17fb7 adding link to each section of a page, and examples folder
@@ -331,7 +335,7 @@ ce17fb7 adding link to each section of a page, and examples folder
 git log --pretty=format:%s # first line of the messages
 ```
 
-- `git log --pretty=format:"%h   %s %C(yellow)(%cr)"`: show date behind commit-id and message
+- `git log --pretty=format:"%h %s %C(yellow)(%cr)"`: show date behind commit-id and message
 	- `%C` is a shorthand for color
 
 - `git log --oneline --grep="add"`
