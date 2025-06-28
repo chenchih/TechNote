@@ -81,7 +81,7 @@ The point of setting upstream is to then simply use `git push` or `git pull` in 
 - `git branch -vv` : Checking Upstream tracking Settings
 It lists your local branches and shows which remote branch track (which we set in the previous section in 1.1) of the local to the remote side. 
 
-![list tracking](#img/git_trackinglist.png)
+![list tracking](img/git_trackinglist.png)
 
 <a name="1.3_gitpush"></a>
 #### 1.3 git push [🔙](#1.Git_push_upstream)
