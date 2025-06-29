@@ -5,11 +5,12 @@ import subprocess
 
 # Command to cut a segment of a video using FFmpeg
 #input_file = 'input_video.mp4'
-input_file=input('enter video name: ')
+input_file=input('enter input video name: ')
+output_file=input('enter save output video name: ')
 start_time = '00:00:00'
 end_time = '00:01:20'
-output_file = 'part_1.mp4'
-
+#output_file = 'part_1.mp4'
+output_file=output_file+'.mp4'
 # Run the FFmpeg command
 cmd = [
     'ffmpeg',

@@ -10,8 +10,6 @@ FFmpeg syntax: `ffmpeg [global_options] -i input_file [input_options] [output_op
 
 ![encode_decode](img/codec_decoec.png)
 
-
-
 ### **1️ What is a Codec?**  
 
 A **codec** (short for COmpressor-DECompressor) is an algorithm or method for compressing (encodes) and decompressing (decodes) video (e.g., H.264, H.265)or audio data to reduce file size while keeping quality.
@@ -91,10 +89,10 @@ ffmpeg -i input.mp4 -c:v copy -c:a copy output.mp4
 
 | Option  |Meaning   | Example |
 | ------------ | ------------ |------------ |
-| -c:v copy  |  Keeps the original video without re-encoding |Fast, retains quality |
-| -c:v libx264  | Re-encodes video using H.264 codec  |Slower, but compatible |
-| -c:a copy |  Keeps the original audio without re-encoding |No quality loss |
-| -c:a aac	 |  Converts audio to AAC format |Good for MP4 |
+| `-c:v copy`  |  Keeps the original video without re-encoding |Fast, retains quality |
+| `-c:v libx264`  | Re-encodes video using H.264 codec  |Slower, but compatible |
+| `-c:a copy` |  Keeps the original audio without re-encoding |No quality loss |
+| `-c:a aac`	 |  Converts audio to AAC format |Good for MP4 |
 
 ---
 
@@ -179,7 +177,43 @@ Most people **don’t need to manually compress** because:
 
 ## Part2 Example 
 
-### 1. Cut trim(Split video with time)
+### 1. Common FFmepg command
+> syntax: 
+>> `ffmpeg [global_options] -i input_file [input_options] [output_options] output_file`
+
+| **Option** | **Description** 
+|----------------|----------------|
+| -i <file> |  Specifies the input file |
+| -y | Overwrite output without asking |
+| -n |Do not overwrite existing files |
+| -loglevel <level> | Controls output messages (quiet, info, error, etc.) |
+
+
+- **Video Options **
+| **Option** | **Description** 
+|----------------|----------------|
+|-c:v copy|	Copy video without re-encoding|
+|-c:v libx264	|Encode video with H.264|
+|-c:v libx265	|Encode video with H.265 (HEVC)|
+|-crf <value>	|Set video quality (lower = better, 23 is default)|
+|-preset <speed>	|Set encoding speed (ultrafast, slow, medium, etc.)|
+
+- **audio Options **
+| **Option** | **Description** 
+|----------------|----------------|
+|-c:a copy|	Copy audio without re-encoding|
+|-c:a aac	|	Encode audio to AAC (default for MP4)|
+|-c:a mp3	|Encode audio to MP3|
+
+- **Subtitle Options**
+| **Option** | **Description** 
+|----------------|----------------|
+|-c:s copy|	Copy subtitles without re-encoding|
+|-c:s mov_text|Convert subtitles for MP4|
+|-sn|Remove all subtitles|
+
+
+### 2. Cut trim(Split video with time)
 You can use the command to split a video to a specfic start and end time. 
 
 #### using the command
@@ -199,19 +233,33 @@ ffmpeg -ss 30 -i input.wmv -c copy -t 10 output.wmv
 ffmpeg -ss 00:00:30.0 -i input.wmv -c copy -t 00:00:10.0 output.wmv 
 
 ffmpeg -ss 02:50 -to 03:20 -i input_video.mp4 -c copy -avoid_negative_ts video.mp4 -y
+
 ```
 
+Cropping:
+```
+#Inserting Timestamps into the video file
+ffmpeg -i video-cropped.mp4 -vf "drawtext=fontfile='C\:\\Windows\\Fonts\\arial.ttf':text='timestamp\:%{pts \: hms}': x=20: y=40: fontsize=24: fontcolor=white" -c:a copy video-cropped-timestamps.mp4
+
+#Creating Image Files every second
+ffmpeg -i video-cropped-timestamps.mp4 -start_number 1 -vf fps=1 video-%04d.jpg
+
+ffmpeg -i video.mp4 -filter:v "crop=1850:250:0:830" -c:a copy video-cropped.mp4
+```
 
 #### using code
-Please refer `video_trimSplit.py` this code 
+Please refer `split_video_startEnd_time.py` this code, this python file, you have to provide a input video in current directory. 
 ```
+import subprocess
+
 # Command to cut a segment of a video using FFmpeg
 #input_file = 'input_video.mp4'
-input_file=input('enter video name: ')
+input_file=input('enter input video name: ')
+output_file=input('enter save output video name: ')
 start_time = '00:00:00'
 end_time = '00:01:20'
-output_file = 'part_1.mp4'
-
+#output_file = 'part_1.mp4'
+output_file=output_file+'.mp4'
 # Run the FFmpeg command
 cmd = [
     'ffmpeg',
@@ -228,8 +276,25 @@ cmd = [
 subprocess.run(cmd, check=True, capture_output=True)
 print(f"Segment saved as {output_file}")
 
+]
+
+# Execute the command
+subprocess.run(cmd, check=True, capture_output=True)
+print(f"Segment saved as {output_file}")
 ```
-### 2. Merge audio and  video
+
+**Output result:**
+```
+#output:
+enter input video name: inputvideo.mp4
+enter save output video name: myfileOutput
+Segment saved as myfileOutput.mp4
+```
+
+![Trim and split video](img/split_vido_example.png)
+
+
+### 3. Merge audio and  video
 
 > - `-f concat`: Specifies the concatenation demuxer for combining files.
 > - `-safe 0`:Allows unsafe file paths (e.g., containing special characters or spaces).
@@ -256,8 +321,8 @@ ffmpeg -i video.mp4 -i audio.mp3 -c:v copy -c:a aac output.mp4
 #re-encodes the video using libx264, which compresses it.
 ffmpeg -i input.ts -c:v libx264 -c:a aac output.mp4
 ```
+#### Code
 
-- Code 
 You can use the code to establish it, or use this code `split_merge_ff.py`
 
 ```
@@ -290,9 +355,34 @@ def merge_videos(files, output_file):
     ]
 ```
 
+**Output result:**
+```
+#run by python 
+py .\split_merge_ff.py .\inputvideo.mp4 02:50-03:20 05:04-09:20
+# run by bat from command prompt
+.\cut_and_merge.bat .\inputvideo.mp4 02:50-03:20 05:04-09:20
+```
+
+![Trim and split video](img/split_merge.png)
 
 
-### 3. Remove 
+### 4. Extract Audio from Video
+Extracts the audio from input.mp4 and saves it as output.mp3.
+
+Use Case: If you want to extract background music or dialogue from a video.
+```
+ffmpeg -i input.mp4 -vn output.mp3# (Re-encoding required)
+ffmpeg -i input.mp4 -vn -c:a copy output.aac  #without re-encoding (Keep original audio format)
+```
+> `-vn`: "no video" (removes video data).
+
+### 5. Overwrite file
+This forces FFmpeg to overwrite output.mp3 if it already exists
+```
+ffmpeg -i input.mp4 -vn output.mp3 -y
+```
+
+### 6. Remove 
 - `-an`: Removing audio stream from a video file
 ```
 #Convert a video but remove the audio 
@@ -308,7 +398,15 @@ ffmpeg -i input.mp4 -vn output.mp3 # output file has only audio, no video
 ffmpeg -i input.mkv -sn output.mp4 #ignore (remove) subtitle tracks when converting the file
 ```
 
-### 4. Add Text Subtitles to a Video
+### 7. Add Text Subtitles to a Video
+
+**Subtitle Options**
+| **Option** | **Description** 
+|----------------|----------------|
+|-c:s copy|	Copy subtitles without re-encoding|
+|-c:s mov_text|Convert subtitles for MP4|
+|-sn|Remove all subtitles|
+
 > - `-c:s` applies to subtitles
 > - `mov_text`:  is a subtitle format used for embedded subtitles in MP4 files.
 
@@ -316,7 +414,7 @@ ffmpeg -i input.mkv -sn output.mp4 #ignore (remove) subtitle tracks when convert
 ffmpeg -i input.mp4 -i subtitles.srt -c copy -c:s mov_text output.mp4
 ```
 
-### 4. Other 
+### 8. Other 
 
 - Convert a Video to X Images
 ```
