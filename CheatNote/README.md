@@ -649,6 +649,15 @@ pyinstaller --onefile --icon=desktop.ico  xxx.py
 
 ## Window 
 
+### Free up drive space by
+Delete these file under these working directory to free more space
+```
+C:\Windows\Temp
+C:\Windows\System32\LogFiles
+C:\Windows\Prefetch
+C:\Windows\SoftwareDistribution\Download
+```
+
 ### Shortcut command
 
 #### window run window
@@ -665,6 +674,8 @@ Press `window+R` to run some shortcut and enter below command:
 - devices management: `devmgmt.msc` checking driver version and install or not  
 - firewall setting: `wf.msc`
 - remote desktop: `MSTSC`
+- window version: `winver`
+
 
 #### command promopt
 - check process: `tasklist  |grep nameapp`
@@ -674,6 +685,7 @@ Press `window+R` to run some shortcut and enter below command:
 	- stop cmd: `Get-Process -Name "cmd" | Stop-Process`
 - check recursive of working directory: `tree /f pathname` 
 - remove unempty dirctory: `Remove-Item <foldername>  -Recurse -Force`
+
 ## Linux
 
 
