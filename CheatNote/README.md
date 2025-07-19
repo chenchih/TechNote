@@ -674,6 +674,15 @@ Press `window+R` to run some shortcut and enter below command:
 	- stop cmd: `Get-Process -Name "cmd" | Stop-Process`
 - check recursive of working directory: `tree /f pathname` 
 - remove unempty dirctory: `Remove-Item <foldername>  -Recurse -Force`
+- check history command:
+```
+#method1: print out
+cat (Get-PSReadlineOption).HistorySavePath
+
+#method2: write into txt
+Get-Content (Get-PSReadlineOption).HistorySavePath > D:\PowerShellHistory.txt
+```
+
 ## Linux
 
 
