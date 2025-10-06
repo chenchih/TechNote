@@ -7,11 +7,12 @@ Record Cheat Sheet Note
 	- update git push setting
 	- window shortcut
 - 2025.05.04: reedit git note	
+- 2025.08.22: remove linux and add wifi setting. Linux please refer this [link](#https://github.com/chenchih/Env_Setup_Note/tree/master)
 
 ## Content
 - [Git Note](#Git-Command-Notes)
 - [PYTHON](#PYTHON)
-- [Linux](#Linux)
+- [Wifi command](#wificli)
 - [Emoji](#Emoji)
 
 ## Git Command Notes
@@ -685,9 +686,45 @@ Press `window+R` to run some shortcut and enter below command:
 	- stop cmd: `Get-Process -Name "cmd" | Stop-Process`
 - check recursive of working directory: `tree /f pathname` 
 - remove unempty dirctory: `Remove-Item <foldername>  -Recurse -Force`
+<<<<<<< HEAD
 
 ## Linux
+=======
+- check history command:
+```
+#method1: print out
+cat (Get-PSReadlineOption).HistorySavePath
+>>>>>>> 6c87c46401f8556555a97750e2f9e89bcff14271
 
+#method2: write into txt
+Get-Content (Get-PSReadlineOption).HistorySavePath > D:\PowerShellHistory.txt
+```
+<a name="wificli"></a>
+## WIFI scanning
+
+- Lost the save wifi ssid on labtop
+```
+#window
+netsh wlan show profile
+
+#linux
+nmcli connection show
+```
+- get the password of it 
+```
+#window
+netsh wlan show profile name="arc-guest" key=clear
+#linux
+sudo nmcli connection show "My Home WiFi" | grep psk
+
+```
+- scan alll ssid 
+```
+#window
+netsh wlan show networks mode=bssid
+#linux
+nmcli device wifi list
+```
 
 ## Emoji 
 
