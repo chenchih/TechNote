@@ -5,15 +5,17 @@ I will include:
 - OpenAI: ChatGPT API (PAID)
 - Gemini: Free Gemini
 
-## Code example
-- `sendPrompt_openAI.py`: An easy example of sending prompt
-- `chatbot_openAI.py`:　Example of a easy AI bot
+## Open AI example
 
-## OpenAI API Note
+### OpenAI API Note
 
 - Register an account and creat API Key
 - Add an API Key(keep this secret, recommend put on .env file)
-- Add Billing information(if not not able to use apikey)
+- Add Billing information(If billed not set then not able to use apikey)
+You have to set billing like credit card and add specfic amount to it. In my case I only add `$5.00`, you can added according to your need. 
+![img/billed.PNG]
+
+
 
 - Please install openai package:
 ```
@@ -21,10 +23,6 @@ pip install openai
 ```
 
 ### Basic write an OpenAI prompt
-
-
-
-
 
 ```
 from openai import OpenAI
@@ -46,6 +44,32 @@ completion = client.chat.completions.create(
 
 print(completion.choices[0].message.content)
 ```
+
+
+### Example Code
+
+#### `sendPrompt_openAI.py`: An easy example of sending prompt
+- Description: Prompt is been hotcoded, token is been restrict to 20, so below output will see response incomplete it's the problem.
+- Output:
+
+![img/sendPrompt_openAI.PNG]
+
+#### `chatbot_openAI.py`:　Example of a easy AI bot
+- Description: User just input prompt like a bot, it will response you. 
+
+- Output:
+![img/chatbot_openAI.PNG]
+
+
+#### Check Usage
+
+Now after run the two code on sending prompt, you can see how much token I use, not much. My billing account to stay `$5.00`. 
+
+To avoid using too  much token , just limit your token. 
+
+![img/tokenused.PNG]
+
+
 ## Google Gemini Note
 - Register an account and create API google [google AI Studio api](https://aistudio.google.com/app/api-keys) 
 

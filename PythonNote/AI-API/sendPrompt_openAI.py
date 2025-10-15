@@ -1,5 +1,5 @@
 from openai import OpenAI
-from dotenv import load_dotenv()
+from dotenv import load_dotenv
 import os
 
 #fixed api key
@@ -25,7 +25,7 @@ def test_gpt(prompt):
 
 if __name__ == "__main__":
     response= test_gpt("hello")
-	print("Chatbot": response)
+    print(f"Chatbot: {response}")
 
 #note:
 #system: Defines the rules of the conversation, make instructions fixed and persistent across the whole conversation. if not set as sytem , you have to write every time
