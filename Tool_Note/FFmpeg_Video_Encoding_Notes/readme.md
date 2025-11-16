@@ -4,7 +4,8 @@
 There are more functions you can deal with video, which I will not cover for more details, check the ffmpeg [documentation](https://ffmpeg.org/ffmpeg.html). 
 Please download ffmpeg from this link [Download](https://www.ffmpeg.org/download.html). 
 
-FFmpeg syntax: `ffmpeg [global_options] -i input_file [input_options] [output_options] output_file`
+> **FFmpeg syntax:** 
+>> `ffmpeg [global_options] -i input_file [input_options] [output_options] output_file`
 
 ## Part 1 Understand codec and encoding
 
@@ -181,34 +182,37 @@ Most people **don’t need to manually compress** because:
 > syntax: 
 >> `ffmpeg [global_options] -i input_file [input_options] [output_options] output_file`
 
-| **Option** | **Description** 
+| **Option** | **Description**| 
 |----------------|----------------|
 | -i <file> |  Specifies the input file |
 | -y | Overwrite output without asking |
-| -n |Do not overwrite existing files |
+| -n | Do not overwrite existing files |
 | -loglevel <level> | Controls output messages (quiet, info, error, etc.) |
 
 
-- **Video Options **
-| **Option** | **Description** 
+- **Video Options**
+
+| **Option** | **Description**| 
 |----------------|----------------|
-|-c:v copy|	Copy video without re-encoding|
+|-c:v copy |	Copy video without re-encoding|
 |-c:v libx264	|Encode video with H.264|
 |-c:v libx265	|Encode video with H.265 (HEVC)|
 |-crf <value>	|Set video quality (lower = better, 23 is default)|
 |-preset <speed>	|Set encoding speed (ultrafast, slow, medium, etc.)|
 
-- **audio Options **
-| **Option** | **Description** 
+- **audio Options**
+
+| **Option** | **Description**| 
 |----------------|----------------|
-|-c:a copy|	Copy audio without re-encoding|
+|-c:a copy |	Copy audio without re-encoding|
 |-c:a aac	|	Encode audio to AAC (default for MP4)|
 |-c:a mp3	|Encode audio to MP3|
 
 - **Subtitle Options**
-| **Option** | **Description** 
+
+| **Option** | **Description**| 
 |----------------|----------------|
-|-c:s copy|	Copy subtitles without re-encoding|
+|-c:s copy |	Copy subtitles without re-encoding|
 |-c:s mov_text|Convert subtitles for MP4|
 |-sn|Remove all subtitles|
 
@@ -216,7 +220,7 @@ Most people **don’t need to manually compress** because:
 ### 2. Cut trim(Split video with time)
 You can use the command to split a video to a specfic start and end time. 
 
-#### using the command
+#### (Manual) using the command
 > - `-ss START_TIME`: Specifies the start time for cutting.
 > - `-to END_TIME` or `-t`:  Specifies the start time for cutting.
 > - `-i INPUT_FILE`: Specifies the input file.
@@ -225,6 +229,8 @@ You can use the command to split a video to a specfic start and end time.
 > - `-OUTPUT_FILE`:  Specifies the name of the output file.
 > - `-y`: Overwrites the output file if it already exists
 
+
+- extract video 
 ```
 # Start extracting the video from the 30th second, and -t 10 is the duration of the output video.
 ffmpeg -ss 30 -i input.wmv -c copy -t 10 output.wmv
@@ -236,7 +242,7 @@ ffmpeg -ss 02:50 -to 03:20 -i input_video.mp4 -c copy -avoid_negative_ts video.m
 
 ```
 
-Cropping:
+- Cropping
 ```
 #Inserting Timestamps into the video file
 ffmpeg -i video-cropped.mp4 -vf "drawtext=fontfile='C\:\\Windows\\Fonts\\arial.ttf':text='timestamp\:%{pts \: hms}': x=20: y=40: fontsize=24: fontcolor=white" -c:a copy video-cropped-timestamps.mp4
@@ -247,7 +253,7 @@ ffmpeg -i video-cropped-timestamps.mp4 -start_number 1 -vf fps=1 video-%04d.jpg
 ffmpeg -i video.mp4 -filter:v "crop=1850:250:0:830" -c:a copy video-cropped.mp4
 ```
 
-#### using code
+#### (Automation) using code
 Please refer `split_video_startEnd_time.py` this code, this python file, you have to provide a input video in current directory. 
 ```
 import subprocess
@@ -305,6 +311,7 @@ Segment saved as myfileOutput.mp4
 > - `merged_output.mp4`: The final merged output file
 
 - Merge Multiple video 
+
 If you want to merge multiple video, you can add the file into txt file like `input.txt file` contains `'part_1.mp4' file 'part_2.mp4' file 'part_3.mp4'` and use the comamnd to merge multipel video
 ```
 #merge multiple video: 
@@ -367,7 +374,7 @@ py .\split_merge_ff.py .\inputvideo.mp4 02:50-03:20 05:04-09:20
 
 
 ### 4. Extract Audio from Video
-Extracts the audio from input.mp4 and saves it as output.mp3.
+Extracts the audio from `input.mp4` and saves it as `output.mp3`.
 
 Use Case: If you want to extract background music or dialogue from a video.
 ```
