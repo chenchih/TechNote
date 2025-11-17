@@ -1,6 +1,8 @@
 # Cheat Sheet
 Record Cheat Sheet Note
 ## Update Record
+- 2025/11/17: 
+	- Add and modify wifi cli command use both on window and linux	
 - 2025/3/10:
 	- adding remove branch, remove remote branch, fetch -- plume
 - 2025.2.24: 
@@ -661,7 +663,7 @@ C:\Windows\SoftwareDistribution\Download
 
 ### Shortcut command
 
-#### window run window
+#### =>window run window
 Press `window+R` to run some shortcut and enter below command:
 
 - Network interface網路連線: `ncpa.cpl`
@@ -678,31 +680,29 @@ Press `window+R` to run some shortcut and enter below command:
 - window version: `winver`
 
 
-#### command promopt
+#### =>command prompt
 - check process: `tasklist  |grep nameapp`
 - kill process: 
 	- stop process ID: `taskkill /pid <process ID> /f`
 	- stop python: `taskkill /IM python.exe /f` 
 	- stop cmd: `Get-Process -Name "cmd" | Stop-Process`
 - check recursive of working directory: `tree /f pathname` 
-- remove unempty dirctory: `Remove-Item <foldername>  -Recurse -Force`
-<<<<<<< HEAD
+- remove unempty directory: `Remove-Item <foldername>  -Recurse -Force`
 
-## Linux
-=======
 - check history command:
 ```
 #method1: print out
 cat (Get-PSReadlineOption).HistorySavePath
->>>>>>> 6c87c46401f8556555a97750e2f9e89bcff14271
 
 #method2: write into txt
 Get-Content (Get-PSReadlineOption).HistorySavePath > D:\PowerShellHistory.txt
 ```
 <a name="wificli"></a>
-## WIFI scanning
 
-- Lost the save wifi ssid on labtop
+## WIFI Cli command 
+
+###  Save wifi ssid on laptop 
+This will list the wifi ssid that you ever connected before, which mean password is been save inside. 
 ```
 #window
 netsh wlan show profile
@@ -710,21 +710,197 @@ netsh wlan show profile
 #linux
 nmcli connection show
 ```
-- get the password of it 
+### get ssid password
 ```
 #window
-netsh wlan show profile name="arc-guest" key=clear
+netsh wlan show profile name="ssidname" key=clear
 #linux
 sudo nmcli connection show "My Home WiFi" | grep psk
-
 ```
-- scan alll ssid 
+###  scan alll ssid 
+This will scan all avaiable SSID
 ```
 #window
-netsh wlan show networks mode=bssid
+netsh wlan show networks
 #linux
 nmcli device wifi list
 ```
+
+> **Note for window:**
+
+If you want to display more detail like HW support model, you can use
+
+```
+netsh wlan show networks mode=bssid 
+```
+
+###  Make a connection to SSID
+In previous command you check available SSID you can use, now you need to make a connection
+```
+#linux 
+ncli device wifi connect "ssidname" password <ssidPassword>
+
+#window 
+netsh wlan connect name="ssidname"
+```
+
+
+#### First time connect SSID (window)
+
+If your ssid never connected then you have to add profile to it you are not able to use above connect method. In window you need to create profile and add xml file which contain ssid and password in it. 
+
+- Step 1: Create a `ssid.xml` file (ex: `WIFI-CAK9XRN.xml`)
+  
+Please replace `{}` the string of your ssid, and password. 
+```
+<?xml version="1.0"?>
+<WLANProfile xmlns="http://www.microsoft.com/networking/WLAN/profile/v1">
+    <name>{SSID}</name>
+    <SSIDConfig>
+        <SSID>
+            <name>{SSID}</name>
+        </SSID>
+    </SSIDConfig>
+    <connectionType>ESS</connectionType>
+    <connectionMode>auto</connectionMode>
+    <MSM>
+        <security>
+            <authEncryption>
+                <authentication>WPA2PSK</authentication>
+                <encryption>AES</encryption>
+                <useOneX>false</useOneX>
+            </authEncryption>
+            <sharedKey>
+                <keyType>passPhrase</keyType>
+                <protected>false</protected>
+                <keyMaterial>{password}</keyMaterial>
+            </sharedKey>
+        </security>
+    </MSM>
+    <MacRandomization xmlns="http://www.microsoft.com/networking/WLAN/profile/v3">
+        <enableRandomization>false</enableRandomization>
+    </MacRandomization>
+</WLANProfile>
+```
+
+- Step 2: Create xml file with interface
+Let Create a profile with file you create in previous step, and you Wirless interface. 
+
+If you don't know your itnerface please use `netsh wlan show interfaces` to check which interface your wan is. 
+
+```
+netsh wlan add profile filename=".\WIFI-CAK9XRN.xml" interface="Wi-Fi"
+```
+
+You can show profile again, it should display the profile you create 
+```
+netsh wlan show profile
+```
+
+> **Note:** If you modify your `.xml` file, you need to remove the profile, else it will not apply
+```
+netsh wlan delete profile name="SSID"
+```
+- Step3 connect ssid
+```
+netsh wlan connect name="WIFI-CAK9XRN"
+```
+
+- Export your porfile
+
+```
+#export all your profile (this is all saved network)
+netsh wlan export profile key=clear
+
+#export specfic profile 
+netsh wlan export profile name=profile name
+```
+
+
+### Check Wirless SSID connected status:
+```
+#linux
+nmcli dev status
+
+#window
+netsh wlan show interfaces
+```
+
+### Forget Network (SSID)
+```
+#Linux
+sudo nmcli connection delete "<CONNECTION_NAME ex: WIFI-CAK9XRN>"
+
+#Window
+netsh wlan delete profile name="<CONNECTION_NAME>"
+```
+
+### Discconect your SSID
+```
+#linux 
+nmcli device disconnect <interface Name ex: wlan0>
+
+#window 
+netsh wlan disconnect
+```
+
+Alterative you can use
+```
+sudo nmcli connection down <CONNECTION_NAME>
+```
+
+### Wifi Summary:
+Window is much complicated on setting, Linux is much easier, so I will list commonly use command
+
+- Window
+```
+# get your ssid password 
+netsh wlan show profile name="<SSID Network Name>" key=clear 
+
+#show your profile
+netsh wlan show profie
+
+# connect SSID
+netsh wlan connect name="<SSID Network Name>"
+
+# connected status
+
+# Forget SSID network
+netsh wlan delete profile name="<SSID Network Name>"
+
+# disconnect Wirless
+nmcli device disconnect
+
+# add profile the file contain ssid and password
+netsh wlan add profile filename=<WirlessFIle.xml> interface=<WIFI Interface>
+
+# delete profile
+sudo nmcli connection delete <SSID Ntwork Name>
+```
+
+- Linux
+```
+# get your ssid password 
+sudo nmcli connection show "My Home WiFi" | grep psk
+
+# show all ssid
+nmcli device wifi list
+
+# connect ssid
+ncli device wifi connect "ssidname" password <ssidPassword>
+
+# connected status
+nmcli dev status
+
+# Forget SSID network
+netsh wlan delete profile name=<SSID Network Name>
+# disconnect Wirless
+nmcli device disconnect <interface Name ex: wlan0
+```
+
+> Reference:
+>> - https://www.serverwatch.com/guides/netsh-commands/
+>> - https://blog.csdn.net/qq_42887760/article/details/104343451
 
 ## Emoji 
 
