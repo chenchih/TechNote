@@ -46,7 +46,7 @@ Record Cheat Sheet Note
   - [Case 3: `git revert` - Undoing Commits Safely](#7.case3)
   - [Case 4: `git reset` - Back to Uncommitted](#7.case4)
   - [Case 5: `git reset` - Back to Unstaged](#7.case5)
-  
+- [8. Git Pull request](#8.PR) 
 
 
 **Git Command Summary**
@@ -591,6 +591,21 @@ Changes not staged for commit:
         modified:   README.md
 ```
 
+<a name="8.PR"></a>[🔝](#top)
+
+If you have multiply developer or team develope on this repository, whenever finsish can push their code on github. The leader or the person who responsible to merge the code will revise the code and do pull request, which will merge the code to master by click PR button. 
+Let me show step on how to use git pull request:
+
+- Step1: create and switch new branch `git checkout -b updateNewBranch` #
+- Step2: edit your file and ave it 
+```
+code file.txt #open vscode and edit your file
+git add ,
+git commit -m "edit file.txt file for testing pull request"
+git push orgin updateNewBranch
+```
+- Step3: navigate to github page and click compare &pull request 
+now you can ask your team to revise it before merging, if it's ok then press merge pull request 
 
 
 ## PYTHON
